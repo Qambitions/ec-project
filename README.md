@@ -1,5 +1,4 @@
-![FITUS](https://cdn.nhanlucnganhluat.vn/uploads/images/9426F66C/logo/2019-03/35228463_2076230712644398_4635641207110762496_n.png)
-
+<a href="https://www.ctdb.hcmus.edu.vn/vi/"><img src="https://www.ctdb.hcmus.edu.vn/wp-content/uploads/2015/10/logo.png" align="center"/></a>
 # EC-2022 - Cửa hàng bán phụ kiện thú cưng online
 -----------------
 Cửa hàng hứa hẹn mang đến sản phẩm đa dạng, chất lượng với giá cạnh tranh, giúp các "con sen" phục vụ chu đáo "hoàng thượng" của mình.
