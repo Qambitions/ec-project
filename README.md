@@ -1,4 +1,4 @@
-![FIT_US]([http://url/to/img.png](https://cdn.nhanlucnganhluat.vn/uploads/images/9426F66C/logo/2019-03/35228463_2076230712644398_4635641207110762496_n.png))
+![FITUS](https://cdn.nhanlucnganhluat.vn/uploads/images/9426F66C/logo/2019-03/35228463_2076230712644398_4635641207110762496_n.png)
 
 # EC-2022 - Cửa hàng bán phụ kiện thú cưng online
 -----------------
