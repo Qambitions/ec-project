@@ -2,6 +2,7 @@
 # EC-2022 - Cửa hàng bán phụ kiện thú cưng online
 -----------------
 Cửa hàng hứa hẹn mang đến sản phẩm đa dạng, chất lượng với giá cạnh tranh, giúp các "con sen" phục vụ chu đáo "hoàng thượng" của mình.
+Cung cấp tất cả phụ kiện cần thiết cho **chó, mèo, hamster**.
 
 ### Điểm nổi bật
 -----------------
