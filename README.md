@@ -10,6 +10,8 @@ Cửa hàng hứa hẹn mang đến sản phẩm đa dạng, chất lượng v�
 - Đảm bảo giao hàng nhanh chóng.
 - Thanh toán dễ dàng.
 - Thông tin sản phẩm được mô tả rõ ràng, chi tiết.
+- Hỗ trợ giao hàng toàn quốc.
+- Các chương trình khuyến mãi hấp dẫn.
 Ngoài ra, đối với doanh nghiệp khác, cửa hàng nhận quảng cáo thương hiệu với mức giá phải chăng.
 
 ### Tech
