@@ -7,7 +7,7 @@
     "client": "npm run start --prefix front_end",
     "letsgo": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "./heroku.build"
+    "heroku-postbuild": "./script/heroku.build"
   },
   "keywords": [],
   "author": "Diastic",
