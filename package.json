@@ -6,7 +6,8 @@
     "server": "npm run start --prefix back_end",
     "client": "npm run start --prefix front_end",
     "letsgo": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "./heroku.build"
   },
   "keywords": [],
   "author": "Diastic",
