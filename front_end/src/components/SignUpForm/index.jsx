@@ -9,6 +9,7 @@ import React from 'react';
 import { useState } from 'react';
 
 export default function SignUpForm(){
+
     const [inputType, setInputType]=useState('password');
     const [iconType, setIconType]=useState(faEye);
     const handleToggle=()=>{
