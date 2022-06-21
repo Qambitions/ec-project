@@ -1,0 +1,26 @@
+
+.footer{
+    flex-direction: column;
+}
+
+.footer-info{
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-stores{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    column-gap: 1em;
+}
+
+.company{
+    font-size: 0.7rem;
+    line-height: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
