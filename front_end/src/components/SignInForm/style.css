@@ -1,0 +1,91 @@
+
+.signin-form{
+    justify-content: center;
+    width: 356.54px;
+    height: 450px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+
+.signin-body{
+    background-image: url("https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655610772/background/cats-foot-cs4-01-_zi1heg.jpg");
+    min-height: 800px;
+    width: 70%;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+}
+
+.signin-form h5{
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.signin-form input{
+    border: none;
+    min-width: 318.95px;;
+    min-height: 34.08px;;
+    background: #FFF5F5;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    outline: none;
+}
+
+.signin-form a{
+    color: #9D471D;
+}
+
+.signin-form span{
+    color: #A4B4C9;
+}
+
+.signin-form-else{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-left: 10rem;
+    font-size: 0.8rem;
+}
+
+.signin-form-signbutton{
+    font-weight: 700;
+    color:white;
+    border: none;
+    min-width: 106.32px;
+    min-height: 32.98px;
+    background: #FF6062;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 40px;
+}
+
+.signin-form-signbutton:hover{
+    background: #ff6063b1;
+}
+
+.sign-form-continue-google{
+    display: flex;
+    width: 277.07px;
+    height: 37.38px;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    font-size: 15px;
+}
+
+.sign-form-continue-google:hover{
+    background: #f2e8e8cc;
+}
+
+.signin-form input{
+    padding-left: 1em;
+}
+
