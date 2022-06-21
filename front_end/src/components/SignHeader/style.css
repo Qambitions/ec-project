@@ -1,0 +1,17 @@
+.nav-signin-menu{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    font-weight: 600;
+}
+
+.nav-signin-menu a{
+    color: black;
+}
+
+.nav-signin-menu i{
+    font-size: 21px;
+}
+.logo{
+    max-height: 100px;
+}
