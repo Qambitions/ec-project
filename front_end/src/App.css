@@ -8,11 +8,12 @@
 .container{
     display: flex;
     justify-content: space-between;
-    width: 70%;
+    min-width: 70%;
+    width: 1200px;
     margin: 0 auto;
 }
 
-@media (max-width:650px){
+@media (max-width:750px){
     .container{
         width: 90%;}
 }
@@ -27,4 +28,5 @@
 
 .body{
     background-color:#F9F8F8;
+    min-height: 700px;
 }

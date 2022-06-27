@@ -23,19 +23,6 @@ export default function SignUpForm(){
         }
     }
 
-    const [inputTypeCf, setInputTypeCf]=useState('password');
-    const [iconTypeCf, setIconTypeCf]=useState(faEye);
-    const handleToggleCf=()=>{
-        if(inputType==='password'){
-            setIconTypeCf(faEye);
-            setInputTypeCf('text');
-        }
-        else{
-            setIconTypeCf(faEyeSlash);
-            setInputTypeCf('password');
-        }
-    }
-
     const provinces=[
         {
             id: 1, 
@@ -77,8 +64,7 @@ export default function SignUpForm(){
                         </select>
                     </div>
                     <div className='signup-input-container'>
-                        <input placeholder="Mật khẩu" type={inputTypeCf}></input>
-                        <FontAwesomeIcon className='eye' icon={iconTypeCf} onClick={handleToggleCf}/>
+                        <input placeholder="Mật khẩu" type={inputType}></input>
                     </div>
                     <div className='signup-input-container'>                    
                     <select className='signup-form-input-2'>

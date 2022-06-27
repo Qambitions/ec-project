@@ -1,0 +1,13 @@
+.search-bar{
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    justify-content: center;
+    margin: auto 0;
+}
+
+.search-bar-search-field{
+    outline: none;
+    border: none;
+    line-height: 28px;
+}
