@@ -1,0 +1,10 @@
+.navbar{
+    color: white;
+    height: 40px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-container{
+    background-color: rgba(224, 74, 74, 0.84);
+}
