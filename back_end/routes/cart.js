@@ -9,8 +9,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 var voucher = require('./cart/voucher');
+var shipping_information = require('./cart/shipping_information');
 
 app.use('/voucher', voucher);
+app.use('/shipping_information', shipping_information);
 
 app.use(function(req, res, next) {
     next(createError(404));
