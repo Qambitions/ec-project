@@ -1,46 +1,17 @@
 import './style.css'
 
 export default function NavBar(props){
-    const navTag=[
-        {
-            id: 1,
-            tagName: 'Trang chủ'
-        },
-        {
-            id: 2,
-            tagName: 'Hot deals'
-        },
-        {
-            id: 3,
-            tagName: 'Thức ăn'
-        },
-        {
-            id: 4,
-            tagName: 'Mỹ phẩm và làm đẹp'
-        },
-        {
-            id: 5,
-            tagName: 'Thời trang'
-        },
-        {
-            id: 6,
-            tagName: 'Đồ chơi'
-        },
-        {
-            id: 7,
-            tagName: 'Y tế'
-        },
-        {
-            id: 8,
-            tagName: 'Chuồng thú'
-        },
-    ]
     return(
         <div className='nav-container'>
             <div className="container navbar">
-                {
-                    navTag.map((item)=>{return <label>{item.tagName}</label>})
-                }
+                <a href='/'>Trang chủ</a>
+                <a href='/'>Hot deals</a>
+                <a href='/'>Thức ăn</a>
+                <a href='/'>Mỹ phẩm và làm đẹp</a>
+                <a href='/'>Thời trang</a>
+                <a href='/'>Đồ chơi</a>
+                <a href='/'>Y tế</a>
+                <a href='/'>Chuồng thú</a>
             </div>
         </div>
     )
