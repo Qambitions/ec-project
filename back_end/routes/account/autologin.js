@@ -21,7 +21,7 @@ router.post('/', async (req, res, next) =>{
         "token": "",
         "account_type":""
     }
-    console.log(req.headers.token)
+    // console.log(req.headers.token)
     const retUser = await queryUser(req.headers);
     if (retUser.count > 0){
       response.account_type = 1
