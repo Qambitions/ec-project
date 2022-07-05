@@ -8,7 +8,7 @@ async function queryVoucher(props){
     const rawSQL = `  SELECT ma_voucher, phan_tram_giam_gia, giam_toi_da FROM voucher  
                         WHERE tg_bat_dau <= '${date_str}'
                         AND '${date_str}'<= tg_ket_thuc
-                        AND phan_loai = 'sanpham'
+                        AND phan_loai = 'donhang'
                     `
     // return knexQuery.select().from("store_admin");
     const result = await knexQuery.raw(rawSQL)
