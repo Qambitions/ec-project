@@ -10,10 +10,12 @@ app.use(express.urlencoded({ extended: false }));
 
 var login = require('./account/login');
 var signup = require('./account/signup');
+var autologin = require('./account/autologin');
 // var signup = require('./account/signup');
 
 app.use('/login', login);
 app.use('/signup', signup);
+app.use('/autologin', autologin);
 
 
 app.use(function(req, res, next) {

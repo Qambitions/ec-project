@@ -2,12 +2,6 @@ var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
 
-var response = {
-  "exitcode": 1,
-  "message": "Đăng ký thất bại",
-  "token": "",
-}
-
 async function checkAvailable(props){
   const rawSQL = `  SELECT count(*) FROM khach_hang 
                     WHERE email_kh  = '${props.email_kh}'
@@ -49,6 +43,12 @@ async function addAccount(props){
 }
 
 router.post('/', async (req, res, next) =>{
+  var response = {
+    "exitcode": 1,
+    "message": "Đăng ký thất bại",
+    "token": "",
+  }
+
   const checkRes = await checkAvailable(req.body);
   if (checkRes.count > 0){
     response.message      = "Email hoặc sđt đã tồn tại"

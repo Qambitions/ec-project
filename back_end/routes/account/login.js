@@ -2,13 +2,6 @@ var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
 
-var response = {
-  "exitcode": 1,
-  "message": "Thông tin đăng nhập không đúng",
-  "token": "",
-  "account_type":""
-}
-
 async function queryAdmin(props){
   const rawSQL = `  SELECT count(*) FROM store_admin 
                     WHERE email  = '${props.username}'
@@ -41,6 +34,13 @@ async function updateToken(props,token){
 }
 
 router.post('/', async (req, res, next) =>{
+  var response = {
+    "exitcode": 1,
+    "message": "Thông tin đăng nhập không đúng",
+    "token": "",
+    "account_type":""
+  }
+  
   const retAdmin = await queryAdmin(req.body);
   console.log(retAdmin)
   if (retAdmin.count > 0){

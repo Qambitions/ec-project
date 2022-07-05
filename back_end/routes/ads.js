@@ -2,12 +2,6 @@ var express = require('express');
 var router = express.Router();
 var knexQuery = require('../db_connect');
 
-var response = {
-    "exitcode": 0,
-    "message": "Lấy dữ liệu quảng cáo thành công",
-    "list_ads": "",
-  }
-
 async function queryAds(props){
     var date = new Date();
     var date_str = String(date.toISOString().split('T')[0]);
@@ -22,9 +16,14 @@ async function queryAds(props){
 }
 
 router.get('/', async (req, res, next) =>{
-    const retAds = await queryAds(req.body);
-    response.list_ads = retAds
-    res.send(response)
+  var response = {
+    "exitcode": 0,
+    "message": "Lấy dữ liệu quảng cáo thành công",
+    "list_ads": "",
+  }
+  const retAds = await queryAds(req.body);
+  response.list_ads = retAds
+  res.send(response)
 });
 
 module.exports = router;
