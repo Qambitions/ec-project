@@ -13,6 +13,33 @@
     margin: 0 auto;
 }
 
+.button_pink{
+    background: #FF5D5D;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    font-size: 1em;
+}
+
+.error_input_containers{
+    width: 90%;
+    
+}
+
+.container__flex{
+    display: flex;
+    align-items: center;
+    column-gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.container__flex_col{
+    display: flex;
+    flex-direction: column;
+}
+
 @media (max-width:750px){
     .container{
         width: 90%;}
@@ -29,4 +56,18 @@
 .body{
     background-color:#F9F8F8;
     min-height: 700px;
+    padding: 1rem 0;
+    font-family: 'K2D', sans-serif;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
