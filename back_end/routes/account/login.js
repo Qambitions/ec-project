@@ -40,9 +40,9 @@ async function updateToken(props,token){
   })
 }
 
-router.get('/', async (req, res, next) =>{
+router.post('/', async (req, res, next) =>{
   const retAdmin = await queryAdmin(req.body);
-  
+  console.log(retAdmin)
   if (retAdmin.count > 0){
     response.account_type = 0
     response.message      = "Chào mừng mấy đứa đua đòi làm zàu!!"

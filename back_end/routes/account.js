@@ -9,9 +9,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 var login = require('./account/login');
+var signup = require('./account/signup');
 // var signup = require('./account/signup');
 
 app.use('/login', login);
+app.use('/signup', signup);
 
 
 app.use(function(req, res, next) {
