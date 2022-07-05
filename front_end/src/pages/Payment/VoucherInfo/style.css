@@ -1,0 +1,5 @@
+.voucher__info .payment__info_body label:nth-child(1){
+    background-color: #FFE083;
+    padding: 0 0.5rem;
+    margin-right: 0.5rem;
+}
