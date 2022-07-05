@@ -1,0 +1,9 @@
+.delivery__card .container__flex label:nth-child(1){
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.delivery__card{
+    align-items: flex-start;
+    justify-content: space-between;
+}

@@ -1,0 +1,40 @@
+.voucher__card{
+    display: flex;
+    border: 1px solid #DA4141;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.voucher__card_left{
+    outline: 1px solid #DA4141;
+    background: #DA4141;
+    width: 25%;
+    text-align: center;
+    line-height: 9ch;
+    border-bottom-right-radius: -4px;
+}
+
+.voucher__card_left label{
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 20px;
+    color: white;
+}
+
+
+.voucher__card_right{
+    margin: auto 0;
+    padding-left: 1rem;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.voucher__card_label1{
+    color: #FF7D7D;
+}
+
+.voucher__card_label2{
+    color: #8C8C8C;
+}

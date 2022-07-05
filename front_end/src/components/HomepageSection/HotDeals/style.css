@@ -1,0 +1,26 @@
+.hot__deals{
+    display: block;
+    background-color: white;
+    margin-bottom: 1rem;
+}
+
+.hot__deals_body{
+    display: flex;
+    justify-content: center;
+}
+
+.hot__deals .carousel-control-prev, .carousel-control-next{
+    width: 3%;
+}
+
+.hot__deals .carousel-indicators{
+    visibility: hidden;
+}
+
+.hot__deals .carousel-control-next-icon{
+    background-image: url("https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832638/icon/32213_pxv0fp.png");
+}
+
+.hot__deals .carousel-control-prev-icon{
+    background-image: url("https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832638/icon/32542_ct6id8.png");
+}

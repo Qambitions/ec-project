@@ -1,0 +1,15 @@
+.navbar{
+    color: white;
+    height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+}
+
+.navbar a{
+    color: white;
+}
+
+.nav-container{
+    background-color: rgba(224, 74, 74, 0.84);
+}

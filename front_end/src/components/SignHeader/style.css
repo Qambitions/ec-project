@@ -2,7 +2,7 @@
     display: flex;
     gap: 1em;
     align-items: center;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .nav-signin-menu a{
@@ -14,4 +14,8 @@
 }
 .logo{
     max-height: 100px;
+}
+
+.logo:hover{
+    cursor: pointer;
 }

@@ -1,0 +1,51 @@
+.product__card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 235px;
+    padding-bottom: 0.5rem;
+    color: black;
+}
+
+.product__card_info{
+    width: 190px;
+}
+
+
+.product__card span{
+    color: #B5B3B3;
+    font-size: 0.8em;
+}
+
+.product__card_img{
+    width: 180px;
+}
+
+.product__card_price{
+    display: flex;
+    justify-content: space-between;
+}
+
+.product__card_price_left{
+    color: #E04A4A;
+    font-weight: 700;
+    font-size: 1em;
+}
+
+.product__card_price_right{
+    color: rgba(0, 0, 0, 0.66);
+    font-weight: 400;
+    font-size: 1em;
+}
+
+.product__card_price_right span{
+    color: white;
+    background: #E04A4A;
+    border-radius: 10px;
+    padding: 0 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.product__card_rating_star{
+    color:orange
+}
