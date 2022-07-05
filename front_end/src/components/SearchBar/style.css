@@ -18,6 +18,7 @@
     border: none;
     line-height: 28px;
     width: 100%;
+    padding-left: 1rem;
 }
 
 .search-icon{
@@ -27,5 +28,5 @@
     height: 30px;
     width: 50px;
     text-align: center;
-    line-height: 33px;
+    line-height: 28px;
 }
