@@ -9,8 +9,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 var details = require('./product/details');
+var view = require('./product/view');
 
 app.use('/details', details);
+app.use('/view', view);
 
 app.use(function(req, res, next) {
     next(createError(404));
