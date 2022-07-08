@@ -25,9 +25,21 @@ router.get('/', async (req, res, next) =>{
         'list_items':''
     }
     const itemsInformation = await queryItem(req.body);
-   
-    // # to do: nhà phân phối
+    var star = {
+        'avg':0,
+        '1': 0,
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+    }
     
+    for (var i=0; i<itemsInformation.length; i++){
+        star.avg = itemsInformation[i].sao 
+        itemsInformation[i].sao = star
+
+    }
+
     response.message      = "Lấy thông tin sản phẩm thành công"
     response.exitcode     = 0
     response.item         = itemsInformation
