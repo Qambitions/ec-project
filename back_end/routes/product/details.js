@@ -83,11 +83,11 @@ router.get('/', async (req, res, next) =>{
     const saoitems = await queryItemStar(req.body);
    
     star.avg = itemsInformation.sao
-    star['1'] = saoitems['1']
-    star['2'] = saoitems['2']
-    star['3'] = saoitems['3']
-    star['4'] = saoitems['4']
-    star['5'] = saoitems['5']
+    star['1'] = (typeof saoitems['1'] === 'undefined') ? 0 : saoitems['1']
+    star['2'] = (typeof saoitems['2'] === 'undefined') ? 0 : saoitems['2']
+    star['3'] = (typeof saoitems['3'] === 'undefined') ? 0 : saoitems['3']
+    star['4'] = (typeof saoitems['4'] === 'undefined') ? 0 : saoitems['4']
+    star['5'] = (typeof saoitems['5'] === 'undefined') ? 0 : saoitems['5']
 
     const tonkho = await queryStock(req.body);
     const chi_nhanh_con = await queryChiNhanhCon(req.body);

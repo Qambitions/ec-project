@@ -21,7 +21,7 @@ router.get('/', async (req, res, next) =>{
     "message": "Lấy dữ liệu quảng cáo thành công",
     "list_ads": "",
   }
-  const retAds = await queryAds(req.body);
+  const retAds = await queryAds();
   response.list_ads = retAds
   res.send(response)
 });
