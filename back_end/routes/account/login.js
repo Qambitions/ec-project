@@ -13,9 +13,10 @@ async function queryAdmin(props){
 }
 
 async function queryUser(props){
-  const rawSQL = `  SELECT count(*) FROM khach_hang 
+  const rawSQL = `  SELECT makh, tenkh, email_kh, sdt_kh FROM khach_hang 
                     WHERE (email_kh  = '${props.username}' or sdt_kh = '${props.username}')
                     AND mat_khau = '${props.password}'
+                    group by 1,2,3,4
                   `
   // return knexQuery.select().from("store_admin");
   const result = await knexQuery.raw(rawSQL)
@@ -38,7 +39,8 @@ router.post('/', async (req, res, next) =>{
     "exitcode": 1,
     "message": "Thông tin đăng nhập không đúng",
     "token": "",
-    "account_type":""
+    "account_type":"",
+    "account_info":"",
   }
   
   const retAdmin = await queryAdmin(req.body);
@@ -51,10 +53,11 @@ router.post('/', async (req, res, next) =>{
   }
   else {
     const retUser = await queryUser(req.body);
-    if (retUser.count > 0){
+    if (typeof(retUser) != "undefined"){
       response.account_type = 1
       response.message      = "Đăng nhập thành công"
       response.exitcode     = 0
+      response.account_info = retUser
       response.token = require('crypto').randomBytes(47).toString('hex');
       await updateToken(req.body, response.token);
       res.send(response)

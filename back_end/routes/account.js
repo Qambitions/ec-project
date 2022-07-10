@@ -11,11 +11,12 @@ app.use(express.urlencoded({ extended: false }));
 var login = require('./account/login');
 var signup = require('./account/signup');
 var autologin = require('./account/autologin');
-// var signup = require('./account/signup');
+var logout = require('./account/logout');
 
 app.use('/login', login);
 app.use('/signup', signup);
 app.use('/autologin', autologin);
+app.use('/logout', logout);
 
 
 app.use(function(req, res, next) {
