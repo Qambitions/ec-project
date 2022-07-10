@@ -29,6 +29,17 @@ async function queryItemStar(props){
     return result.rows
 }
 
+async function queryComment(props){
+    const rawSQL = ` 
+                    select tenkh, masp, noi_dung, ngay_dang
+                    from danh_gia dg
+                    left join khach_hang kh on kh.makh = dg.makh 
+                    where masp = '${props.masp}'
+                    `
+    const result = await knexQuery.raw(rawSQL)
+    return result.rows
+}
+
 async function queryStock(props){
     const rawSQL = ` 
                     select sum(so_luong_ton)
@@ -91,6 +102,7 @@ router.get('/', async (req, res, next) =>{
 
     const tonkho = await queryStock(req.body);
     const chi_nhanh_con = await queryChiNhanhCon(req.body);
+    const comment = await queryComment(req.body)
     var item = {
         'masp':itemsInformation.masp,
         'tensp':itemsInformation.ten_sp,
@@ -103,7 +115,8 @@ router.get('/', async (req, res, next) =>{
         'tong_da_ban':itemsInformation.tong_da_ban,
         'ton_kho':tonkho,
         'chi_nhanh_con':chi_nhanh_con,
-        'gia_ban_giam' : itemsInformation.gia_ban_giam
+        'gia_ban_giam' : itemsInformation.gia_ban_giam,
+        'comment' : comment
     };
     
     
