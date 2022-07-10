@@ -5,11 +5,11 @@ import { SignInErrorMessageBox } from './SignInErrorMessageBox';
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "../../context/AuthProvider";
 import axios from '../../api/axios';
+import Cookies from 'js-cookie';
 
 const LOGIN_URL = '/account/login';
 
 export default function SignInForm(){
-    const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
     const [username, setUsername] = useState('');
@@ -50,9 +50,13 @@ export default function SignInForm(){
                 );
                 console.log(JSON.stringify(res?.data));
                 const accessToken = res?.data.token;
+                Cookies.set('uid',(res.data.account_info.makh), { expires: 1, path: '/', sameSite:'strict', secure:true })
+                Cookies.set('token',(res.data.token), { expires: 1, path: '/', sameSite:'strict', secure:true })
+                Cookies.set('tenkh',(res.data.account_info.tenkh), { expires: 1, path: '/', sameSite:'strict', secure:true })
+                Cookies.set('email_kh',(res.data.account_info.email_kh), { expires: 1, path: '/', sameSite:'strict', secure:true })
+                Cookies.set('sdt_kh',(res.data.account_info.sdt_kh), { expires: 1, path: '/', sameSite:'strict', secure:true })
                 if(res?.data.exitcode===0){
                     setExitCode(res?.data.exitcode);
-                    setAuth({username,password,accessToken});
                     setUsername('');
                     setPassword('');
                     setSuccess(true);
