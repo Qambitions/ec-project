@@ -10,9 +10,11 @@ app.use(express.urlencoded({ extended: false }));
 
 var details = require('./product/details');
 var view = require('./product/view');
+var search = require('./product/search')
 
 app.use('/details', details);
 app.use('/view', view);
+app.use('/search', search);
 
 app.use(function(req, res, next) {
     next(createError(404));
