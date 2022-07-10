@@ -1,5 +1,5 @@
 .signup-form{
-    width: 589px;;
+    width: 589px;
     min-height: 600px;
     flex-wrap:wrap ;
     background: #ffffff;
@@ -13,6 +13,10 @@
     padding: 1rem 0;
 }
 
+.signup__section_1{
+    width: 80%;
+}
+
 .signup__section_2{
     width: 80%;
     justify-content: space-between;
@@ -20,9 +24,9 @@
 }
 
 .error_message_container{
-    width: 80%;
-    padding-left: 0.5rem;
+    width: 100%;
     color:#c10d10;
+    margin-bottom: 1rem;
 }
 
 .signup-form input{
@@ -32,15 +36,6 @@
     width: 100%;
     padding-left: 1em; 
     background-color: #FFF5F5;
-}
-
-.signup-section-1{
-    margin-bottom: 5px;
-    border-radius: 4px;
-    display: flex;
-    width: 80%;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    background: #FFF5F5;
 }
 
 .signup__section_2_col{
@@ -102,7 +97,7 @@ h2{
     background: #FFF5F5;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .eye{

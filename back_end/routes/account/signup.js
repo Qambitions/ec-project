@@ -19,7 +19,7 @@ async function addAccount(props){
     sdt_kh: props.sdt_kh,
     mat_khau: props.mat_khau,
     check_sd_voucher: false,
-    ma_cap_bac: 1,
+    ma_cap_bac: 4,
     tong_diem_tich_luy: 0,
   })
 
@@ -58,6 +58,7 @@ router.post('/', async (req, res, next) =>{
   else {
     await addAccount(req.body);
     response.message      = "Đăng ký tài khoản thành công!!"
+
     response.exitcode     = 0
     res.send(response)
   }
