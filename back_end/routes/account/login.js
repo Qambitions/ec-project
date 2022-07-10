@@ -24,13 +24,10 @@ async function queryUser(props){
 }
 
 async function updateToken(props,token){
-  var date = new Date();
-  date.setDate(date.getDate() + 3);
   await knexQuery('khach_hang')
   .whereRaw(`(email_kh  = '${props.username}' or sdt_kh = '${props.username}') and mat_khau = '${props.password}'`)
   .update({
     kh_token: token,
-    token_end_time: String(date.toISOString().split('T')[0]),
   })
 }
 
