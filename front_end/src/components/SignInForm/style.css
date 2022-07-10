@@ -1,8 +1,8 @@
 
-.signin-form{
+.signin-container{
     justify-content: center;
     width: 356.54px;
-    height: 450px;
+    min-height: 450px;
     background: #FFFFFF;
     border-radius: 20px;
     display: flex;
@@ -10,6 +10,7 @@
     align-items: center;
     row-gap: 10px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 1.5rem 0;
 }
 
 
@@ -18,6 +19,13 @@
     min-height: 800px;
     width: 70%;
     background-size: cover;
+    justify-content: center;
+    align-items: center;
+}
+
+.signin-form{
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -50,6 +58,7 @@
     flex-direction: column;
     align-items: flex-end;
     padding-left: 10rem;
+    padding-bottom: 1rem;
     font-size: 0.8rem;
 }
 
@@ -57,8 +66,7 @@
     font-weight: 700;
     color:white;
     border: none;
-    min-width: 106.32px;
-    min-height: 32.98px;
+    width: 106.32px;
     background: #FF6062;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 40px;
