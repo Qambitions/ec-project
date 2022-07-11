@@ -81,9 +81,9 @@ export function ProductDetail(props){
             <div className='product__detail_comment'>
                 <h3>Đánh giá</h3>
                 <hr/>
-                <div className='container__flex'>
-                    <div>
-                        <label>/</label>
+                <div className='container__flex rating__overview'>
+                    <div className='rating__overview_left'>
+                        <span><lable className="rating__overview_current_rate">4.9</lable>/5</span>
                         <div>
                             <AiOutlineStar/>
                             <AiOutlineStar/>
@@ -93,14 +93,53 @@ export function ProductDetail(props){
                         </div>
                         <label>đánh giá</label>
                     </div>
-                    <div>
-                        <ul>
-                            <h6>5<AiFillStar/></h6>
-                            <h6>4<AiFillStar/></h6>
-                            <h6>3<AiFillStar/></h6>
-                            <h6>2<AiFillStar/></h6>
-                            <h6>1<AiFillStar/></h6>
-                        </ul>
+                    <div className='rating__overview_right'>
+                        <div className='rating__overview_right_col'>
+                            <label>5</label>
+                            <label>4</label>
+                            <label>3</label>
+                            <label>2</label>
+                            <label>1</label>
+                        </div>
+                        <div className='rating__overview_right_col'>
+                            <div className='rating__overview_right_row'>
+                                <AiOutlineStar/>
+                                <div className='rating__container_grey'>
+                                    <div className='rating__container_red'></div>
+                                </div>
+                            </div>
+                            <div className='rating__overview_right_row'>
+                                <AiOutlineStar/>
+                                <div className='rating__container_grey'>
+                                    <div className='rating__container_red'></div>
+                                </div>
+                            </div>
+                            <div className='rating__overview_right_row'>
+                                <AiOutlineStar/>
+                                <div className='rating__container_grey'>
+                                    <div className='rating__container_red'></div>
+                                </div>
+                            </div>
+                            <div className='rating__overview_right_row'>
+                                <AiOutlineStar/>
+                                <div className='rating__container_grey'>
+                                    <div className='rating__container_red'></div>
+                                </div>
+                            </div>
+                            <div className='rating__overview_right_row'>
+                                <AiOutlineStar/>
+                                <div className='rating__container_grey'>
+                                    <div className='rating__container_red'></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='rating__overview_right_col'>
+                            <label>(332123)</label>
+                            <label>(22)</label>
+                            <label>()</label>
+                            <label>()</label>
+                            <label>(123)</label>
+                        </div>
                     </div>
                 </div>
                 <CommentCard/>

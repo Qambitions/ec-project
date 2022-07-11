@@ -1,0 +1,14 @@
+.comment__card{
+    padding: 0 2rem;
+    padding-top: 2rem;
+    align-items: flex-start;
+}
+
+.comment__card svg{
+    color: #E04A4A;
+}
+
+.comment__card_thumbsup{
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
