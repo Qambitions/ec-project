@@ -10,8 +10,10 @@ var accountRouter = require('./routes/account.js');
 var ads = require('./routes/ads.js');
 var cart = require('./routes/cart.js');
 var product = require('./routes/product.js');
-var cors = require('cors');
+var management = require('./routes/management.js');
+
 var app = express();
+var cors = require('cors');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,8 +33,7 @@ app.use('/account', accountRouter);
 app.use('/ads', ads);
 app.use('/cart', cart);
 app.use('/product', product);
-
-
+app.use('/management', management);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
