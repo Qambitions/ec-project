@@ -19,6 +19,8 @@ async function queryItem(props){
 
 
 router.get('/', async (req, res, next) =>{
+    req.body.limit = (typeof req.body.limit === 'undefined') ? 5 : req.body.limit;
+    req.body.offset = (typeof req.body.offset === 'undefined') ? 0 : req.body.offset;
     var response = {
         "exitcode": 1,
         "message": "",
