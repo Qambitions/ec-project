@@ -20,7 +20,7 @@ export default function VoucherPopUp(){
             <VoucherCard/>
             <VoucherCard/>
 
-            <button className="voucher__button_agree">Đồng ý</button>
+            <button className="voucher__button_agree button_pink">Đồng ý</button>
         </div>
     )
 }

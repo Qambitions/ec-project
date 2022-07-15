@@ -43,13 +43,5 @@
 }
 
 .voucher__button_agree{
-    font-weight: 700;
-    font-size: 20px;
-    background: #EB5F5F;
-    border-radius: 5px;
-    color: white;
-    border: none;
-    width: 154px;
-    height: 40px;
-    margin-left:30%;
+    margin-left:33%;
 }

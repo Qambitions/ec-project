@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ProductCart from '../../components/ProductCart';
 import { IoTrashBin } from "react-icons/io5";
 import VoucherPopUp from '../../components/ProductCart/VoucherPopUp'
-import { VoucherPicker } from '../../components/VoucherPicker';
+import { VoucherPicker } from '../../components/ProductCart/VoucherPicker';
 
 export default function Cart(){
 
@@ -49,6 +49,7 @@ export default function Cart(){
                         </div>
                         <ProductCart updateTotal={total => setInvoice(total)}/>
                         <ProductCart updateTotal={total => setInvoice(total)}/>
+                        <VoucherPopUp/>
                     </div>
                     <div className="checkout-aside">
                         <div className="checkout-product-invoice">
@@ -69,9 +70,8 @@ export default function Cart(){
                         <div className="checkout-aside-coupon-container">
                             <VoucherPicker/>
                         </div>
-                        <button onClick={handleSubmit} className="btn-buy-confirm">Mua hàng</button>
+                        <button onClick={handleSubmit} className="button_pink">Mua hàng</button>
                         <div>
-                        <VoucherPopUp/>
                 </div>
                     </div>
                 </div>
