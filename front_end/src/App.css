@@ -10,7 +10,7 @@
     justify-content: space-between;
     min-width: 70%;
     width: 1200px;
-    margin: 0 auto;
+    margin: 0.5rem auto;
 }
 
 .button_pink{
@@ -18,7 +18,7 @@
     border-radius: 5px;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2.5rem;
     font-weight: 700;
     font-size: 1em;
 }
@@ -40,9 +40,23 @@
     flex-direction: column;
 }
 
+.currency{
+    text-decoration: underline;
+    margin-left: 0.5rem;
+}
+
+.grey_text{
+    color: rgba(0, 0, 0, 0.46);
+}
+
 @media (max-width:750px){
     .container{
         width: 90%;}
+}
+
+@media (max-width:550px){
+    .container{
+        width: 100%;}
 }
 
 .btn{

@@ -20,8 +20,8 @@ export function CommentCard(){
                         <label style={{color:"grey"}}>DateTime</label>
                     </div>
                     <p>Content</p>             
-                    <FiThumbsUp className='comment__card_thumbsup' style={{color:"aquamarine"}}/>
-                    <label style={{color:"aquamarine"}}>5</label>
+                    <FiThumbsUp className='comment__card_thumbsup' style={{color:"#A4B4C9"}}/>
+                    <label style={{color:"#A4B4C9"}}>5</label>
                 </div>
             </div>
             <hr></hr>

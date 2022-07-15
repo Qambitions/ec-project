@@ -6,27 +6,27 @@
     margin: auto 0;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border: none;
-    width: 30%;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+    width: 35%;
+    border-radius: 4px;
+    height: 2.5rem;
 }
 
 .search-bar-search-field{
     outline: none;
     border: none;
-    line-height: 28px;
+    line-height: 1.5rem;
     width: 100%;
     padding-left: 1rem;
+    border-radius: 4px;
 }
 
 .search-icon{
     background: #FF9B7F;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
-    height: 30px;
-    width: 50px;
-    text-align: center;
-    line-height: 28px;
+    height:2.5rem;
+    width: 13%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

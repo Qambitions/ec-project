@@ -32,15 +32,26 @@ export default function SignUpForm(){
         district:"",ward:"",address:"",pass:"",confirm:""
     });
 
-    const [formErrors, setFormErrors]= useState({});
+    const [formErrors, setFormErrors]= useState({        
+        fullname:"Không được để trống",phone:"Không được để trống",
+        email:"Không được để trống",city:"Không được để trống",
+        district:"Không được để trống",ward:"Không được để trống",
+        address:"Không được để trống",pass:"Không được để trống",
+        confirm:"Không được để trống"});
+
     const userRef = useRef();
+    const [errorState,setErrorState]=useState({});
 
     useEffect(() => {
         userRef.current.focus();
     }, [])
 
     useEffect(() => {
-        setFormErrors(validate(formValues));
+        const res = validate(formValues);
+        const errors = res.errors;
+        const visibility = res.states;
+        setErrorState(visibility);
+        setFormErrors(errors);
     }, [formValues])
 
     const handleChange = (e) =>{
@@ -49,7 +60,6 @@ export default function SignUpForm(){
     };
     const handleSubmit = async(e)=>{
         e.preventDefault();
-        setFormErrors(validate(formValues));
         if(formErrors.validate){
             try {
                 const res = await axios.post(REGISTER_URL,{
@@ -71,61 +81,59 @@ export default function SignUpForm(){
     };
 
     const validate = (values)=>{
-        const errors={};
+        const errors={        fullname:"Không được để trống",phone:"Không được để trống",
+        email:"Không được để trống",city:"Không được để trống",
+        district:"Không được để trống",ward:"Không được để trống",
+        address:"Không được để trống",pass:"Không được để trống",
+        confirm:"Không được để trống"};
+        const states={};
         errors.validate = true;
-        if(!values.fullname){
-            errors.fullname = "Không được để trống";
-            errors.validate = false;
+        if(values.fullname){
+            states.name='hidden';
         }
-        if(!values.phone){
-            errors.phone = "Không được để trống";
-            errors.validate = false;
+        if(values.phone){
+            if(!PHONE_REGEX.test(values.phone)){
+                errors.phone='Số điện thoại không hợp lệ!';
+            }
+            else{
+                states.phone='hidden';
+            }
         }
-        else if(!PHONE_REGEX.test(values.phone)){
-            errors.phone = "Số điện thoại không hợp lệ";
-            errors.validate = false;
+        if(values.email){
+            if (!MAIL_REGEX.test(values.email)){
+                errors.email='Email không hợp lệ!';
+            }
+            else{states.email='hidden';}
         }
-        if(!values.email){
-            errors.email = "Không được để trống";
-            errors.validate = false;
+        if(values.city){
+            states.city='hidden';
         }
-        else if (!MAIL_REGEX.test(values.email)){
-            errors.email = "Email không hợp lệ!";
-            errors.validate = false;
+        if(values.district){
+            states.district='hidden';
         }
-        if(!values.city){
-            errors.city = "Không được để trống";
-            errors.validate = false;
+        if(values.ward){
+            states.ward='hidden';
         }
-        if(!values.district){
-            errors.district = "Không được để trống";
-            errors.validate = false;
+        if(values.address){
+            states.address='hidden';
         }
-        if(!values.ward){
-            errors.ward = "Không được để trống";
-            errors.validate = false;
+        if(values.pass){
+            if (!PWD_REGEX.test(values.pass)){
+                errors.pass='Yêu cầu 8-24 ký tự bao gồm chữ, số, ký tự đặc biệt, chữ cái in hoa!! ';
+            }
+            else{
+                states.pass='hidden';
+            }
         }
-        if(!values.address){
-            errors.address = "Không được để trống";
-            errors.validate = false;
+        if(values.confirm){
+            if(values.confirm!==values.pass){
+                errors.confirm='Không khớp mật khẩu!!';
+            }
+            else{
+                states.confirm='hidden';
+            }
         }
-        if(!values.pass){
-            errors.pass = "Không được để trống";
-            errors.validate = false;
-        }
-        else if (!PWD_REGEX.test(values.pass)){
-            errors.pass = "8-24 ký tự. Chứa ký tự thường và hoa. Số và ký tự đặc biệt";
-            errors.validate = false;
-        }
-        if(!values.confirm){
-            errors.confirm = "Không được để trống";
-            errors.validate = false;
-        }
-        if(values.confirm!==values.pass){
-            errors.confirm = "Mật khẩu không khớp";
-            errors.validate = false;
-        }
-        return errors;
+        return {states, errors};
     };
 
     const provinces=[
@@ -138,6 +146,7 @@ export default function SignUpForm(){
             name: 'Hà Nội',
         }
     ];
+
     return(
         <div className="container signin-body">
             <form className="signup-form"  onSubmit={handleSubmit}>
@@ -146,21 +155,21 @@ export default function SignUpForm(){
                     <div className='signup-input-container'>
                         <input placeholder="Họ và tên" name="fullname" value={formValues.fullname} onChange={handleChange}></input>
                     </div>
-                    <div className='error_message_container'>
+                    <div className='error_message_container' style={{visibility:errorState.name}}>
                         <small>{formErrors.fullname}</small>
                     </div>
                     <div className='signup-input-container'>
                         <input placeholder="Số điện thoại" name="phone" value={formValues.phone} onChange={handleChange}></input>
                     </div>
-                    <div className='error_message_container'>
+                    <div className='error_message_container' style={{visibility:errorState.phone}}>
                         <small>{formErrors.phone}</small>
                     </div>
                     <div className='signup-input-container'>
                         <input placeholder="Email" name="email" value={formValues.email} onChange={handleChange}></input>
                     </div>
-                    <div className='error_message_container'>
+                    <div className='error_message_container' style={{visibility:errorState.email}}>
                         <small>{formErrors.email}</small>
-                    </div>  
+                    </div>
                 </div>
                 <div className='signup__section_2 container__flex'>
                     <div className='signup__section_2_col'>
@@ -172,7 +181,7 @@ export default function SignUpForm(){
                                 }
                             </select>
                         </div>
-                        <div className='error_message_container'>
+                        <div className='error_message_container' style={{visibility:errorState.city}}>
                             <small>{formErrors.city}</small>
                         </div>
                         <div className='signup-input-container'>
@@ -183,13 +192,13 @@ export default function SignUpForm(){
                             }
                             </select>
                         </div>
-                        <div className='error_message_container'>
+                        <div className='error_message_container' style={{visibility:errorState.ward}}>
                             <small>{formErrors.ward}</small>
                         </div>
                         <div className='signup-input-container'>
                             <input placeholder="Mật khẩu" name="pass" type={inputType} value={formValues.pass} onChange={handleChange}></input>
                         </div>
-                        <div className='error_message_container'>
+                        <div className='error_message_container' style={{visibility:errorState.pass}}>
                             <small>{formErrors.pass}</small>
                         </div>
                     </div>
@@ -202,20 +211,20 @@ export default function SignUpForm(){
                                 }
                             </select>
                         </div>
-                        <div className='error_message_container'>
+                        <div className='error_message_container' style={{visibility:errorState.district}}>
                             <small>{formErrors.district}</small>
                         </div>
                         <div className='signup-input-container'>
                             <input placeholder="Địa chỉ cụ thể" name="address" value={formValues.address} onChange={handleChange}></input>
                         </div>
-                        <div className='error_message_container'>
+                        <div className='error_message_container' style={{visibility:errorState.address}}>
                             <small>{formErrors.address}</small>
                         </div>
                         <div className='signup-input-container'>
                             <input placeholder="Nhập lại mật khẩu" name="confirm" type={inputType} value={formValues.confirm} onChange={handleChange}></input>
                             <FontAwesomeIcon className='eye' icon={iconType} onClick={handleToggle}/>
                         </div>  
-                        <div className='error_message_container'>
+                        <div className='error_message_container' style={{visibility:errorState.confirm}}>
                             <small>{formErrors.confirm}</small>
                         </div>  
                     </div>         
