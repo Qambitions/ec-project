@@ -3,7 +3,7 @@ import './style.css';
 import SignInForm from "../../components/SignInForm";
 import SignHeader from "../../components/SignHeader";
 import Footer from "../../components/Footer";
-
+import { Outlet } from 'react-router-dom'
 
 
 export default function SignInWindow(){
