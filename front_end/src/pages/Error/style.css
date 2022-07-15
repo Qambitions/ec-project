@@ -1,0 +1,37 @@
+.errorpage{
+    background-color: #F0C9C9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+}
+
+.errorpage h3{
+    margin: 0;
+    font-weight: 500;
+    font-size: 5rem;
+}
+
+.errorpage h2{
+    font-weight: 400;
+    font-size: 2rem;
+    line-height: 3rem;
+    margin: 0;
+}
+
+.errorpage label{
+    font-weight: 400;
+    font-size: 10rem;
+    font-family:'Kavoon';
+}
+
+.errorpage h4{
+    font-size: 3rem;
+    line-height: 2rem;
+}
+
+.errorpage .error-to-homepage{
+    color: #E04A4A;
+    text-decoration:underline;
+}

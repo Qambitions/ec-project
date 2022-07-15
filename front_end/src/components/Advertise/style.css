@@ -1,0 +1,26 @@
+.main__ads{
+    column-gap: 16px;
+    margin-bottom: 1rem;
+    padding: 0;
+}
+
+.carousel__ads{
+    width: 60%;
+}
+
+.carousel__ads_slide{
+    width: 60vw;
+    min-height: 370px;
+}
+
+.side__ads{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.side__ads_img{
+    width: 100%;
+    min-height: 177px;
+}

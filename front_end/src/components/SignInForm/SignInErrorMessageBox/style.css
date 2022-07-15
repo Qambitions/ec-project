@@ -1,0 +1,12 @@
+.signin__error_message_box{
+    width: 90%;
+    background-color: #FFDDDD;
+    border: 1px solid #ED5353;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.2rem;
+}
+
+.signin__error_message_box svg{
+    color:#ED5353;
+}

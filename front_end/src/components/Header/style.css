@@ -1,0 +1,13 @@
+.head__nav_signin_menu{
+    margin: auto 0;
+    justify-content: space-between;
+    display: flex;
+    width: 45%;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.head__nav_signin_menu a{
+    color: black;
+}

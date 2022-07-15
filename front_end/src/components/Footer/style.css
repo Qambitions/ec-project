@@ -1,6 +1,6 @@
-
 .footer{
     flex-direction: column;
+    margin-top: 2rem;
 }
 
 .footer-info{
@@ -8,7 +8,22 @@
     justify-content: space-between;
 }
 
+.footer__icon_container_vertical{
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content: center;
+    gap: 5px;
+}
+
+.footer__icon_container_horizontal{
+    display: flex;
+    gap: 10px;
+}
+
 .footer-stores{
+    border-top: 1px solid rgba(0, 0, 0, 0.545);
+    padding-top: 1rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
