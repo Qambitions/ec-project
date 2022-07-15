@@ -1,47 +1,48 @@
 -- 1, 1
 INSERT INTO CAP_BAC (LOAI_CAP_BAC, PHAN_TRAM_GIAM_GIA) 
 VALUES 
-('Normal', 0), 
-('VIP Gold', 5), 
-('VIP Diamond', 10);
+('New', 0),
+('Normal', 10), 
+('VIP Gold', 20), 
+('VIP Diamond', 40);
 
 -- 1000000, 1
-INSERT INTO KHACH_HANG (MA_CAP_BAC, TENKH, EMAIL_KH, TONG_DIEM_TICH_LUY, MAT_KHAU) 
+INSERT INTO KHACH_HANG (MA_CAP_BAC, TENKH, EMAIL_KH, TONG_DIEM_TICH_LUY, MAT_KHAU, ACTIVATE) 
 VALUES 
-(1, N'Nguyễn Thị Ngọc Diệu', 'ntnd1@example.com', 0, 'mk123'),
-(3, N'Lê Thị Phương Linh', 'ltpl2@example.com', 1609, 'mk123'),
-(1, N'Phan Khải Đông', 'pkd3@example.com', 0, 'mk123'),
-(2, N'Bùi Đăng Khoa', 'bdk4@example.com', 329, 'mk123'),
-(1, N'Tống Thảo Nhi', 'ttn5@example.com', 67, 'mk123'),
-(1, N'Nguyễn Thị Bích Phương', 'ntbp6@example.com', 0, 'mk123'),
-(1, N'Trần Thị Lan Anh', 'ttla7@example.com', 0, 'mk123'),
-(3, N'Nguyễn Như Ngọc', 'nnn8@example.com', 1654, 'mk123'),
-(1, N'Nguyễn Phạm Mỹ Duyên', 'npmd9@example.com', 0, 'mk123'),
-(1, N'Huỳnh Nguyễn Thùy Nhiên', 'hntn10@example.com', 49, 'mk123'),
-(2, N'Nguyễn Quang Trường', 'nqt11@example.com', 765, 'mk123'),
-(1, N'Hà Đức Trọng', 'hdt12@example.com', 0, 'mk123'),
-(2, N'Trương Nguyên Thảo', 'tnt13@example.com', 652, 'mk123'),
-(1, N'Nguyễn Tuyết Anh', 'nta14@example.com', 0, 'mk123'),
-(1, N'Lê Thị Tú Loan', 'lttl15@example.com', 102, 'mk123'),
-(1, N'Nguyễn Lê Tuấn Minh', 'nltm16@example.com', 0, 'mk123'),
-(2, N'Võ Quang Duy', 'vqd17@example.com', 498, 'mk123'),
-(1, N'Trương Nguyễn Thảo Nguyên', 'nttn18@example.com', 123, 'mk123'),
-(1, N'Nguyễn Thị Thanh An', 'ntta19@example.com', 46, 'mk123'),
-(2, N'Nguyễn Thị Hoài Linh', 'nthl20@example.com', 549, 'mk123'),
-(3, N'Phan Quang Hiếu', 'pqh21@example.com', 1221, 'mk123'),
-(1, N'Võ Như Quỳnh', 'vnq22@example.com', 0, 'mk123'),
-(1, N'Huỳnh Thục Quyên', 'htq23@example.com', 53, 'mk123'),
-(1, N'Lê Vũ Thảo Hiền', 'lvth24@example.com', 0, 'mk123'),
-(1, N'Nguyễn Bá Quân', 'nbq25@example.com', 46, 'mk123'),
-(1, N'Trần Vương Quỳnh Trân', 'tvqt26@example.com', 0, 'mk123'),
-(1, N'Nguyễn Minh Thảo', 'nmt28@example.com', 0, 'mk123'),
-(2, N'Nguyễn Trung Anh', 'nta29@example.com', 345, 'mk123'),
-(1, N'Nguyễn Thị Kim Anh', 'ntka30@example.com', 0, 'mk123'),
-(1, N'Huỳnh Thị Hồng Phấn', 'hthp31@example.com', 0, 'mk123'),
-(1, N'Bùi Thị Kim Ngân', 'btkn32@example.com', 0, 'mk123'),
-(1, N'Phan Tường Vy', 'ptv33@example.com', 0, 'mk123'),
-(2, N'Nguyễn Thương Thương', 'ntt34@example.com', 323, 'mk123'),
-(1, N'Lê Thị Minh Tuyền', 'ltmt35@example.com', 23, 'mk123');
+(1, N'Nguyễn Thị Ngọc Diệu', 'ntnd1@gmail.com', 0, 'mk123', true),
+(3, N'Lê Thị Phương Linh', 'ltpl2@gmail.com', 1609, 'mk123', true),
+(1, N'Phan Khải Đông', 'pkd3@gmail.com', 0, 'mk123', true),
+(2, N'Bùi Đăng Khoa', 'bdk4@gmail.com', 329, 'mk123', true),
+(1, N'Tống Thảo Nhi', 'ttn5@gmail.com', 67, 'mk123', true),
+(1, N'Nguyễn Thị Bích Phương', 'ntbp6@gmail.com', 0, 'mk123', true),
+(1, N'Trần Thị Lan Anh', 'ttla7@gmail.com', 0, 'mk123', true),
+(3, N'Nguyễn Như Ngọc', 'nnn8@gmail.com', 1654, 'mk123', true),
+(1, N'Nguyễn Phạm Mỹ Duyên', 'npmd9@gmail.com', 0, 'mk123', true),
+(1, N'Huỳnh Nguyễn Thùy Nhiên', 'hntn10@gmail.com', 49, 'mk123', true),
+(2, N'Nguyễn Quang Trường', 'nqt11@gmail.com', 765, 'mk123', true),
+(1, N'Hà Đức Trọng', 'hdt12@gmail.com', 0, 'mk123', true),
+(2, N'Trương Nguyên Thảo', 'tnt13@gmail.com', 652, 'mk123', true),
+(1, N'Nguyễn Tuyết Anh', 'nta14@gmail.com', 0, 'mk123', true),
+(1, N'Lê Thị Tú Loan', 'lttl15@gmail.com', 102, 'mk123', true),
+(1, N'Nguyễn Lê Tuấn Minh', 'nltm16@gmail.com', 0, 'mk123', true),
+(2, N'Võ Quang Duy', 'vqd17@gmail.com', 498, 'mk123', false),
+(1, N'Trương Nguyễn Thảo Nguyên', 'nttn18@gmail.com', 123, 'mk123', false),
+(1, N'Nguyễn Thị Thanh An', 'ntta19@gmail.com', 46, 'mk123', false),
+(2, N'Nguyễn Thị Hoài Linh', 'nthl20@gmail.com', 549, 'mk123', false),
+(3, N'Phan Quang Hiếu', 'pqh21@gmail.com', 1221, 'mk123', false),
+(1, N'Võ Như Quỳnh', 'vnq22@gmail.com', 0, 'mk123', false),
+(1, N'Huỳnh Thục Quyên', 'htq23@gmail.com', 53, 'mk123', false),
+(1, N'Lê Vũ Thảo Hiền', 'lvth24@gmail.com', 0, 'mk123', false),
+(1, N'Nguyễn Bá Quân', 'nbq25@gmail.com', 46, 'mk123', true),
+(1, N'Trần Vương Quỳnh Trân', 'tvqt26@gmail.com', 0, 'mk123', false),
+(1, N'Nguyễn Minh Thảo', 'nmt28@gmail.com', 0, 'mk123', true),
+(2, N'Nguyễn Trung Anh', 'nta29@gmail.com', 345, 'mk123', true),
+(1, N'Nguyễn Thị Kim Anh', 'ntka30@gmail.com', 0, 'mk123', true),
+(1, N'Huỳnh Thị Hồng Phấn', 'hthp31@gmail.com', 0, 'mk123', true),
+(1, N'Bùi Thị Kim Ngân', 'btkn32@gmail.com', 0, 'mk123', true),
+(1, N'Phan Tường Vy', 'ptv33@gmail.com', 0, 'mk123', true),
+(2, N'Nguyễn Thương Thương', 'ntt34@gmail.com', 323, 'mk123', false),
+(1, N'Lê Thị Minh Tuyền', 'ltmt35@gmail.com', 23, 'mk123', false);
 
 -- 1000, 1
 INSERT INTO NHA_PHAN_PHOI (TEN_NPP, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH) 
@@ -97,12 +98,11 @@ VALUES
 -- 100000, 1
 INSERT INTO VOUCHER (PHAN_TRAM_GIAM_GIA, GIAM_TOI_DA, TG_BAT_DAU, TG_KET_THUC, PHAN_LOAI) 
 VALUES 
-(5, 1000, '2022-06-20 00:00:00-07', '2022-07-01 00:00:00-07', N'A'),
-(7, 100, '2022-06-25 00:00:00-07', '2022-07-01 00:00:00-07', N'B'),
-(5, 500, '2022-06-30 00:00:00-07', '2022-07-20 00:00:00-07', N'A'),
-(10, 50, '2022-07-01 00:00:00-07', '2022-07-10 00:00:00-07', N'C'),
-(2, 10000, '2022-07-05 00:00:00-07', '2022-07-31 00:00:00-07', N'C');
-
+(5, 1000, '2022-06-20 00:00:00-07', '2022-07-01 00:00:00-07', N'DH'),
+(7, 100, '2022-06-25 00:00:00-07', '2022-07-01 00:00:00-07', N'DH'),
+(5, 500, '2022-06-30 00:00:00-07', '2022-07-20 00:00:00-07', N'DH'),
+(10, 500, '2022-07-01 00:00:00-07', '2022-07-10 00:00:00-07', N'SP'),
+(20, 500, '2022-07-05 00:00:00-07', '2022-07-31 00:00:00-07', N'SP');
 
 --10, 1
 INSERT INTO LOAI_HANG (TEN_LH) 
@@ -208,13 +208,283 @@ VALUES
 -- 10000, 1
 INSERT INTO PHIEU_NHAP_HANG (MANPP, MACN, NGAY_LAP, TONG_TIEN_NHAP, TONG_SO_MAT_HANG) 
 VALUES 
-(1000, 200, '2022-05-15 12:21:37', 1850000, 2),
-(1002, 200, '2022-05-23 19:10:25', 2500000, 3),
-(1003, 203, '2022-06-01 09:08:07', 1230000, 1),
-(1004, 205, '2022-06-05 18:32:30', 4100000, 4),
-(1005, 205, '2022-06-09 11:30:09', 4875000, 3),
-(1006, 205, '2022-06-13 12:47:13', 1600000, 1),
-(1007, 206, '2022-06-21 14:20:05', 1200000, 1),
-(1008, 207, '2022-06-28 15:41:42', 6780000, 5),
-(1009, 208, '2022-06-28 12:52:25', 5420000, 3),
-(1010, 201, '2022-07-04 19:53:06', 3520000, 3);
+(1000, 200, '2022-05-15 12:21:37', 1900000, 2),
+(1002, 200, '2022-05-23 19:10:25', 2000000, 1),
+(1003, 203, '2022-06-01 09:08:07', 1500000, 2),
+(1006, 205, '2022-06-05 18:32:30', 8900000, 5),
+(1012, 205, '2022-06-09 11:30:09', 13800000, 3),
+(1015, 205, '2022-06-13 12:47:13', 3650000, 1),
+(1017, 206, '2022-06-21 14:20:05', 7220000, 5),
+(1018, 207, '2022-06-28 15:41:42', 2800000, 1),
+(1015, 208, '2022-06-28 12:52:25', 2600000, 3),
+(1008, 201, '2022-07-04 19:53:06', 1200000, 1),
+(1022, 202, '2022-07-04 19:53:06', 3200000, 4);
+
+-- 
+INSERT INTO CHI_TIET_NHAP_HANG (MAPN, MASP, SO_LUONG_NHAP, DON_GIA_NHAP) 
+VALUES 
+(10000, 200000, 10, 120000),
+(10000, 200002, 10, 70000),
+(10001, 200007, 10, 200000),
+(10002, 200011, 20, 30000),
+(10002, 200012, 30, 30000),
+(10003, 200008, 10, 20000),
+(10003, 200016, 10, 20000),
+(10003, 200020, 10, 150000),
+(10003, 200023, 3, 1400000),
+(10003, 200024, 2, 1400000),
+(10004, 200028, 2, 3200000),
+(10004, 200029, 7, 350000),
+(10004, 200031, 3, 1650000),
+(10005, 200034, 10, 365000),
+(10006, 200036, 10, 155000),
+(10006, 200037, 10, 220000),
+(10006, 200038, 5, 240000),
+(10006, 200040, 5, 235000),
+(10006, 200043, 5, 215000),
+(10007, 200044, 10, 280000),
+(10008, 200051, 30, 35000),
+(10008, 200052, 20, 35000),
+(10008, 200053, 10, 85000),
+(10009, 200019, 40, 30000),
+(10010, 200061, 10, 85000),
+(10010, 200062, 20, 40000),
+(10010, 200064, 10, 90000),
+(10010, 200063, 10, 65000);
+
+-- 500000, 1
+INSERT INTO DON_HANG (MAKH, MACN, PHI_SAN_PHAM, PHI_VAN_CHUYEN, HINH_THUC_THANH_TOAN, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH, TRANG_THAI) 
+VALUES 
+(1000000, 200, 279000, 35000, N'THANH TOÁN BẰNG TIỀN MẶT', N'227 Nguyễn Văn Cừ', N'7', N'5', N'HCM', N'ĐÃ XÁC NHẬN'),
+(1000003, 208, 327000, 20000, N'THANH TOÁN BẰNG MOMO', N'324 Nguyễn Văn Linh', N'2', N'7', N'HCM', N'ĐÃ GIAO'),
+(1000008, 203, 175000, 35000, N'THANH TOÁN BẰNG MOMO', N'112 Nguyễn Văn Trỗi', N'6', N'Đà Lạt', N'Lâm Đồng', N'ĐANG GIAO'),
+(1000001, 201, 612500, 45000, N'THANH TOÁN BẰNG TIỀN MẶT', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'ĐÃ HỦY'),
+(1000005, 200, 535000, 30000, N'THANH TOÁN BẰNG TIỀN MẶT', N'51 Hùng Vương', N'5', N'Vũng Tàu', N'Bà Rịa - Vũng Tàu', N'CHỜ XÁC NHẬN'),
+(1000012, 205, 564500, 45000, N'THANH TOÁN BẰNG MOMO', N'147 Nguyễn Tri Phương', N'4', N'5', N'HCM', N'ĐÃ GIAO'),
+(1000002, 205, 310000, 20000, N'THANH TOÁN BẰNG MOMO', N'50 Võ Văn Kiệt', N'An Lạc', N'Bình Tân', N'HCM', N'CHỜ XÁC NHẬN'),
+(1000002, 208, 410000, 20000, N'THANH TOÁN BẰNG MOMO', N'491 Hậu Giang', N'11', N'6', N'HCM', N'CHỜ XÁC NHẬN'),
+(1000002, 203, 460000, 20000, N'THANH TOÁN BẰNG MOMO', N'9 Trần Hưng Đạo', N'Nguyễn Thái Bình', N'1', N'HCM', N'ĐANG GIAO'),
+(1000001, 202, 420000, 45000, N'THANH TOÁN BẰNG TIỀN MẶT', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN'),
+(1000001, 205, 480000, 45000, N'THANH TOÁN BẰNG TIỀN MẶT', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN');
+
+--
+INSERT INTO CHI_TIET_DON_HANG (MADH, MASP, MA_VOUCHER, SO_LUONG_MUA, THANH_TIEN_MUA) 
+VALUES 
+(500000, 200000, 100003, 2, 279000),
+(500001, 200005, 100003, 1, 207000),
+(500001, 200012, NULL, 3, 120000),
+(500002, 200020, NULL, 1, 175000),
+(500003, 200010, NULL, 4, 140000),
+(500003, 200047, 100003, 1, 472500),
+(500004, 200018, 100004, 1, 140000),
+(500004, 200034, NULL, 1, 395000),
+(500005, 200008, 100003, 3, 94500),
+(500005, 200029, 100003, 1, 360000),
+(500005, 200080, NULL, 2, 110000),
+(500006, 200000, NULL, 2, 310000),
+(500007, 200010, NULL, 1, 35000),
+(500007, 200001, NULL, 1, 185000),
+(500007, 200002, NULL, 2, 190000),
+(500008, 200005, NULL, 2, 460000),
+(500009, 200020, NULL, 1, 175000),
+(500009, 200047, NULL, 1, 245000),
+(500010, 200040, NULL, 1, 180000),
+(500010, 200050, NULL, 1, 300000);
+
+--
+INSERT INTO DIA_CHI_KH (MAKH, STT, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH, MAC_DINH) 
+VALUES 
+(1000000, 1, N'227 Nguyễn Văn Cừ', N'7', N'5', N'HCM', TRUE),
+(1000000, 2, N'85 Nguyễn Tất Thành', N'5', N'2', N'HCM', FALSE),
+(1000001, 1, N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', TRUE),
+(1000002, 1, N'50 Võ Văn Kiệt', N'An Lạc', N'Bình Tân', N'HCM', TRUE),
+(1000002, 2, N'491 Hậu Giang', N'11', N'6', N'HCM', FALSE),
+(1000002, 3, N'9 Trần Hưng Đạo', N'Nguyễn Thái Bình', N'1', N'HCM', FALSE),
+(1000003, 1, N'324 Nguyễn Văn Linh', N'2', N'7', N'HCM', TRUE),
+(1000005, 1, N'51 Hùng Vương', N'5', N'Vũng Tàu', N'Bà Rịa - Vũng Tàu', TRUE),
+(1000008, 1, N'112 Nguyễn Văn Trỗi', N'6', N'Đà Lạt', N'Lâm Đồng', TRUE),
+(1000012, 1, N'147 Nguyễn Tri Phương', N'4', N'5', N'HCM', TRUE);
+
+--
+INSERT INTO TRANG_THAI_DH (MADH, TRANG_THAI, THOI_GIAN) 
+VALUES 
+(500000, N'CHỜ XÁC NHẬN', '2022-04-07 19:53:06'),
+(500000, N'ĐÃ XÁC NHẬN', '2022-04-08 07:22:41'),
+(500001, N'CHỜ XÁC NHẬN', '2022-03-27 12:43:08'),
+(500001, N'ĐÃ XÁC NHẬN', '2022-03-27 13:34:45'),
+(500001, N'ĐANG GIAO', '2022-03-28 09:20:15'),
+(500001, N'ĐÃ GIAO', '2022-03-30 11:33:21'),
+(500002, N'CHỜ XÁC NHẬN', '2022-04-30 13:36:19'),
+(500002, N'ĐÃ XÁC NHẬN', '2022-04-30 15:41:23'),
+(500002, N'ĐANG GIAO', '2022-05-02 08:47:36'),
+(500003, N'CHỜ XÁC NHẬN', '2022-04-08 14:13:12'),
+(500003, N'ĐÃ XÁC NHẬN', '2022-04-08 14:45:52'),
+(500003, N'ĐÃ HỦY', '2022-04-08 15:01:03'),
+(500004, N'CHỜ XÁC NHẬN', '2022-07-09 02:07:49'),
+(500005, N'CHỜ XÁC NHẬN', '2022-05-23 14:39:45'),
+(500005, N'ĐÃ XÁC NHẬN', '2022-05-23 15:32:31'),
+(500005, N'ĐANG GIAO', '2022-05-24 13:14:52'),
+(500006, N'CHỜ XÁC NHẬN', '2022-07-09 18:52:12'),
+(500007, N'CHỜ XÁC NHẬN', '2022-07-09 20:30:20'),
+(500008, N'CHỜ XÁC NHẬN', '2022-07-10 21:36:19'),
+(500008, N'ĐÃ XÁC NHẬN', '2022-07-11 08:30:23'),
+(500008, N'ĐANG GIAO', '2022-07-11 15:50:36'),
+(500009, N'CHỜ XÁC NHẬN', '2022-07-11 09:15:39'),
+(500010, N'CHỜ XÁC NHẬN', '2022-07-11 20:28:15');
+--
+INSERT INTO HOP_DONG_QUANG_CAO (MAKH, STT, HINH_ANH_QC, TG_BAT_DAU, TG_KET_THUC, VI_TRI, CHI_PHI, LINK_WEBSITE, CHECK_THANH_TOAN) 
+VALUES 
+(1000019, 1, 'https://ohay.vn/blog/wp-content/uploads/2020/02/pet-things-2.png', '2022-05-01 00:00:00', '2022-08-01 00:00:00', 3, 2400000, 'https://ohay.vn/', TRUE);
+
+--
+INSERT INTO LICH_SU_GIA (MASP, THOI_GIAN, DON_GIA) 
+VALUES 
+(200000, '2021-04-21 13:30:26', 150000),
+(200000, '2021-06-22 15:26:32', 155000);
+
+--
+INSERT INTO KHO (MASP, MACN, SO_LUONG_TON, SO_LUONG_DA_BAN) 
+VALUES 
+(200000, 200, 142, 52),
+(200000, 201, 159, 21),
+(200000, 202, 191, 53),
+(200000, 203, 194, 61),
+(200000, 204, 184, 28),
+(200000, 205, 89, 98),
+(200000, 206, 145, 42),
+(200000, 207, 198, 14),
+(200000, 208, 112, 81),
+
+(200001, 200, 113, 34),
+(200001, 201, 182, 63),
+(200001, 202, 138, 25),
+(200001, 203, 121, 93),
+(200001, 204, 143, 28),
+(200001, 205, 134, 59),
+(200001, 206, 142, 18),
+(200001, 207, 131, 81),
+(200001, 208, 173, 15),
+
+(200002, 200, 142, 115),
+(200002, 201, 134, 43),
+(200002, 202, 118, 61),
+(200002, 203, 184, 82),
+(200002, 204, 138, 33),
+(200002, 205, 134, 48),
+(200002, 206, 138, 37),
+(200002, 207, 182, 41),
+(200002, 208, 173, 52),
+
+(200003, 200, 127, 114),
+(200003, 201, 147, 63),
+(200003, 202, 115, 91),
+(200003, 203, 174, 83),
+(200003, 204, 81, 133),
+(200003, 205, 42, 148),
+(200003, 206, 472, 37),
+(200003, 207, 184, 41),
+(200003, 208, 71, 82),
+
+(200004, 200, 127, 114),
+(200004, 201, 147, 63),
+(200004, 202, 115, 91),
+(200004, 203, 174, 83),
+(200004, 204, 81, 133),
+(200004, 205, 42, 148),
+(200004, 206, 472, 37),
+(200004, 207, 184, 41),
+(200004, 208, 71, 82),
+
+(200005, 200, 127, 114),
+(200005, 201, 147, 63),
+(200005, 202, 115, 91),
+(200005, 203, 174, 83),
+(200005, 204, 81, 133),
+(200005, 205, 42, 148),
+(200005, 206, 472, 37),
+(200005, 207, 184, 41),
+(200005, 208, 71, 82),
+
+(200006, 200, 127, 114),
+(200006, 201, 147, 63),
+(200006, 202, 115, 91),
+(200006, 203, 174, 83),
+(200006, 204, 81, 133),
+(200006, 205, 42, 148),
+(200006, 206, 472, 37),
+(200006, 207, 184, 41),
+(200006, 208, 71, 82),
+
+(200007, 200, 127, 114),
+(200007, 201, 147, 63),
+(200007, 202, 115, 91),
+(200007, 203, 174, 83),
+(200007, 204, 81, 133),
+(200007, 205, 42, 148),
+(200007, 206, 472, 37),
+(200007, 207, 184, 41),
+(200007, 208, 71, 82),
+
+(200008, 200, 127, 114),
+(200008, 201, 147, 63),
+(200008, 202, 115, 91),
+(200008, 203, 174, 83),
+(200008, 204, 81, 133),
+(200008, 205, 42, 148),
+(200008, 206, 472, 37),
+(200008, 207, 184, 41),
+(200008, 208, 71, 82),
+
+(200009, 200, 127, 114),
+(200009, 201, 147, 63),
+(200009, 202, 115, 91),
+(200009, 203, 174, 83),
+(200009, 204, 81, 133),
+(200009, 205, 42, 148),
+(200009, 206, 472, 37),
+(200009, 207, 184, 41),
+(200009, 208, 71, 82),
+
+(200010, 200, 127, 114),
+(200010, 201, 147, 63),
+(200010, 202, 115, 91),
+(200010, 203, 174, 83),
+(200010, 204, 81, 133),
+(200010, 205, 42, 148),
+(200010, 206, 472, 37),
+(200010, 207, 184, 41),
+(200010, 208, 71, 82),
+
+(200020, 202, 100, 82),
+(200025, 202, 100, 290),
+(200040, 202, 100, 60),
+(200047, 202, 150, 82),
+(200050, 202, 130, 87),
+
+(200020, 205, 71, 112),
+(200025, 205, 87, 50),
+(200040, 205, 171, 82),
+(200047, 205, 251, 55),
+(200050, 205, 90, 200);
+
+--
+INSERT INTO DANH_GIA (MAKH, MASP, NOI_DUNG, NGAY_DANG, SAO) 
+VALUES 
+(1000003, 200005, N'Tốt', '2022-03-30 12:15:26', 5),
+(1000003, 200012, N'Tốt', '2022-03-30 12:16:25', 5),
+(1000012, 200009, N'Tốt', '2022-05-26 18:32:06', 5),
+(1000012, 200028, N'Tốt', '2022-05-26 18:33:07', 5),
+(1000012, 200080, N'Tốt', '2022-05-26 18:34:08', 5);
+
+-- 300, 1
+INSERT INTO STORE_ADMIN (EMAIL, MAT_KHAU) 
+VALUES 
+('admin1@gmail.com', 'ADMIN'),
+('admin2@gmail.com', 'ADMIN'),
+('admin3@gmail.com', 'ADMIN'),
+('admin4@gmail.com', 'ADMIN'),
+('admin5@gmail.com', 'ADMIN'),
+('admin6@gmail.com', 'ADMIN'),
+('admin7@gmail.com', 'ADMIN'),
+('admin8@gmail.com', 'ADMIN'),
+('admin9@gmail.com', 'ADMIN');
