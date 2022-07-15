@@ -1,5 +1,5 @@
 import './style.css'
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {FcGoogle} from "react-icons/fc";
 import { SignInErrorMessageBox } from './SignInErrorMessageBox';
 import { useRef, useState, useEffect, useContext } from 'react';
@@ -10,6 +10,9 @@ import Cookies from 'js-cookie';
 const LOGIN_URL = '/account/login';
 
 export default function SignInForm(){
+
+    const navigate = useNavigate();
+
     const userRef = useRef();
     const errRef = useRef();
     const [username, setUsername] = useState('');
@@ -60,6 +63,7 @@ export default function SignInForm(){
                     setUsername('');
                     setPassword('');
                     setSuccess(true);
+                    navigate('/',{replace:true});
                 }
                 else{
                     setExitCode(res?.data.exitcode);
