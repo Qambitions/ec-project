@@ -33,6 +33,12 @@
     width: 38%;
 }
 
+.payment__body_right button{
+    width: 35%;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+
 .payment__info_container{
     border-radius: 4px;
     margin: 1rem 0;

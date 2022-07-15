@@ -3,6 +3,7 @@ import { ShippingInfo } from './ShippingInfo'
 import { OrderInfo } from './OrdersInfo'
 import  VoucherInfo  from './VoucherInfo'
 import './style.css'
+import TotalCard from './TotalCard'
 
 
 export default function Payment(props){
@@ -18,6 +19,8 @@ export default function Payment(props){
                 <div className='container__flex_col payment__body_right'>
                     <OrderInfo/>
                     <VoucherInfo/>
+                    <TotalCard/>
+                    <button className='button_pink'>Đặt hàng</button>
                 </div>
             </div>
         </div> 
