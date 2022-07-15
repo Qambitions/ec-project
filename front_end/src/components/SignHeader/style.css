@@ -9,8 +9,9 @@
     color: black;
 }
 
-.nav-signin-menu i{
-    font-size: 21px;
+.nav-signin-menu svg{
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
 }
 .logo{
     max-height: 100px;
