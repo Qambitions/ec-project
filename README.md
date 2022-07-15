@@ -3,7 +3,7 @@
 <a href="https://www.ctdb.hcmus.edu.vn/vi/"><img src="https://www.ctdb.hcmus.edu.vn/wp-content/uploads/2015/10/logo.png" width='50%' height='50%'/></a>
 -----------------
 Cửa hàng hứa hẹn mang đến sản phẩm đa dạng, chất lượng với giá cạnh tranh, giúp các "con sen" phục vụ chu đáo "hoàng thượng" của mình.
-Cung cấp tất cả phụ kiện cần thiết cho **chó, mèo, hamster**.
+Cung cấp tất cả phụ kiện cần thiết cho **chó, mèo**.
 
 ### Điểm nổi bật
 -----------------
