@@ -7,7 +7,6 @@ async function queryUser(props){
     var date_str = String(date.toISOString().split('T')[0]);
     const rawSQL = `  SELECT count(*) FROM khach_hang 
                         WHERE kh_token  = '${props.token}'
-                        AND '${date_str}'<= token_end_time
                     `
     // return knexQuery.select().from("store_admin");
     const result = await knexQuery.raw(rawSQL)
