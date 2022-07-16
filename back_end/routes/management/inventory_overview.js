@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
 
-async function queryUserOverview(props){
-    const rawSQL = `SELECT makh, email_kh, ma_cap_bac, activate
-                    FROM khach_hang kh 
+async function queryInventoryOverview(props){
+    const rawSQL = `SELECT masp, ten_sp, 
+                    FROM san_pham
+                    where (malh = '${props.malh}' or '${props.malh}' is null)
                     limit '${props.limit}' offset '${props.offset}'
                   `
 
@@ -12,9 +13,10 @@ async function queryUserOverview(props){
   return result.rows  
 }
 
-async function queryTotalUser(props){
+async function queryTotalInventory(props){
     const rawSQL = `SELECT count(*)
-                    FROM khach_hang dh 
+                    FROM san_pham dh 
+                    where (malh = '${props.malh}' or '${props.malh}' is null)
                   `
 
   const result = await knexQuery.raw(rawSQL)
@@ -35,12 +37,14 @@ router.get('/', async (req, res, next) =>{
     }
     req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
     req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
-    const userOverview = await queryUserOverview(req.query);
-    const totalUser = await queryTotalUser(req.query);
+    req.query.malh = (typeof req.query.malh === 'undefined') ? 'null' : req.query.malh;
+
+    const InventoryOverview = await queryInventoryOverview(req.query);
+    const totalInventory = await queryTotalInventory(req.query);
     response.exitcode = 0
     response.message = "lấy thông tin thành công"
-    response.list_order = userOverview
-    response.total  =  totalUser
+    response.list_order = InventoryOverview
+    response.total  =  totalInventory
     res.send(response)
     
 });

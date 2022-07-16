@@ -77,7 +77,7 @@ router.get('/', async (req, res, next) =>{
         'item':''
     }
     
-    const itemsInformation = await queryItem(req.body);
+    const itemsInformation = await queryItem(req.query);
     if (typeof itemsInformation == 'undefined'){
         res.send(response)
         return
@@ -91,7 +91,7 @@ router.get('/', async (req, res, next) =>{
         '4': 0,
         '5': 0,
     }
-    const saoitems = await queryItemStar(req.body);
+    const saoitems = await queryItemStar(req.query);
    
     star.avg = itemsInformation.sao
     star['1'] = (typeof saoitems['1'] === 'undefined') ? 0 : saoitems['1']
@@ -100,9 +100,9 @@ router.get('/', async (req, res, next) =>{
     star['4'] = (typeof saoitems['4'] === 'undefined') ? 0 : saoitems['4']
     star['5'] = (typeof saoitems['5'] === 'undefined') ? 0 : saoitems['5']
 
-    const tonkho = await queryStock(req.body);
-    const chi_nhanh_con = await queryChiNhanhCon(req.body);
-    const comment = await queryComment(req.body)
+    const tonkho = await queryStock(req.query);
+    const chi_nhanh_con = await queryChiNhanhCon(req.query);
+    const comment = await queryComment(req.query)
     var item = {
         'masp':itemsInformation.masp,
         'tensp':itemsInformation.ten_sp,

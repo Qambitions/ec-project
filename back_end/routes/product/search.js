@@ -2,7 +2,15 @@ var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
 
+function removeAccents(str) {
+    return str.normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+  }
+
 async function queryItem(props){
+    var string_search = removeAccents(props.search_str).split(' ').join('|');
+    console.log(string_search)
     const rawSQL = ` 
                     select masp, ten_sp, hinh_anh, luot_danh_gia, sao, gia_ban, 
                     tong_da_ban,phan_tram_giam_gia, 
@@ -12,7 +20,7 @@ async function queryItem(props){
                     where masp in (select masp
                     from san_pham sp 
                     left join loai_hang lh on sp.malh = lh.malh 
-                    where to_tsvector(ten_sp || ' ' || mo_ta || ' ' || lh.ten_lh) @@ to_tsquery('${props.search_str}'))
+                    where to_tsvector(convertTVkdau(ten_sp) || ' ' || convertTVkdau(mo_ta) || ' ' || convertTVkdau(lh.ten_lh)) @@ to_tsquery('${string_search}'))
                     `
     // return knexQuery.select().from("store_admin");
     const result = await knexQuery.raw(rawSQL)
@@ -25,7 +33,7 @@ router.get('/', async (req, res, next) =>{
         "message": "",
         'list_items':''
     }
-    const itemsInformation = await queryItem(req.body);
+    const itemsInformation = await queryItem(req.query);
     var star = {
         'avg':0,
         '1': 0,
