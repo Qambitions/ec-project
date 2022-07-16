@@ -82,6 +82,20 @@ CREATE TABLE VOUCHER (
 	CONSTRAINT PK_VOUCHER PRIMARY KEY (MA_VOUCHER)
 );
 
+CREATE TABLE HINH_THUC_THANH_TOAN (
+	MAHT TEXT,
+	TEN_HINH_THUC TEXT,
+
+	CONSTRAINT PK_HINH_THUC_THANH_TOAN PRIMARY KEY (MAHT)
+);
+
+CREATE TABLE HINH_THUC_GIAO_HANG (
+	MAHT TEXT,
+	TEN_HINH_THUC TEXT,
+
+	CONSTRAINT PK_HINH_THUC_GIAO_HANG PRIMARY KEY (MAHT)
+);
+
 CREATE TABLE DON_HANG (
 	MADH INT PRIMARY key GENERATED ALWAYS AS IDENTITY(START WITH 500000 INCREMENT BY 1),
 	MAKH INT,
@@ -105,6 +119,8 @@ CREATE TABLE DON_HANG (
 	CONSTRAINT FK_DH_KH FOREIGN KEY (MAKH)  REFERENCES KHACH_HANG(MAKH),
 	CONSTRAINT FK_DH_CN  FOREIGN KEY (MACN)  REFERENCES CHI_NHANH (MACN),
 	CONSTRAINT FK_DH_VOUCHER FOREIGN KEY (MA_VOUCHER) REFERENCES VOUCHER(MA_VOUCHER)
+	CONSTRAINT FK_DH_THANH_TOAN FOREIGN KEY (HINH_THUC_THANH_TOAN) REFERENCES HINH_THUC_THANH_TOAN(MAHT)
+	CONSTRAINT FK_DH_GIAO_HANG FOREIGN KEY  (HINH_THUC_GIAO_HANG) REFERENCES HINH_THUC_GIAO_HANG(MAHT)
 );
 
 CREATE TABLE SAN_PHAM (
@@ -237,43 +253,49 @@ VALUES
 ('VIP Gold', 20), 
 ('VIP Diamond', 40);
 
--- 1000000, 1
-INSERT INTO KHACH_HANG (MA_CAP_BAC, TENKH, EMAIL_KH, TONG_DIEM_TICH_LUY, MAT_KHAU, ACTIVATE) 
+INSERT INTO HINH_THUC_THANH_TOAN (MAHT, TEN_HINH_THUC) 
 VALUES 
-(1, N'Nguyễn Thị Ngọc Diệu', 'ntnd1@gmail.com', 0, 'mk123', true),
-(3, N'Lê Thị Phương Linh', 'ltpl2@gmail.com', 1609, 'mk123', true),
-(1, N'Phan Khải Đông', 'pkd3@gmail.com', 0, 'mk123', true),
-(2, N'Bùi Đăng Khoa', 'bdk4@gmail.com', 329, 'mk123', true),
-(1, N'Tống Thảo Nhi', 'ttn5@gmail.com', 67, 'mk123', true),
-(1, N'Nguyễn Thị Bích Phương', 'ntbp6@gmail.com', 0, 'mk123', true),
-(1, N'Trần Thị Lan Anh', 'ttla7@gmail.com', 0, 'mk123', true),
-(3, N'Nguyễn Như Ngọc', 'nnn8@gmail.com', 1654, 'mk123', true),
-(1, N'Nguyễn Phạm Mỹ Duyên', 'npmd9@gmail.com', 0, 'mk123', true),
-(1, N'Huỳnh Nguyễn Thùy Nhiên', 'hntn10@gmail.com', 49, 'mk123', true),
-(2, N'Nguyễn Quang Trường', 'nqt11@gmail.com', 765, 'mk123', true),
-(1, N'Hà Đức Trọng', 'hdt12@gmail.com', 0, 'mk123', true),
-(2, N'Trương Nguyên Thảo', 'tnt13@gmail.com', 652, 'mk123', true),
-(1, N'Nguyễn Tuyết Anh', 'nta14@gmail.com', 0, 'mk123', true),
-(1, N'Lê Thị Tú Loan', 'lttl15@gmail.com', 102, 'mk123', true),
-(1, N'Nguyễn Lê Tuấn Minh', 'nltm16@gmail.com', 0, 'mk123', true),
-(2, N'Võ Quang Duy', 'vqd17@gmail.com', 498, 'mk123', false),
-(1, N'Trương Nguyễn Thảo Nguyên', 'nttn18@gmail.com', 123, 'mk123', false),
-(1, N'Nguyễn Thị Thanh An', 'ntta19@gmail.com', 46, 'mk123', false),
-(2, N'Nguyễn Thị Hoài Linh', 'nthl20@gmail.com', 549, 'mk123', false),
-(3, N'Phan Quang Hiếu', 'pqh21@gmail.com', 1221, 'mk123', false),
-(1, N'Võ Như Quỳnh', 'vnq22@gmail.com', 0, 'mk123', false),
-(1, N'Huỳnh Thục Quyên', 'htq23@gmail.com', 53, 'mk123', false),
-(1, N'Lê Vũ Thảo Hiền', 'lvth24@gmail.com', 0, 'mk123', false),
-(1, N'Nguyễn Bá Quân', 'nbq25@gmail.com', 46, 'mk123', true),
-(1, N'Trần Vương Quỳnh Trân', 'tvqt26@gmail.com', 0, 'mk123', false),
-(1, N'Nguyễn Minh Thảo', 'nmt28@gmail.com', 0, 'mk123', true),
-(2, N'Nguyễn Trung Anh', 'nta29@gmail.com', 345, 'mk123', true),
-(1, N'Nguyễn Thị Kim Anh', 'ntka30@gmail.com', 0, 'mk123', true),
-(1, N'Huỳnh Thị Hồng Phấn', 'hthp31@gmail.com', 0, 'mk123', true),
-(1, N'Bùi Thị Kim Ngân', 'btkn32@gmail.com', 0, 'mk123', true),
-(1, N'Phan Tường Vy', 'ptv33@gmail.com', 0, 'mk123', true),
-(2, N'Nguyễn Thương Thương', 'ntt34@gmail.com', 323, 'mk123', false),
-(1, N'Lê Thị Minh Tuyền', 'ltmt35@gmail.com', 23, 'mk123', false);
+('CDO',   'THANH TOÁN BẰNG TIỀN MẶT'),
+('MOMO',  'THANH TOÁN BẰNG VÍ ĐIỆN TỬ MOMO'), 
+('PAYPAL','THANH TOÁN BẰNG VÍ ĐIỆN TỬ PAYPAL');
+
+-- 1000000, 1
+INSERT INTO KHACH_HANG (MA_CAP_BAC, TENKH, EMAIL_KH, SDT_KH, TONG_DIEM_TICH_LUY, MAT_KHAU, ACTIVATE) 
+VALUES 
+(1, N'Nguyễn Thị Ngọc Diệu', 'ntnd1@gmail.com',    '0857916579', 0, 'mk123', true),
+(3, N'Lê Thị Phương Linh', 'ltpl2@gmail.com',      '0857916578', 1609, 'mk123', true),
+(1, N'Phan Khải Đông', 'pkd3@gmail.com',           '0857916577', 0, 'mk123', true),
+(2, N'Bùi Đăng Khoa', 'bdk4@gmail.com',            '0857916576', 329, 'mk123', true),
+(1, N'Tống Thảo Nhi', 'ttn5@gmail.com',            '0857916575', 67, 'mk123', true),
+(1, N'Nguyễn Thị Bích Phương', 'ntbp6@gmail.com',  '0857916574', 0, 'mk123', true),
+(1, N'Trần Thị Lan Anh', 'ttla7@gmail.com',        '0857916573', 0, 'mk123', true),
+(3, N'Nguyễn Như Ngọc', 'nnn8@gmail.com',          '0857916572', 1654, 'mk123', true),
+(1, N'Nguyễn Phạm Mỹ Duyên', 'npmd9@gmail.com',    '0157916571', 0, 'mk123', true),
+(1, N'Huỳnh Nguyễn Thùy Nhiên', 'hntn10@gmail.com','0557916570', 49, 'mk123', true),
+(2, N'Nguyễn Quang Trường', 'nqt11@gmail.com',     '0857916599', 765, 'mk123', true),
+(1, N'Hà Đức Trọng', 'hdt12@gmail.com',            '0857916589', 0, 'mk123', true),
+(2, N'Trương Nguyên Thảo', 'tnt13@gmail.com',      '0957916579', 652, 'mk123', true),
+(1, N'Nguyễn Tuyết Anh', 'nta14@gmail.com',        '0457916569', 0, 'mk123', true),
+(1, N'Lê Thị Tú Loan', 'lttl15@gmail.com',         '0857916559', 102, 'mk123', true),
+(1, N'Nguyễn Lê Tuấn Minh', 'nltm16@gmail.com',       '0817916539', 0, 'mk123', true),
+(2, N'Võ Quang Duy', 'vqd17@gmail.com',               '0837916519', 498, 'mk123', false),
+(1, N'Trương Nguyễn Thảo Nguyên', 'nttn18@gmail.com', '0847916529', 123, 'mk123', false),
+(1, N'Nguyễn Thị Thanh An', 'ntta19@gmail.com',       '0857918579', 46, 'mk123', false),
+(2, N'Nguyễn Thị Hoài Linh', 'nthl20@gmail.com',      '0867916779', 549, 'mk123', false),
+(3, N'Phan Quang Hiếu', 'pqh21@gmail.com',            '0877916549', 1221, 'mk123', false),
+(1, N'Võ Như Quỳnh', 'vnq22@gmail.com',               '0887916569', 0, 'mk123', false),
+(1, N'Huỳnh Thục Quyên', 'htq23@gmail.com',           '0807916579', 53, 'mk123', false),
+(1, N'Lê Vũ Thảo Hiền', 'lvth24@gmail.com',           '0815916579', 0, 'mk123', false),
+(1, N'Nguyễn Bá Quân', 'nbq25@gmail.com',             '0852916579', 46, 'mk123', true),
+(1, N'Trần Vương Quỳnh Trân', 'tvqt26@gmail.com',     '0858916579', 0, 'mk123', false),
+(1, N'Nguyễn Minh Thảo', 'nmt28@gmail.com',           '0850916789', 0, 'mk123', true),
+(2, N'Nguyễn Trung Anh', 'nta29@gmail.com',           '0851916519', 345, 'mk123', true),
+(1, N'Nguyễn Thị Kim Anh', 'ntka30@gmail.com',        '0857116579', 0, 'mk123', true),
+(1, N'Huỳnh Thị Hồng Phấn', 'hthp31@gmail.com',       '0157952579', 0, 'mk123', true),
+(1, N'Bùi Thị Kim Ngân', 'btkn32@gmail.com',          '0757916579', 0, 'mk123', true),
+(1, N'Phan Tường Vy', 'ptv33@gmail.com',              '0957918879', 0, 'mk123', true),
+(2, N'Nguyễn Thương Thương', 'ntt34@gmail.com',       '0857926879', 323, 'mk123', false),
+(1, N'Lê Thị Minh Tuyền', 'ltmt35@gmail.com',         '0867116579', 23, 'mk123', false);
 
 -- 1000, 1
 INSERT INTO NHA_PHAN_PHOI (TEN_NPP, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH) 
@@ -484,19 +506,19 @@ VALUES
 (10010, 200063, 10, 65000);
 
 -- 500000, 1
-INSERT INTO DON_HANG (MAKH, MACN, PHI_SAN_PHAM, PHI_VAN_CHUYEN, HINH_THUC_THANH_TOAN, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH, TRANG_THAI) 
+INSERT INTO DON_HANG (MAKH, MACN, PHI_SAN_PHAM, PHI_VAN_CHUYEN, HINH_THUC_THANH_TOAN, HINH_THUC_GIAO_HANG, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH, TRANG_THAI) 
 VALUES 
-(1000000, 200, 279000, 35000, N'THANH TOÁN BẰNG TIỀN MẶT', N'227 Nguyễn Văn Cừ', N'7', N'5', N'HCM', N'ĐÃ XÁC NHẬN'),
-(1000003, 208, 327000, 20000, N'THANH TOÁN BẰNG MOMO', N'324 Nguyễn Văn Linh', N'2', N'7', N'HCM', N'ĐÃ GIAO'),
-(1000008, 203, 175000, 35000, N'THANH TOÁN BẰNG MOMO', N'112 Nguyễn Văn Trỗi', N'6', N'Đà Lạt', N'Lâm Đồng', N'ĐANG GIAO'),
-(1000001, 201, 612500, 45000, N'THANH TOÁN BẰNG TIỀN MẶT', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'ĐÃ HỦY'),
-(1000005, 200, 535000, 30000, N'THANH TOÁN BẰNG TIỀN MẶT', N'51 Hùng Vương', N'5', N'Vũng Tàu', N'Bà Rịa - Vũng Tàu', N'CHỜ XÁC NHẬN'),
-(1000012, 205, 564500, 45000, N'THANH TOÁN BẰNG MOMO', N'147 Nguyễn Tri Phương', N'4', N'5', N'HCM', N'ĐÃ GIAO'),
-(1000002, 205, 310000, 20000, N'THANH TOÁN BẰNG MOMO', N'50 Võ Văn Kiệt', N'An Lạc', N'Bình Tân', N'HCM', N'CHỜ XÁC NHẬN'),
-(1000002, 208, 410000, 20000, N'THANH TOÁN BẰNG MOMO', N'491 Hậu Giang', N'11', N'6', N'HCM', N'CHỜ XÁC NHẬN'),
-(1000002, 203, 460000, 20000, N'THANH TOÁN BẰNG MOMO', N'9 Trần Hưng Đạo', N'Nguyễn Thái Bình', N'1', N'HCM', N'ĐANG GIAO'),
-(1000001, 202, 420000, 45000, N'THANH TOÁN BẰNG TIỀN MẶT', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN'),
-(1000001, 205, 480000, 45000, N'THANH TOÁN BẰNG TIỀN MẶT', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN');
+(1000000, 200, 279000, 35000, N'COD' ,'GHN', N'227 Nguyễn Văn Cừ', N'7', N'5', N'HCM', N'ĐÃ XÁC NHẬN'),
+(1000003, 208, 327000, 20000, N'MOMO','GHN', N'324 Nguyễn Văn Linh', N'2', N'7', N'HCM', N'ĐÃ GIAO'),
+(1000008, 203, 175000, 35000, N'MOMO','GHN', N'112 Nguyễn Văn Trỗi', N'6', N'Đà Lạt', N'Lâm Đồng', N'ĐANG GIAO'),
+(1000001, 201, 612500, 45000, N'COD' ,'GHTK', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'ĐÃ HỦY'),
+(1000005, 200, 535000, 30000, N'COD' ,'GHTK', N'51 Hùng Vương', N'5', N'Vũng Tàu', N'Bà Rịa - Vũng Tàu', N'CHỜ XÁC NHẬN'),
+(1000012, 205, 564500, 45000, N'MOMO','GHN', N'147 Nguyễn Tri Phương', N'4', N'5', N'HCM', N'ĐÃ GIAO'),
+(1000002, 205, 310000, 20000, N'MOMO','GHN', N'50 Võ Văn Kiệt', N'An Lạc', N'Bình Tân', N'HCM', N'CHỜ XÁC NHẬN'),
+(1000002, 208, 410000, 20000, N'MOMO','GHN', N'491 Hậu Giang', N'11', N'6', N'HCM', N'CHỜ XÁC NHẬN'),
+(1000002, 203, 460000, 20000, N'MOMO','GHTK', N'9 Trần Hưng Đạo', N'Nguyễn Thái Bình', N'1', N'HCM', N'ĐANG GIAO'),
+(1000001, 202, 420000, 45000, N'COD' ,'GHN', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN'),
+(1000001, 205, 480000, 45000, N'COD' ,'GHN', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN');
 
 --
 INSERT INTO CHI_TIET_DON_HANG (MADH, MASP, MA_VOUCHER, SO_LUONG_MUA, THANH_TIEN_MUA) 
@@ -719,3 +741,19 @@ VALUES
 ('admin7@gmail.com', 'ADMIN'),
 ('admin8@gmail.com', 'ADMIN'),
 ('admin9@gmail.com', 'ADMIN');
+
+CREATE OR REPLACE FUNCTION convertTVkdau (x text) RETURNS text AS
+$$
+DECLARE
+ cdau text; kdau text; r text;
+BEGIN
+ cdau = 'áàảãạâấầẩẫậăắằẳẵặđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶĐÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴ';
+ kdau = 'aaaaaaaaaaaaaaaaadeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyAAAAAAAAAAAAAAAAADEEEEEEEEEEEIIIIIOOOOOOOOOOOOOOOOOUUUUUUUUUUUYYYYY';
+ r = x;
+ FOR i IN 0..length(cdau)
+ LOOP
+ r = replace(r, substr(cdau,i,1), substr(kdau,i,1));
+ END LOOP;
+ RETURN r;
+END;
+$$ LANGUAGE plpgsql;
