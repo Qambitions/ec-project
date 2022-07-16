@@ -10,9 +10,13 @@ app.use(express.urlencoded({ extended: false }));
 
 var voucher = require('./cart/voucher');
 var shipping_information = require('./cart/shipping_information');
+var order_create = require('./cart/order_create');
+var delivery_price = require('./cart/delivery_price');
 
 app.use('/voucher', voucher);
 app.use('/shipping_information', shipping_information);
+app.use('/order_create', order_create);
+app.use('/delivery', delivery_price);
 
 app.use(function(req, res, next) {
     next(createError(404));
