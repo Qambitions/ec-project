@@ -34,6 +34,7 @@ async function addAccount(props){
   .insert({
     makh: result.rows[0].makh,
     stt: 1,
+    districtid: props.districtid,
     so_nha_duong: props.so_nha_duong,
     phuong_xa: props.phuong_xa,
     quan_tp: props.quan_tp,

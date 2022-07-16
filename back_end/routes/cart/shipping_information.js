@@ -4,7 +4,7 @@ var knexQuery = require('../../db_connect');
 
 async function queryAddress(props){
     const rawSQL = ` 
-                    select dck.stt, dck.so_nha_duong, dck.phuong_xa, dck.quan_tp, dck.tp_tinh, dck.mac_dinh
+                    select dck.districtid, dck.stt, dck.so_nha_duong, dck.phuong_xa, dck.quan_tp, dck.tp_tinh, dck.mac_dinh
                     from khach_hang kh 
                     left join dia_chi_kh dck on dck.makh = kh.makh 
                     where kh.kh_token = '${props.token}' 
