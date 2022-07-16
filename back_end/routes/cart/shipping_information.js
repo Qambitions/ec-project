@@ -17,7 +17,7 @@ async function queryAddress(props){
 router.get('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
-        "message": "",
+        "message": "Lấy thông tin thất bại",
         "list_address": []
     }
     // console.log(req.headers.token)

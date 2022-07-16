@@ -33,10 +33,10 @@ router.get('/', async (req, res, next) =>{
         res.send(response)
         return
     }
-    req.body.limit = (typeof req.body.limit === 'undefined') ? 5 : req.body.limit;
-    req.body.offset = (typeof req.body.offset === 'undefined') ? 0 : req.body.offset;
-    const orderOverview = await queryOrderOverview(req.body);
-    const totalOrder = await queryTotalOrder(req.body);
+    req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
+    req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
+    const orderOverview = await queryOrderOverview(req.query);
+    const totalOrder = await queryTotalOrder(req.query);
     response.exitcode = 0
     response.message = "lấy thông tin thành công"
     response.list_order = orderOverview

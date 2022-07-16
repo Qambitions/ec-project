@@ -35,12 +35,12 @@ router.get('/', async (req, res, next) =>{
         res.send(response)
         return
     }
-    req.body.limit = (typeof req.body.limit === 'undefined') ? 5 : req.body.limit;
-    req.body.offset = (typeof req.body.offset === 'undefined') ? 0 : req.body.offset;
-    req.body.malh = (typeof req.body.malh === 'undefined') ? 'null' : req.body.malh;
+    req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
+    req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
+    req.query.malh = (typeof req.query.malh === 'undefined') ? 'null' : req.query.malh;
 
-    const InventoryOverview = await queryInventoryOverview(req.body);
-    const totalInventory = await queryTotalInventory(req.body);
+    const InventoryOverview = await queryInventoryOverview(req.query);
+    const totalInventory = await queryTotalInventory(req.query);
     response.exitcode = 0
     response.message = "lấy thông tin thành công"
     response.list_order = InventoryOverview

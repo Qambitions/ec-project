@@ -19,14 +19,14 @@ async function queryItem(props){
 
 
 router.get('/', async (req, res, next) =>{
-    req.body.limit = (typeof req.body.limit === 'undefined') ? 5 : req.body.limit;
-    req.body.offset = (typeof req.body.offset === 'undefined') ? 0 : req.body.offset;
+    req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
+    req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
     var response = {
         "exitcode": 1,
         "message": "",
         'list_items':''
     }
-    const itemsInformation = await queryItem(req.body);
+    const itemsInformation = await queryItem(req.query);
     var star = {
         'avg':0,
         '1': 0,
