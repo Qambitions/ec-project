@@ -131,3 +131,11 @@
 .rating__overview_right_col:nth-child(3){
     align-items:baseline;
 }
+
+.breadcrumbs a{
+    color: #8FA0B7;
+}
+
+.breadcrumbs a:hover{
+    text-decoration: underline;
+}
