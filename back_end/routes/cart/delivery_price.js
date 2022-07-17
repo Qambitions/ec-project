@@ -69,7 +69,8 @@ router.post('/GHN/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
         "message": "Tạo đơn hàng thất bại",
-        "paymentURL":"",
+        "price":"1000000",
+        "macn":""
     }
 
     const Client = await checkClient(req.headers);
@@ -82,6 +83,8 @@ router.post('/GHN/', async (req, res, next) =>{
     const listBranch = await queryBranch();
     const minPrice = await getMinPriceGHN(listBranch, req.body.dia_chi, req.body.sum_weight);    
     console.log(minPrice);
+    response.price = minPrice.total_price
+    response.macn  = minPrice.macn
     res.send(response)
 });
 
