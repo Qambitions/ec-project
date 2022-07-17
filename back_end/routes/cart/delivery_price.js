@@ -65,10 +65,51 @@ async function getMinPriceGHN(listBranch, dia_chi, sum_weight){
     return minPrice
 }
 
-router.post('/GHN/', async (req, res, next) =>{
+async function getMinPriceGHTK(listBranch, dia_chi, sum_weight, mode){
+    var axios_connect = await axios.create({
+        baseURL:'https://services.giaohangtietkiem.vn/services/shipment/fee'
+    });
+    var minPrice = {'total_price':1000000,
+                    'macn'       :0}
+    
+    for(var i = 0; i < listBranch.length;i++){
+        var price = await axios_connect('/',{
+            method: 'POST',
+            headers: {
+                token: 'a2f65c9Ff7651cf6ED922F1b867Dcce8CeEe7586'
+            },
+            data:{
+                "pick_province": listBranch[i].tp_tinh,
+                "pick_district": listBranch[i].quan_tp,
+                "province": dia_chi.tp_tinh,
+                "district": dia_chi.quan_tp,
+                "weight": sum_weight,
+                "transport": "road",
+                "deliver_option": mode,
+                "tags": [1,7]
+            }
+        }) 
+        .then (function (response) {
+            return response.data.fee.ship_fee_only
+        })
+        .catch(function (error) {
+            // console.log(error)
+            return 1000000
+        });
+        // console.log(price)
+        if (minPrice.total_price >  price){
+            minPrice.total_price = price
+            minPrice.macn        = listBranch[i].macn
+        }
+    }
+    
+    return minPrice
+}
+
+router.post('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
-        "message": "Tạo đơn hàng thất bại",
+        "message": "thất bại",
         "price":"1000000",
         "macn":""
     }
@@ -81,10 +122,22 @@ router.post('/GHN/', async (req, res, next) =>{
         return
     }
     const listBranch = await queryBranch();
-    const minPrice = await getMinPriceGHN(listBranch, req.body.dia_chi, req.body.sum_weight);    
+    var minPrice = 1000000
+    if (req.body.method == 'GHN')
+        minPrice = await getMinPriceGHN(listBranch, req.body.dia_chi, req.body.sum_weight);    
+    else if (req.body.method == 'GHTK_norm')
+        minPrice = await getMinPriceGHTK(listBranch, req.body.dia_chi, req.body.sum_weight,'none');   
+    else if (req.body.method == 'GHTK_fast')
+        minPrice = await getMinPriceGHTK(listBranch, req.body.dia_chi, req.body.sum_weight,'xteam');
+
+
     console.log(minPrice);
-    response.price = minPrice.total_price
-    response.macn  = minPrice.macn
+    if (minPrice != 1000000){
+        response.exitcode = 0
+        response.message = "Lấy thông tin thành công"
+        response.price = minPrice.total_price
+        response.macn  = minPrice.macn
+    }
     res.send(response)
 });
 
