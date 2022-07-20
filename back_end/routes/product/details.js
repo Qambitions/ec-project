@@ -57,18 +57,24 @@ async function queryStock(props){
 }
 
 async function queryChiNhanhCon(props){
-    const rawSQL = ` 
-                    select count(macn)
+    var rawSQL = ` select * from chi_nhanh cn2
+                    where macn in (select macn 
                     from kho
-                    where masp = '${props.masp}'
-                    group by masp
+                    where masp = ${props.masp}
+                    and so_luong_ton > 0)
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
-    if (result.rowCount == 0){
-        return 0
-    }
-    return result.rows[0].count
+    const branch_available = await knexQuery.raw(rawSQL)
+    rawSQL = ` select * from chi_nhanh cn2
+                    where macn not in (select macn 
+                    from kho
+                    where masp = ${props.masp}
+                    and so_luong_ton > 0)
+                    `
+    const branch_unavailable = await knexQuery.raw(rawSQL)
+
+    return {branch_available: branch_available.rows, 
+            branch_unavailable: branch_available.rows}
 }
 
 router.get('/', async (req, res, next) =>{
@@ -115,10 +121,12 @@ router.get('/', async (req, res, next) =>{
         'khoi_luong':itemsInformation.khoi_luong,
         'tong_da_ban':itemsInformation.tong_da_ban,
         'ton_kho':tonkho,
-        'chi_nhanh_con':chi_nhanh_con,
+        // 'chi_nhanh_con':chi_nhanh_con,
         'gia_ban_giam' : itemsInformation.gia_ban_giam,
         'comment' : comment,
-        'ten_npp' : itemsInformation.ten_npp
+        'ten_npp' : itemsInformation.ten_npp,
+        'branch_available': chi_nhanh_con.branch_available,
+        'branch_available': chi_nhanh_con.branch_unavailable
     };
     
     
