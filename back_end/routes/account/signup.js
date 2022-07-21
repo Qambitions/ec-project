@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
+require("dotenv").config();
+const crypto = require("crypto");
+const secret = process.env.SECRET_KEY;
 
 async function checkAvailable(props){
   const rawSQL = `  SELECT count(*) FROM khach_hang 
@@ -17,10 +20,8 @@ async function addAccount(props){
     tenkh: props.tenkh,
     email_kh: props.email_kh,
     sdt_kh: props.sdt_kh,
-    mat_khau: props.mat_khau,
+    mat_khau: crypto.createHmac("sha256", secret).update(props.mat_khau).digest("base64"),
     check_sd_voucher: false,
-    ma_cap_bac: 4,
-    tong_diem_tich_luy: 0,
   })
 
   const rawSQL = `  SELECT makh FROM khach_hang 

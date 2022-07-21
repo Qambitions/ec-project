@@ -1,11 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
+require("dotenv").config();
+const crypto = require("crypto");
+const secret = process.env.SECRET_KEY;
+
 
 async function queryAdmin(props){
   const rawSQL = `  SELECT count(*) FROM store_admin 
                     WHERE email  = '${props.username}'
-                    AND mat_khau = '${props.password}'
+                    AND mat_khau = '${crypto.createHmac("sha256", secret).update(props.password).digest("base64")}'
                   `
   // return knexQuery.select().from("store_admin");
   const result = await knexQuery.raw(rawSQL)
@@ -15,7 +19,7 @@ async function queryAdmin(props){
 async function queryUser(props){
   const rawSQL = `  SELECT makh, tenkh, email_kh, sdt_kh FROM khach_hang 
                     WHERE (email_kh  = '${props.username}' or sdt_kh = '${props.username}')
-                    AND mat_khau = '${props.password}'
+                    AND mat_khau = '${crypto.createHmac("sha256", secret).update(props.password).digest("base64")}'
                     group by 1,2,3,4
                   `
   // return knexQuery.select().from("store_admin");
@@ -24,10 +28,11 @@ async function queryUser(props){
 }
 
 async function updateToken(props,token){
+  var password = crypto.createHmac("sha256", secret).update(props.password).digest("base64")
   await knexQuery('khach_hang')
-  .whereRaw(`(email_kh  = '${props.username}' or sdt_kh = '${props.username}') and mat_khau = '${props.password}'`)
+  .whereRaw(`(email_kh  = '${props.username}' or sdt_kh = '${props.username}') and mat_khau = '${password}'`)
   .update({
-    kh_token: token,
+    kh_token: crypto.createHmac("sha256", secret).update(token).digest("base64"),
   })
 }
 

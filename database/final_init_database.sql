@@ -12,13 +12,13 @@ CREATE TABLE CAP_BAC (
 
 CREATE TABLE KHACH_HANG (
 	MAKH INT GENERATED ALWAYS AS IDENTITY(START WITH 1000000 INCREMENT BY 1),
-	MA_CAP_BAC INT,
+	MA_CAP_BAC INT default 1,
 	TENKH TEXT,
 	EMAIL_KH VARCHAR(60) NOT NULL UNIQUE,
 	SDT_KH CHAR(10),
 	NGSINH_KH DATE,
 	TONG_DIEM_TICH_LUY INT DEFAULT 0,
-	MAT_KHAU VARCHAR(50) NOT NULL,
+	MAT_KHAU VARCHAR(65) NOT NULL,
 	KH_TOKEN VARCHAR(100),
 	CHECK_SD_VOUCHER BOOL,
 	THOI_GIAN_DK timestamp default current_timestamp,
@@ -272,40 +272,40 @@ VALUES
 -- 1000000, 1
 INSERT INTO KHACH_HANG (MA_CAP_BAC, TENKH, EMAIL_KH, SDT_KH, TONG_DIEM_TICH_LUY, MAT_KHAU, ACTIVATE) 
 VALUES 
-(1, N'Nguyễn Thị Ngọc Diệu', 'ntnd1@gmail.com',    '0857916579', 0, 'mk123', true),
-(3, N'Lê Thị Phương Linh', 'ltpl2@gmail.com',      '0857916578', 1609, 'mk123', true),
-(1, N'Phan Khải Đông', 'pkd3@gmail.com',           '0857916577', 0, 'mk123', true),
-(2, N'Bùi Đăng Khoa', 'bdk4@gmail.com',            '0857916576', 329, 'mk123', true),
-(1, N'Tống Thảo Nhi', 'ttn5@gmail.com',            '0857916575', 67, 'mk123', true),
-(1, N'Nguyễn Thị Bích Phương', 'ntbp6@gmail.com',  '0857916574', 0, 'mk123', true),
-(1, N'Trần Thị Lan Anh', 'ttla7@gmail.com',        '0857916573', 0, 'mk123', true),
-(3, N'Nguyễn Như Ngọc', 'nnn8@gmail.com',          '0857916572', 1654, 'mk123', true),
-(1, N'Nguyễn Phạm Mỹ Duyên', 'npmd9@gmail.com',    '0157916571', 0, 'mk123', true),
-(1, N'Huỳnh Nguyễn Thùy Nhiên', 'hntn10@gmail.com','0557916570', 49, 'mk123', true),
-(2, N'Nguyễn Quang Trường', 'nqt11@gmail.com',     '0857916599', 765, 'mk123', true),
-(1, N'Hà Đức Trọng', 'hdt12@gmail.com',            '0857916589', 0, 'mk123', true),
-(2, N'Trương Nguyên Thảo', 'tnt13@gmail.com',      '0957916579', 652, 'mk123', true),
-(1, N'Nguyễn Tuyết Anh', 'nta14@gmail.com',        '0457916569', 0, 'mk123', true),
-(1, N'Lê Thị Tú Loan', 'lttl15@gmail.com',         '0857916559', 102, 'mk123', true),
-(1, N'Nguyễn Lê Tuấn Minh', 'nltm16@gmail.com',       '0817916539', 0, 'mk123', true),
-(2, N'Võ Quang Duy', 'vqd17@gmail.com',               '0837916519', 498, 'mk123', false),
-(1, N'Trương Nguyễn Thảo Nguyên', 'nttn18@gmail.com', '0847916529', 123, 'mk123', false),
-(1, N'Nguyễn Thị Thanh An', 'ntta19@gmail.com',       '0857918579', 46, 'mk123', false),
-(2, N'Nguyễn Thị Hoài Linh', 'nthl20@gmail.com',      '0867916779', 549, 'mk123', false),
-(3, N'Phan Quang Hiếu', 'pqh21@gmail.com',            '0877916549', 1221, 'mk123', false),
-(1, N'Võ Như Quỳnh', 'vnq22@gmail.com',               '0887916569', 0, 'mk123', false),
-(1, N'Huỳnh Thục Quyên', 'htq23@gmail.com',           '0807916579', 53, 'mk123', false),
-(1, N'Lê Vũ Thảo Hiền', 'lvth24@gmail.com',           '0815916579', 0, 'mk123', false),
-(1, N'Nguyễn Bá Quân', 'nbq25@gmail.com',             '0852916579', 46, 'mk123', true),
-(1, N'Trần Vương Quỳnh Trân', 'tvqt26@gmail.com',     '0858916579', 0, 'mk123', false),
-(1, N'Nguyễn Minh Thảo', 'nmt28@gmail.com',           '0850916789', 0, 'mk123', true),
-(2, N'Nguyễn Trung Anh', 'nta29@gmail.com',           '0851916519', 345, 'mk123', true),
-(1, N'Nguyễn Thị Kim Anh', 'ntka30@gmail.com',        '0857116579', 0, 'mk123', true),
-(1, N'Huỳnh Thị Hồng Phấn', 'hthp31@gmail.com',       '0157952579', 0, 'mk123', true),
-(1, N'Bùi Thị Kim Ngân', 'btkn32@gmail.com',          '0757916579', 0, 'mk123', true),
-(1, N'Phan Tường Vy', 'ptv33@gmail.com',              '0957918879', 0, 'mk123', true),
-(2, N'Nguyễn Thương Thương', 'ntt34@gmail.com',       '0857926879', 323, 'mk123', false),
-(1, N'Lê Thị Minh Tuyền', 'ltmt35@gmail.com',         '0867116579', 23, 'mk123', false);
+(1, N'Nguyễn Thị Ngọc Diệu', 'ntnd1@gmail.com',    '0857916579', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(3, N'Lê Thị Phương Linh', 'ltpl2@gmail.com',      '0857916578', 1609, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Phan Khải Đông', 'pkd3@gmail.com',           '0857916577', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(2, N'Bùi Đăng Khoa', 'bdk4@gmail.com',            '0857916576', 329, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Tống Thảo Nhi', 'ttn5@gmail.com',            '0857916575', 67, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Nguyễn Thị Bích Phương', 'ntbp6@gmail.com',  '0857916574', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Trần Thị Lan Anh', 'ttla7@gmail.com',        '0857916573', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(3, N'Nguyễn Như Ngọc', 'nnn8@gmail.com',          '0857916572', 1654, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Nguyễn Phạm Mỹ Duyên', 'npmd9@gmail.com',    '0157916571', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Huỳnh Nguyễn Thùy Nhiên', 'hntn10@gmail.com','0557916570', 49, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(2, N'Nguyễn Quang Trường', 'nqt11@gmail.com',     '0857916599', 765, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Hà Đức Trọng', 'hdt12@gmail.com',            '0857916589', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(2, N'Trương Nguyên Thảo', 'tnt13@gmail.com',      '0957916579', 652, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Nguyễn Tuyết Anh', 'nta14@gmail.com',        '0457916569', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Lê Thị Tú Loan', 'lttl15@gmail.com',         '0857916559', 102, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Nguyễn Lê Tuấn Minh', 'nltm16@gmail.com',       '0817916539', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(2, N'Võ Quang Duy', 'vqd17@gmail.com',               '0837916519', 498, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(1, N'Trương Nguyễn Thảo Nguyên', 'nttn18@gmail.com', '0847916529', 123, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(1, N'Nguyễn Thị Thanh An', 'ntta19@gmail.com',       '0857918579', 46, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(2, N'Nguyễn Thị Hoài Linh', 'nthl20@gmail.com',      '0867916779', 549, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(3, N'Phan Quang Hiếu', 'pqh21@gmail.com',            '0877916549', 1221, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(1, N'Võ Như Quỳnh', 'vnq22@gmail.com',               '0887916569', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(1, N'Huỳnh Thục Quyên', 'htq23@gmail.com',           '0807916579', 53, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(1, N'Lê Vũ Thảo Hiền', 'lvth24@gmail.com',           '0815916579', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(1, N'Nguyễn Bá Quân', 'nbq25@gmail.com',             '0852916579', 46, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Trần Vương Quỳnh Trân', 'tvqt26@gmail.com',     '0858916579', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(1, N'Nguyễn Minh Thảo', 'nmt28@gmail.com',           '0850916789', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(2, N'Nguyễn Trung Anh', 'nta29@gmail.com',           '0851916519', 345, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Nguyễn Thị Kim Anh', 'ntka30@gmail.com',        '0857116579', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Huỳnh Thị Hồng Phấn', 'hthp31@gmail.com',       '0157952579', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Bùi Thị Kim Ngân', 'btkn32@gmail.com',          '0757916579', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(1, N'Phan Tường Vy', 'ptv33@gmail.com',              '0957918879', 0, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', true),
+(2, N'Nguyễn Thương Thương', 'ntt34@gmail.com',       '0857926879', 323, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false),
+(1, N'Lê Thị Minh Tuyền', 'ltmt35@gmail.com',         '0867116579', 23, '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=', false);
 
 -- 1000, 1
 INSERT INTO NHA_PHAN_PHOI (TEN_NPP, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH) 
@@ -785,3 +785,33 @@ create TRIGGER trig_copy_don_hang
      FOR EACH ROW
      EXECUTE PROCEDURE function_copy();
 --==============================================
+--CREATE USER ngoc_dieu WITH PASSWORD '20010714';
+--GRANT select, insert, update, delete  ON ALL TABLES IN SCHEMA public TO dev_acc;
+--GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO dev_acc;
+--
+--CREATE USER linh_le WITH PASSWORD '20010916';
+--GRANT select, insert, update, delete  ON ALL TABLES IN SCHEMA public TO dev_acc;
+--GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO dev_acc;
+--
+--CREATE USER dong_phan WITH PASSWORD '200107712';
+--GRANT select, insert, update, delete  ON ALL TABLES IN SCHEMA public TO dev_acc;
+--GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO dev_acc;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

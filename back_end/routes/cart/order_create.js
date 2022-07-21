@@ -5,12 +5,15 @@ var {momoCall}  = require('./momo');
 var {paypalCall}  = require('./paypal');
 var {vnpayCall,vnpay_sortObject}  = require('./vnpay');
 const paypal = require('paypal-rest-sdk');
+require("dotenv").config();
+const crypto = require("crypto");
+const secret = process.env.SECRET_KEY;
 
 async function checkClient(props){
     const rawSQL = ` 
                     select *
                     from khach_hang kh 
-                    where kh_token = '${props.token}' 
+                    where kh_token = '${crypto.createHmac("sha256", secret).update(props.token).digest("base64")}' 
                     and kh.kh_token is not null
                     `
     const result = await knexQuery.raw(rawSQL)
