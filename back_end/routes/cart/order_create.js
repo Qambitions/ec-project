@@ -1,9 +1,9 @@
 var express = require('express');
-var url_lib = require('url');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
 var {momoCall}  = require('./momo');
 var {paypalCall}  = require('./paypal');
+var {vnpayCall,vnpay_sortObject}  = require('./vnpay');
 const paypal = require('paypal-rest-sdk');
 
 async function checkClient(props){
@@ -52,7 +52,7 @@ async function addOrder(props, Client){
 
 async function updateOrderStatus(Client, status, token=false){
     if (token == false){
-        console.log("testtt",token)
+        // console.log("testtt",token)
         await knexQuery('don_hang')
         .where('makh','=',Client.makh)
         .andWhere('trang_thai','=','WAIT FOR PAYMENT')
@@ -133,6 +133,18 @@ router.post('/', async (req, res, next) =>{
         res.send(response)
         return
     }
+    else if (req.body.hinh_thuc_thanh_toan == 'VNPAY'){
+        const result = await vnpayCall(req.body, Client);
+        // console.log(result)
+        if (result.resultCode != 0){
+            updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
+        }
+        response.exitcode = result.resultCode;
+        response.message  = result.message;
+        response.paymentURL = result.payUrl;
+        res.send(response)
+        return
+    }
     
 
     updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
@@ -186,6 +198,49 @@ router.get('/paypal_camon_fail', async function(req, res, next) {
     updateOrderStatus('','THANH TOÁN THẤT BẠI',req.query.token)
     res.send('that bai')
     // res.redirect(process.env.FAIL)
+});
+
+router.get('/vnpay_camon', function (req, res, next) {
+    // console.log(req.query)
+    var Client = {
+        'makh': req.query.vnp_TxnRef.split('_')[0]
+    }
+    var vnp_Params = req.query;
+    var secureHash = vnp_Params['vnp_SecureHash'];
+
+    delete vnp_Params['vnp_SecureHash'];
+    delete vnp_Params['vnp_SecureHashType'];
+
+    vnp_Params = vnpay_sortObject(vnp_Params);
+    var secretKey = 'DNBEDJWRYVOKGGLLWKDLQUBFSYDVDGPH';
+    var querystring = require('qs');
+    var signData = querystring.stringify(vnp_Params, { encode: false });
+    var crypto = require("crypto");     
+    var hmac = crypto.createHmac("sha512", secretKey);
+    var signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
+     
+    console.log("passs2")
+    if(secureHash === signed){
+        var orderId = vnp_Params['vnp_TxnRef'];
+        var rspCode = vnp_Params['vnp_ResponseCode'];
+        //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
+        
+        if (rspCode=='00'){
+            updateOrderStatus(Client,'CHỜ XÁC NHẬN')
+            // res.redirect(process.env.SUCCESS)
+            res.send('sucess')
+        }
+        else {
+            updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
+            // res.redirect(process.env.FAIL)
+            res.send('fail')
+        // res.send("ahihi")
+        }
+    }
+    else {
+        // res.redirect(process.env.FAIL)
+        res.send("1231245")
+    }
 });
 
 module.exports = router;
