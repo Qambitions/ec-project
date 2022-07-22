@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
+require("dotenv").config();
+const crypto = require("crypto");
+const secret = process.env.SECRET_KEY;
 
 async function queryUser(props){
     var date = new Date();
     var date_str = String(date.toISOString().split('T')[0]);
     const rawSQL = `  SELECT count(*) FROM khach_hang 
-                        WHERE kh_token  = '${props.token}'
+                        WHERE kh_token  = '${crypto.createHmac("sha256", secret).update(props.token).digest("base64")}'
                     `
     // return knexQuery.select().from("store_admin");
     const result = await knexQuery.raw(rawSQL)

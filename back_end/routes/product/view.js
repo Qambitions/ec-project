@@ -3,16 +3,19 @@ var router = express.Router();
 var knexQuery = require('../../db_connect');
 
 async function queryItem(props){
-    const rawSQL = ` 
-                    select masp, ten_sp, hinh_anh, luot_danh_gia, sao, gia_ban, 
+    var rawSQL = ` 
+                    select masp, malh, ten_sp, hinh_anh, luot_danh_gia, sao, gia_ban, 
                     tong_da_ban,phan_tram_giam_gia, 
                     giam_toi_da, gia_ban - GREATEST(gia_ban*COALESCE(phan_tram_giam_gia,0),COALESCE(giam_toi_da,0)) as gia_ban_giam
                     from san_pham sp 
                     left join voucher v on sp.ma_voucher = v.ma_voucher 
-                    where malh = '${props.malh}'
-                    limit '${props.limit}' offset '${props.offset}'
+                    where true = true  
                     `
-    // return knexQuery.select().from("store_admin");
+    if (typeof props.malh != 'undefined') {
+        rawSQL += ` AND malh = '${props.malh}' ` 
+        rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
+    }
+    else if (typeof props.masp != 'undefined') rawSQL += ` AND masp = '${props.masp}' `
     const result = await knexQuery.raw(rawSQL)
     return result.rows
 }
@@ -44,7 +47,7 @@ router.get('/', async (req, res, next) =>{
 
     response.message      = "Lấy thông tin sản phẩm thành công"
     response.exitcode     = 0
-    response.item         = itemsInformation
+    response.list_items   = itemsInformation
     
     res.send(response)
 });
