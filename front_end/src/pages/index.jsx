@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 import { ProductDetail } from "../components/ProductDetail";
 import Payment from "./Payment";
 import CategoryPage from "./CategoryPage";
+import Catalog from "../components/Catalog";
 
 export default function Pages() {
   return (
@@ -30,11 +31,12 @@ export default function Pages() {
         <Route path="/gio-hang" element={<Cart />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/categories" element={<CategoryPage />} />
+        <Route path="/view/:categories" element={<CategoryPage />} />
+        <Route path="/search/:str" element={<Catalog />} />
       </Route>
       <Route path="/user/dang-nhap" element={<SignInWindow />} />
       <Route path="/user/dang-ky" element={<SignUpWindow />} />
-      <Route path="/error" element={<ErrorPage />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }
