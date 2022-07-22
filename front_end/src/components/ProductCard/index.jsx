@@ -22,7 +22,7 @@ export default function ProductCard(props) {
             <span>{obj.phan_tram_giam_gia}%</span>
           </label>
         </div>
-        <h5>BRAND</h5>
+        <h5>{obj.ten_npp}</h5>
         <p>{obj.ten_sp}</p>
         <div className="product__card_info">
           <div>
