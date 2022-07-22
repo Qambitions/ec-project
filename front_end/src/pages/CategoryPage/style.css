@@ -1,0 +1,9 @@
+.categorypage{
+    display: block;
+    background-color: white;
+    margin-bottom: 3rem;
+}
+
+.categorypage .homepage_section_head_title{
+    background-color: #F9F8F8;
+}

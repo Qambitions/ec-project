@@ -4,11 +4,12 @@ var knexQuery = require('../../db_connect');
 
 async function queryItem(props){
     var rawSQL = ` 
-                    select masp, malh, ten_sp, hinh_anh, luot_danh_gia, sao, gia_ban, 
+                    select masp, malh, ten_sp, hinh_anh, luot_danh_gia, sao, gia_ban, pp.ten_npp,
                     tong_da_ban,phan_tram_giam_gia, 
                     giam_toi_da, gia_ban - GREATEST(gia_ban*COALESCE(phan_tram_giam_gia,0),COALESCE(giam_toi_da,0)) as gia_ban_giam
                     from san_pham sp 
                     left join voucher v on sp.ma_voucher = v.ma_voucher 
+                    left join nha_phan_phoi pp on pp.manpp = sp.manpp
                     where true = true  
                     `
     if (typeof props.malh != 'undefined') {
@@ -27,7 +28,7 @@ router.get('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
         "message": "",
-        'list_items':''
+        'items':''
     }
     const itemsInformation = await queryItem(req.query);
     var star = {
@@ -47,7 +48,7 @@ router.get('/', async (req, res, next) =>{
 
     response.message      = "Lấy thông tin sản phẩm thành công"
     response.exitcode     = 0
-    response.list_items   = itemsInformation
+    response.items   = itemsInformation
     
     res.send(response)
 });

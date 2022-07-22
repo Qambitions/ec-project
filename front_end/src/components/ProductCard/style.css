@@ -2,9 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 235px;
     padding-bottom: 0.5rem;
     color: black;
+    margin: 0 auto;
 }
 
 .product__card_info{
