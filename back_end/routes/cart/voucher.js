@@ -10,23 +10,30 @@ async function queryVoucher(props){
                         AND '${date_str}'<= tg_ket_thuc
                         AND phan_loai = 'donhang'
                     `
-    // return knexQuery.select().from("store_admin");
+    
     const result = await knexQuery.raw(rawSQL)
     return result.rows
 }
 
 router.get('/', async (req, res, next) =>{
     var response = {
-        "exitcode": 1,
-        "message": "",
+        "exitcode": 105,
+        "message": "Không có mã nào tồn tại",
         "list_voucher": []
     }
-    // console.log(req.headers.token)
-    const retVoucher = await queryVoucher(req.headers);
-    response.message      = "Lấy thông tin voucher thành công"
-    response.exitcode     = 0
-    response.list_voucher = retVoucher
-    res.send(response)
+    try{
+        // console.log(req.headers.token)
+        const retVoucher = await queryVoucher();
+        if (retVoucher.length > 0)
+            response.message      = "Lấy thông tin voucher thành công"
+        response.exitcode     = 0
+        response.list_voucher = retVoucher
+    }
+    catch (e){
+        response.exitcode= 1
+        response.message = e
+    }
+    return res.send(response)
 });
 
 module.exports = router;

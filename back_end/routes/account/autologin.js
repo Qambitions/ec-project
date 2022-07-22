@@ -18,7 +18,7 @@ async function queryUser(props){
 
 router.post('/', async (req, res, next) =>{
     var response = {
-        "exitcode": 1,
+        "exitcode": 104,
         "message": "Thông tin đăng nhập không đúng",
         "token": "",
         "account_type":""
@@ -29,9 +29,9 @@ router.post('/', async (req, res, next) =>{
       response.account_type = 1
       response.message      = "Đăng nhập thành công"
       response.exitcode     = 0
-      res.send(response)
+      return res.send(response)
     }
-    else res.send(response)
+    else return res.send(response)
 });
 
 module.exports = router;

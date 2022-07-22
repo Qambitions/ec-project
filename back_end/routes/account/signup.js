@@ -47,24 +47,28 @@ async function addAccount(props){
 router.post('/', async (req, res, next) =>{
   req.body.districtid = (typeof req.query.districtid === 'undefined') ? 0 : req.query.districtid;
   var response = {
-    "exitcode": 1,
+    "exitcode": 101,
     "message": "Đăng ký thất bại",
     "token": "",
   }
-
-  const checkRes = await checkAvailable(req.body);
-  if (checkRes.count > 0){
-    response.message      = "Email hoặc sđt đã tồn tại"
-    response.exitcode     = 104
-    res.send(response)
+  try{
+    const checkRes = await checkAvailable(req.body);
+    if (checkRes.count > 0){
+      response.message      = "Email hoặc sđt đã tồn tại"
+      response.exitcode     = 104
+      return res.send(response)
+    }
+    else {
+      await addAccount(req.body);
+      response.message      = "Đăng ký tài khoản thành công!!"
+      response.exitcode     = 0
+    }
   }
-  else {
-    await addAccount(req.body);
-    response.message      = "Đăng ký tài khoản thành công!!"
-
-    response.exitcode     = 0
-    res.send(response)
+  catch (e){
+    response.exitcode = 1
+    response.message = e
   }
+  return res.send(response)
 });
 
 module.exports = router;

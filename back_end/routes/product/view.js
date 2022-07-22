@@ -26,31 +26,40 @@ router.get('/', async (req, res, next) =>{
     req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
     req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
     var response = {
-        "exitcode": 1,
-        "message": "",
+        "exitcode": 101,
+        "message": "Thông tin sai / không có sản phẩm",
         'items':''
     }
-    const itemsInformation = await queryItem(req.query);
-    var star = {
-        'avg':0,
-        '1': 0,
-        '2': 0,
-        '3': 0,
-        '4': 0,
-        '5': 0,
-    }
-    
-    for (var i=0; i<itemsInformation.length; i++){
-        star.avg = itemsInformation[i].sao 
-        itemsInformation[i].sao = star
 
-    }
+    try{
+        const itemsInformation = await queryItem(req.query);
+        var star = {
+            'avg':0,
+            '1': 0,
+            '2': 0,
+            '3': 0,
+            '4': 0,
+            '5': 0,
+        }
+        
+        for (var i=0; i<itemsInformation.length; i++){
+            star.avg = itemsInformation[i].sao 
+            itemsInformation[i].sao = star // view không cần có star chi tiết
 
-    response.message      = "Lấy thông tin sản phẩm thành công"
-    response.exitcode     = 0
-    response.items   = itemsInformation
-    
-    res.send(response)
+        }
+        if (itemsInformation.length > 0) {
+            response.message      = "Lấy thông tin sản phẩm thành công"
+        }
+        response.exitcode     = 0
+        response.items        = itemsInformation
+        
+    }
+    catch (e){
+        response.exitcode =1
+        response.message = e
+    }
+        
+    return res.send(response)
 });
 
 module.exports = router;

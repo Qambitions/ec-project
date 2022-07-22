@@ -37,34 +37,40 @@ async function updateToken(props,token){
 
 router.post('/', async (req, res, next) =>{
   var response = {
-    "exitcode": 1,
+    "exitcode": 104,
     "message": "Thông tin đăng nhập không đúng",
     "token": "",
     "account_type":"",
     "account_info":"",
   }
-  
-  const retAdmin = await queryAdmin(req.body);
-  console.log(retAdmin)
-  if (retAdmin.count > 0){
-    response.account_type = 0
-    response.message      = "Chào mừng mấy đứa đua đòi làm zàu!!"
-    response.exitcode     = 0
-    res.send(response)
-  }
-  else {
-    const retUser = await queryUser(req.body);
-    if (typeof(retUser) != "undefined"){
-      response.account_type = 1
-      response.message      = "Đăng nhập thành công"
+  try{
+    const retAdmin = await queryAdmin(req.body);
+    console.log(retAdmin)
+    if (retAdmin.count > 0){
+      response.account_type = 0
+      response.message      = "Chào mừng mấy đứa đua đòi làm zàu!!"
       response.exitcode     = 0
-      response.account_info = retUser
-      response.token = require('crypto').randomBytes(47).toString('hex');
-      await updateToken(req.body, response.token);
       res.send(response)
     }
-    else res.send(response)
+    else {
+      const retUser = await queryUser(req.body);
+      if (typeof(retUser) != "undefined"){
+        response.account_type = 1
+        response.message      = "Đăng nhập thành công"
+        response.exitcode     = 0
+        response.account_info = retUser
+        response.token = require('crypto').randomBytes(47).toString('hex');
+        await updateToken(req.body, response.token);
+        return res.send(response)
+      }
+      else return res.send(response)
+    }
   }
+  catch (e){
+    response.exitcode = 1
+    response.message = e
+  }
+  return res.send(response)
 });
 
 module.exports = router;

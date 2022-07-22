@@ -84,57 +84,63 @@ router.get('/', async (req, res, next) =>{
         'item':''
     }
     
-    const itemsInformation = await queryItem(req.query);
-    if (typeof itemsInformation == 'undefined'){
-        res.send(response)
-        return
-    }
+    try{
+        const itemsInformation = await queryItem(req.query);
+        if (typeof itemsInformation == 'undefined'){
+            res.send(response)
+            return
+        }
+        
+        var star = {
+            'avg':0,
+            '1': 0,
+            '2': 0,
+            '3': 0,
+            '4': 0,
+            '5': 0,
+        }
+        const saoitems = await queryItemStar(req.query);
     
-    var star = {
-        'avg':0,
-        '1': 0,
-        '2': 0,
-        '3': 0,
-        '4': 0,
-        '5': 0,
-    }
-    const saoitems = await queryItemStar(req.query);
-   
-    star.avg = itemsInformation.sao
-    star['1'] = (typeof saoitems['1'] === 'undefined') ? 0 : saoitems['1']
-    star['2'] = (typeof saoitems['2'] === 'undefined') ? 0 : saoitems['2']
-    star['3'] = (typeof saoitems['3'] === 'undefined') ? 0 : saoitems['3']
-    star['4'] = (typeof saoitems['4'] === 'undefined') ? 0 : saoitems['4']
-    star['5'] = (typeof saoitems['5'] === 'undefined') ? 0 : saoitems['5']
+        star.avg = itemsInformation.sao
+        star['1'] = (typeof saoitems['1'] === 'undefined') ? 0 : saoitems['1']
+        star['2'] = (typeof saoitems['2'] === 'undefined') ? 0 : saoitems['2']
+        star['3'] = (typeof saoitems['3'] === 'undefined') ? 0 : saoitems['3']
+        star['4'] = (typeof saoitems['4'] === 'undefined') ? 0 : saoitems['4']
+        star['5'] = (typeof saoitems['5'] === 'undefined') ? 0 : saoitems['5']
 
-    const tonkho = await queryStock(req.query);
-    const chi_nhanh_con = await queryChiNhanhCon(req.query);
-    const comment = await queryComment(req.query)
-    var item = {
-        'masp':itemsInformation.masp,
-        'tensp':itemsInformation.ten_sp,
-        'mo_ta':itemsInformation.mo_ta,
-        'hinh_anh':itemsInformation.hinh_anh,
-        'luot_danh_gia':itemsInformation.luot_danh_gia,
-        'sao':star,
-        'gia_ban_goc':itemsInformation.gia_ban,
-        'khoi_luong':itemsInformation.khoi_luong,
-        'tong_da_ban':itemsInformation.tong_da_ban,
-        'ton_kho':tonkho,
-        // 'chi_nhanh_con':chi_nhanh_con,
-        'gia_ban_giam' : itemsInformation.gia_ban_giam,
-        'comment' : comment,
-        'ten_npp' : itemsInformation.ten_npp,
-        'branch_available': chi_nhanh_con.branch_available,
-        'branch_available': chi_nhanh_con.branch_unavailable
-    };
-    
-    
-    response.message      = "Lấy thông tin sản phẩm thành công"
-    response.exitcode     = 0
-    response.item         = item
-    console.log(item)
-    res.send(response)
+        const tonkho = await queryStock(req.query);
+        const chi_nhanh_con = await queryChiNhanhCon(req.query);
+        const comment = await queryComment(req.query)
+        var item = {
+            'masp':itemsInformation.masp,
+            'tensp':itemsInformation.ten_sp,
+            'mo_ta':itemsInformation.mo_ta,
+            'hinh_anh':itemsInformation.hinh_anh,
+            'luot_danh_gia':itemsInformation.luot_danh_gia,
+            'sao':star,
+            'gia_ban_goc':itemsInformation.gia_ban,
+            'khoi_luong':itemsInformation.khoi_luong,
+            'tong_da_ban':itemsInformation.tong_da_ban,
+            'ton_kho':tonkho,
+            // 'chi_nhanh_con':chi_nhanh_con,
+            'gia_ban_giam' : itemsInformation.gia_ban_giam,
+            'comment' : comment,
+            'ten_npp' : itemsInformation.ten_npp,
+            'branch_available': chi_nhanh_con.branch_available,
+            'branch_available': chi_nhanh_con.branch_unavailable
+        };
+        
+        
+        response.message      = "Lấy thông tin sản phẩm thành công"
+        response.exitcode     = 0
+        response.item         = item
+        console.log(item)
+    }
+    catch (e){
+        response.exitcode=1
+        response.message = e
+    }
+    return res.send(response)
 });
 
 module.exports = router;
