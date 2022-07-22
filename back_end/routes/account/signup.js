@@ -45,7 +45,7 @@ async function addAccount(props){
 }
 
 router.post('/', async (req, res, next) =>{
-  req.query.districtid = (typeof req.query.districtid === 'undefined') ? 0 : req.query.districtid;
+  req.body.districtid = (typeof req.query.districtid === 'undefined') ? 0 : req.query.districtid;
   var response = {
     "exitcode": 1,
     "message": "Đăng ký thất bại",

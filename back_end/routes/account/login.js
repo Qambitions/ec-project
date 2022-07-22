@@ -20,7 +20,6 @@ async function queryUser(props){
   const rawSQL = `  SELECT makh, tenkh, email_kh, sdt_kh FROM khach_hang 
                     WHERE (email_kh  = '${props.username}' or sdt_kh = '${props.username}')
                     AND mat_khau = '${crypto.createHmac("sha256", secret).update(props.password).digest("base64")}'
-                    group by 1,2,3,4
                   `
   // return knexQuery.select().from("store_admin");
   const result = await knexQuery.raw(rawSQL)
