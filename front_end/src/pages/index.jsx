@@ -10,7 +10,9 @@ import ErrorPage from "./Error";
 import Footer from "../components/Footer";
 import { ProductDetail } from "../components/ProductDetail";
 import Payment from "./Payment";
-
+import Admin from "./Admin/AdminLayout";
+import OrderDashboard from "./Admin/OrderDashboard";
+import UserDashboard from "./Admin/UserDashboard";
 export default function Pages(){
     return(
             <Routes>
@@ -33,6 +35,12 @@ export default function Pages(){
                 <Route path="/user/dang-nhap" element={<SignInWindow/>}/>
                 <Route path="/user/dang-ky" element={<SignUpWindow/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
+                <Route path="/admin" element={<Admin/>}/>
+                <Route path="/admin/order" element={<OrderDashboard/>}/>
+                <Route path="/admin/user" element={<UserDashboard/>}/>
+
+
+
             </Routes>
     )
 }
