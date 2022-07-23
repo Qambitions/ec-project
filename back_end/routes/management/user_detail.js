@@ -2,50 +2,44 @@ var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
 
-async function queryOrderOverview(props){
-    const rawSQL = `SELECT madh, (thoi_gian + interval '7 hours') as thoi_gian,tong_phi, trang_thai 
-                    FROM don_hang dh 
-                    
+async function queryUserDetail(props){
+    const rawSQL = `SELECT makh, email_kh, ma_cap_bac, activate,
+                    ngsinh_kh, tenkh, sdt_kh, thoi_gian_dk,
+                    tong_so_don_da_mua, tong_so_don_da_huy,
+                    tong_diem_tich_luy
+                    FROM khach_hang kh 
+                    WHERE kh.makh = '${props.makh}' 
                   `
 
   const result = await knexQuery.raw(rawSQL)
-  return result.rows  
-}
-
-async function queryTotalOrder(props){
-    const rawSQL = `SELECT count(*)
-                    FROM don_hang dh 
-                  `
-
-  const result = await knexQuery.raw(rawSQL)
-  return result.rows[0].count
+  return result.rows[0]
 }
 
 router.get('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
-        "message": "Sai thông tin/sản phẩm không tồn tại",
-        "total":"",
-        "list_order":"",
+        "message": "",
+        "user":"",
     }
-    try {
-      if (req.headers.magic_pass != 'LamZauKhumKho'){
-          response.message = "sai Pass ròi!!"
-          res.send(response)
-          return
-      }
-      const orderOverview = await queryOrderOverview(req.query);
-      const totalOrder = await queryTotalOrder(req.query);
-      response.exitcode = 0
-      response.message = "lấy thông tin thành công"
-      response.list_order = orderOverview
-      response.total  =  totalOrder
-    }
-    catch (e){
-      response.message = e
+    if (req.headers.magic_pass != 'LamZauKhumKho'){
+        response.message = "sai Pass ròi!!"
+        res.send(response)
+        return
     }
     
-    res.send(response)
+    try{
+      const user= await queryUserDetail(req.query);
+      response.exitcode = 0
+      response.message = "lấy thông tin thành công"
+      response.user = user
+    }
+    catch (e){
+      response.exitcode= 1
+      response.message = e
+    }
+
+    return res.send(response)
+    
 });
 
 module.exports = router;
