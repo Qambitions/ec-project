@@ -212,13 +212,13 @@ router.get('/momo_camon', async function(req, res, next) {
     console.log(Client)
     if (resultCode == 0){
         updateOrderStatus(Client,'CHỜ XÁC NHẬN')
-        //return res.redirect(process.env.SUCCESS)
-        return res.send('thanh cong')
+        return res.redirect(process.env.REACT_APP_PAYMENT_SUCCESS)
+        // return res.send('thanh cong')
     }
     else
         updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
-        return res.send('that bai')
-        //return res.redirect(process.env.FAIL)
+        // return res.send('that bai')
+        return res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
         
 });
 
@@ -233,13 +233,13 @@ router.get('/paypal_camon_success', async function(req, res, next) {
     paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
         if (error) {
             updateOrderStatus('','THANH TOÁN THẤT BẠI',req.query.token)
-            // res.redirect(process.env.FAIL)
-            return res.send("that bai")
+            res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
+            // return res.send("that bai")
         } else {
             console.log(JSON.stringify(payment));
             updateOrderStatus('','CHỜ XÁC NHẬN',req.query.token)
-            // res.redirect(process.env.SUCCESS)
-            return res.send("thanh cong")
+            res.redirect(process.env.REACT_APP_PAYMENT_SUCCESS)
+            // return res.send("thanh cong")
         }
     });
 });
@@ -247,8 +247,8 @@ router.get('/paypal_camon_success', async function(req, res, next) {
 router.get('/paypal_camon_fail', async function(req, res, next) {
     // console.log(req)
     updateOrderStatus('','THANH TOÁN THẤT BẠI',req.query.token)
-    return res.send('that bai')
-    // res.redirect(process.env.FAIL)
+    // return res.send('that bai')
+    res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
 });
 
 router.get('/vnpay_camon', function (req, res, next) {
@@ -278,18 +278,18 @@ router.get('/vnpay_camon', function (req, res, next) {
         
         if (rspCode=='00'){
             updateOrderStatus(Client,'CHỜ XÁC NHẬN')
-            //return res.redirect(process.env.SUCCESS)
-            return res.send('sucess')
+            return res.redirect(process.env.REACT_APP_PAYMENT_SUCCESS)
+            // return res.send('sucess')
         }
         else {
             updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
-            //return res.redirect(process.env.FAIL)
-            return res.send('fail')
+            return res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
+            // return res.send('fail')
         }
     }
     else {
-        //return res.redirect(process.env.FAIL)
-        return res.send("1231245")
+        return res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
+        // return res.send("1231245")
     }
 });
 
