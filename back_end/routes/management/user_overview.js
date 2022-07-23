@@ -5,6 +5,7 @@ var knexQuery = require('../../db_connect');
 async function queryUserOverview(props){
     const rawSQL = `SELECT makh, email_kh, ma_cap_bac, activate
                     FROM khach_hang kh 
+                    ORDER BY makh
                     limit '${props.limit}' offset '${props.offset}'
                   `
 
