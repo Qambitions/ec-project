@@ -23,6 +23,8 @@ CREATE TABLE KHACH_HANG (
 	CHECK_SD_VOUCHER BOOL,
 	THOI_GIAN_DK timestamp default current_timestamp,
 	ACTIVATE BOOL default true,
+	tong_so_don_da_mua INT DEFAULT 0,
+	tong_so_don_da_huy INT DEFAULT 0,
 
 	CONSTRAINT PK_KHACH_HANG PRIMARY KEY(MAKH),
 	CONSTRAINT FK_KH_CAP_BAC FOREIGN KEY(MA_CAP_BAC) REFERENCES CAP_BAC(MA_CAP_BAC)
@@ -186,8 +188,8 @@ CREATE TABLE CHI_TIET_DON_HANG (
 	MASP INT,
 	MA_VOUCHER INT,
 	SO_LUONG_MUA INT DEFAULT 1,
-	GIAM_GIA INT DEFAULT 0,
-	THANH_TIEN_MUA NUMERIC,
+	GIA_PHAI_TRA INT DEFAULT 0,
+	THANH_TIEN_MUA numeric GENERATED ALWAYS AS (SO_LUONG_MUA*GIA_PHAI_TRA) STORED,
 
 	CONSTRAINT FK_CTDH_DH FOREIGN KEY (MADH) REFERENCES DON_HANG(MADH),
 	CONSTRAINT FK_CTDH_SP FOREIGN KEY (MASP) REFERENCES SAN_PHAM(MASP),
@@ -531,24 +533,24 @@ VALUES
 (1000001, 205, 480000, 45000, N'COD' ,'GHN', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN');
 
 --
-INSERT INTO CHI_TIET_DON_HANG (MADH, MASP, MA_VOUCHER, SO_LUONG_MUA, THANH_TIEN_MUA) 
+INSERT INTO CHI_TIET_DON_HANG (MADH, MASP, MA_VOUCHER, SO_LUONG_MUA, GIA_PHAI_TRA) 
 VALUES 
-(500000, 200000, 100003, 2, 279000),
+(500000, 200000, 100003, 2, 100000),
 (500001, 200005, 100003, 1, 207000),
-(500001, 200012, NULL, 3, 120000),
+(500001, 200012, NULL, 3, 40000),
 (500002, 200020, NULL, 1, 175000),
 (500003, 200010, NULL, 4, 140000),
 (500003, 200047, 100003, 1, 472500),
 (500004, 200018, 100004, 1, 140000),
 (500004, 200034, NULL, 1, 395000),
-(500005, 200008, 100003, 3, 94500),
+(500005, 200008, 100003, 3, 30000),
 (500005, 200029, 100003, 1, 360000),
-(500005, 200080, NULL, 2, 110000),
-(500006, 200000, NULL, 2, 310000),
+(500005, 200080, NULL, 2, 55000),
+(500006, 200000, NULL, 2, 165000),
 (500007, 200010, NULL, 1, 35000),
 (500007, 200001, NULL, 1, 185000),
-(500007, 200002, NULL, 2, 190000),
-(500008, 200005, NULL, 2, 460000),
+(500007, 200002, NULL, 2, 95000),
+(500008, 200005, NULL, 2, 230000),
 (500009, 200020, NULL, 1, 175000),
 (500009, 200047, NULL, 1, 245000),
 (500010, 200040, NULL, 1, 180000),
@@ -742,15 +744,15 @@ VALUES
 -- 300, 1
 INSERT INTO STORE_ADMIN (EMAIL, MAT_KHAU) 
 VALUES 
-('admin1@gmail.com', 'ADMIN'),
-('admin2@gmail.com', 'ADMIN'),
-('admin3@gmail.com', 'ADMIN'),
-('admin4@gmail.com', 'ADMIN'),
-('admin5@gmail.com', 'ADMIN'),
-('admin6@gmail.com', 'ADMIN'),
-('admin7@gmail.com', 'ADMIN'),
-('admin8@gmail.com', 'ADMIN'),
-('admin9@gmail.com', 'ADMIN');
+('admin1@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM='),
+('admin2@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM='),
+('admin3@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM='),
+('admin4@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM='),
+('admin5@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM='),
+('admin6@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM='),
+('admin7@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM='),
+('admin8@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM='),
+('admin9@gmail.com', '4H7hBaFiUivUeiqRG9rjBUX+9ER5PmcoLh+/UixwYJM=');
 
 CREATE OR REPLACE FUNCTION convertTVkdau (x text) RETURNS text AS
 $$
@@ -768,7 +770,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 --=====================
-CREATE FUNCTION function_copy() RETURNS TRIGGER AS
+CREATE FUNCTION function_copy_trang_thai() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     INSERT INTO
@@ -783,7 +785,32 @@ language plpgsql;
 create TRIGGER trig_copy_don_hang
      AFTER INSERT OR UPDATE ON DON_HANG
      FOR EACH ROW
-     EXECUTE PROCEDURE function_copy();
+     EXECUTE PROCEDURE function_copy_trang_thai();
+
+CREATE FUNCTION update_diem_tich_luy() RETURNS TRIGGER AS
+$BODY$
+begin
+    UPDATE khach_hang as kh
+    set tong_diem_tich_luy = tong_diem_tich_luy + new.diem_tich_luy,
+   		tong_so_don_da_mua = tong_so_don_da_mua + 1
+    where kh.makh = new.makh
+    and new.trang_thai = 'WAIT FOR PAYMENT';
+   
+--   	UPDATE khach_hang as kh
+--    set tong_diem_tich_luy = tong_diem_tich_luy + new.diem_tich_luy
+--    where kh.makh = new.makh
+--    and new.trang_thai = 'WAIT FOR PAYMENT';
+	
+    RETURN null;
+END;
+$BODY$
+language plpgsql;
+
+create TRIGGER trig_update_diem_tich_luy_don_hang
+     AFTER INSERT OR UPDATE ON DON_HANG
+     FOR EACH ROW
+     EXECUTE PROCEDURE update_diem_tich_luy();
+   
 --==============================================
 --CREATE USER ngoc_dieu WITH PASSWORD '20010714';
 --GRANT select, insert, update, delete  ON ALL TABLES IN SCHEMA public TO dev_acc;
