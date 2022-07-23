@@ -9,7 +9,9 @@ async function queryInventoryOverview(props){
                     limit '${props.limit}' offset '${props.offset}'
                   `
 
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+  });
   return result.rows  
 }
 
@@ -19,7 +21,9 @@ async function queryTotalInventory(props){
                     where (malh = '${props.malh}' or '${props.malh}' is null)
                   `
 
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+  });
   return result.rows[0].count
 }
 

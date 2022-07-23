@@ -5,7 +5,7 @@ var knexQuery = require('../../db_connect');
 async function queryOrderOverview(props){
     const rawSQL = `SELECT madh, (thoi_gian + interval '7 hours') as thoi_gian,tong_phi, trang_thai 
                     FROM don_hang dh 
-                    limit '${props.limit}' offset '${props.offset}'
+                    
                   `
 
   const result = await knexQuery.raw(rawSQL)
@@ -24,18 +24,16 @@ async function queryTotalOrder(props){
 router.get('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
-        "message": "",
+        "message": "Sai thông tin/sản phẩm không tồn tại",
         "total":"",
         "list_order":"",
     }
-    try{
+    try {
       if (req.headers.magic_pass != 'LamZauKhumKho'){
           response.message = "sai Pass ròi!!"
           res.send(response)
           return
       }
-      req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
-      req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
       const orderOverview = await queryOrderOverview(req.query);
       const totalOrder = await queryTotalOrder(req.query);
       response.exitcode = 0
@@ -44,11 +42,10 @@ router.get('/', async (req, res, next) =>{
       response.total  =  totalOrder
     }
     catch (e){
-      response.exitcode= 1
       response.message = e
     }
-    return res.send(response)
     
+    res.send(response)
 });
 
 module.exports = router;
