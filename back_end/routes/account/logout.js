@@ -24,7 +24,7 @@ router.post('/', async (req, res, next) =>{
     }
 
     await updateToken(req.headers,);
-    res.send(response)
+    return res.send(response)
 });
 
 module.exports = router;

@@ -19,16 +19,22 @@ async function queryAddress(props){
 
 router.get('/', async (req, res, next) =>{
     var response = {
-        "exitcode": 1,
-        "message": "Lấy thông tin thất bại",
+        "exitcode": 101,
+        "message": "Lấy thông tin thất bại / Không có thông tin address",
         "list_address": []
     }
-    // console.log(req.headers.token)
-    const retAddress = await queryAddress(req.headers);
-    response.message      = "Lấy thông tin voucher thành công"
-    response.exitcode     = 0
-    response.list_voucher = retAddress
-    res.send(response)
+    try{
+        // console.log(req.headers.token)
+        const retAddress = await queryAddress(req.headers);
+        response.message      = "Lấy thông tin address thành công"
+        response.exitcode     = 0
+        response.list_voucher = retAddress
+    }
+    catch (e){
+        response.exitcode= 1
+        response.message = e
+    }
+    return res.send(response)
 });
 
 module.exports = router;

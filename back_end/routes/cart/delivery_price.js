@@ -108,37 +108,43 @@ async function getMinPriceGHTK(listBranch, dia_chi, sum_weight, mode){
 
 router.post('/', async (req, res, next) =>{
     var response = {
-        "exitcode": 1,
+        "exitcode": 101,
         "message": "thất bại",
         "price":"1000000",
         "macn":""
     }
 
     const Client = await checkClient(req.headers);
-    if (typeof(Client) == "undefined"){
+    if (typeof(Client) == "undefined" || typeof(req.body.dia_chi) == "undefined" || typeof(req.body.sum_weight) == "undefined"){
         response.exitcode = 106
-        response.message = "Token không tồn tại"
+        response.message = "Token không tồn tại / thiếu trường dữ liệu"
         res.send(response)
         return
     }
-    const listBranch = await queryBranch();
-    var minPrice = 1000000
-    if (req.body.method == 'GHN')
-        minPrice = await getMinPriceGHN(listBranch, req.body.dia_chi, req.body.sum_weight);    
-    else if (req.body.method == 'GHTK_norm')
-        minPrice = await getMinPriceGHTK(listBranch, req.body.dia_chi, req.body.sum_weight,'none');   
-    else if (req.body.method == 'GHTK_fast')
-        minPrice = await getMinPriceGHTK(listBranch, req.body.dia_chi, req.body.sum_weight,'xteam');
+    try {
+        const listBranch = await queryBranch();
+        var minPrice = 1000000
+        if (req.body.method == 'GHN')
+            minPrice = await getMinPriceGHN(listBranch, req.body.dia_chi, req.body.sum_weight);    
+        else if (req.body.method == 'GHTK_norm')
+            minPrice = await getMinPriceGHTK(listBranch, req.body.dia_chi, req.body.sum_weight,'none');   
+        else if (req.body.method == 'GHTK_fast')
+            minPrice = await getMinPriceGHTK(listBranch, req.body.dia_chi, req.body.sum_weight,'xteam');
 
 
-    console.log(minPrice);
-    if (minPrice != 1000000){
-        response.exitcode = 0
-        response.message = "Lấy thông tin thành công"
-        response.price = minPrice.total_price
-        response.macn  = minPrice.macn
+        console.log(minPrice);
+        if (minPrice != 1000000){
+            response.exitcode = 0
+            response.message = "Lấy thông tin thành công"
+            response.price = minPrice.total_price
+            response.macn  = minPrice.macn
+        }
     }
-    res.send(response)
+    catch (e){
+        response.exitcode= 1
+        response.message = e
+    }
+    return res.send(response)
 });
 
 module.exports = router;

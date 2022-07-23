@@ -30,30 +30,37 @@ async function queryItem(props){
 router.get('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
-        "message": "",
+        "message": "Thông tin sai / không có sản phẩm",
         'list_items':''
     }
-    const itemsInformation = await queryItem(req.query);
-    var star = {
-        'avg':0,
-        '1': 0,
-        '2': 0,
-        '3': 0,
-        '4': 0,
-        '5': 0,
-    }
-    
-    for (var i=0; i<itemsInformation.length; i++){
-        star.avg = itemsInformation[i].sao 
-        itemsInformation[i].sao = star
+    try{
+        const itemsInformation = await queryItem(req.query);
+        var star = {
+            'avg':0,
+            '1': 0,
+            '2': 0,
+            '3': 0,
+            '4': 0,
+            '5': 0,
+        }
+        
+        for (var i=0; i<itemsInformation.length; i++){
+            star.avg = itemsInformation[i].sao 
+            itemsInformation[i].sao = star
 
+        }
+        if (itemsInformation.length > 0) {
+            response.message      = "search thành công"
+        }
+        response.exitcode     = 0
+        response.item         = itemsInformation
     }
-
-    response.message      = "search thành công"
-    response.exitcode     = 0
-    response.item         = itemsInformation
-    
-    res.send(response)
+    catch (e){
+        response.exitcode =1
+        response.message = e
+    }
+        
+    return res.send(response)
 });
 
 

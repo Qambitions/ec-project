@@ -53,6 +53,28 @@ async function addOrder(props, Client){
     console.log(makh)
 }
 
+async function addItems(props, Client){
+    await knexQuery('don_hang')
+    .insert({
+        makh: Client.makh,
+        macn: props.macn,
+        ma_voucher: props.ma_voucher,
+        phi_san_pham:props.tong_phi,
+        phi_van_chuyen: props.phi_van_chuyen,
+        phi_giam: props.phi_giam,
+        hinh_thuc_thanh_toan: props.hinh_thuc_thanh_toan,
+        hinh_thuc_giao_hang: props.hinh_thuc_giao_hang,
+        so_nha_duong: props.dia_chi.so_nha_duong,
+        phuong_xa: props.dia_chi.phuong_xa,
+        quan_tp: props.dia_chi.quan_tp,
+        tp_tinh: props.dia_chi.tp_tinh
+    })
+    const makh = await knexQuery.select('makh').from('don_hang')
+    .where('makh','=',Client.makh)
+    .andWhere('trang_thai','=','WAIT FOR PAYMENT')
+    console.log(makh)
+}
+
 async function updateOrderStatus(Client, status, token=false){
     if (token == false){
         // console.log("testtt",token)
@@ -84,74 +106,73 @@ async function updatePaymentToken(Client, token){
 
 router.post('/', async (req, res, next) =>{
     var response = {
-        "exitcode": 1,
+        "exitcode": 101,
         "message": "Tạo đơn hàng THẤT BẠI",
         "paymentURL":"",
     }
-
-    const Client = await checkClient(req.headers);
-    if (typeof(Client) == "undefined"){
-        response.exitcode = 106
-        response.message = "Token không tồn tại"
-        res.send(response)
-        return
-    }
-    const waitOrder = await checkOrder(Client); 
-    if (typeof(waitOrder) != "undefined"){
-        response.exitcode = 107
-        response.message = "Tồn tại đơn hàng đang chờ thanh toán"
-        res.send(response)
-        return
-    }
-    // console.log(req.body)
-    addOrder(req.body, Client)
-
-    if (req.body.hinh_thuc_thanh_toan == 'COD'){
-        updateOrderStatus(Client,'CHỜ XÁC NHẬN')
-        res.send(response)
-        return
-    }
-    else if (req.body.hinh_thuc_thanh_toan == 'MOMO'){
-        const result = JSON.parse(await momoCall(req.body, Client));
-        // console.log(result)
-        if (result.resultCode != 0){
-            updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
+    try{
+        const Client = await checkClient(req.headers);
+        if (typeof(Client) == "undefined"){
+            response.exitcode = 106
+            response.message = "Token không tồn tại"
+            return res.send(response)
         }
-        response.exitcode = result.resultCode;
-        response.message  = result.message;
-        response.paymentURL = result.payUrl;
-        res.send(response)
-        return
-    }
-    else if (req.body.hinh_thuc_thanh_toan == 'PAYPAL'){
-        const result = await paypalCall(req.body, Client);
-        console.log(result)
-        if (result.resultCode != 0){
-            updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
+        const waitOrder = await checkOrder(Client); 
+        if (typeof(waitOrder) != "undefined"){
+            response.exitcode = 107
+            response.message = "Tồn tại đơn hàng đang chờ thanh toán"
+            return res.send(response)
         }
-        else updatePaymentToken(Client,result.token.token)
-        response.exitcode   = result.resultCode;
-        response.message    = result.message;
-        response.paymentURL = result.payUrl;
-        res.send(response)
-        return
-    }
-    else if (req.body.hinh_thuc_thanh_toan == 'VNPAY'){
-        const result = await vnpayCall(req.body, Client);
-        // console.log(result)
-        if (result.resultCode != 0){
-            updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
-        }
-        response.exitcode = result.resultCode;
-        response.message  = result.message;
-        response.paymentURL = result.payUrl;
-        res.send(response)
-        return
-    }
-    
+        // console.log(req.body)
+        addOrder(req.body, Client);
+        // addItems(req.body, Client);
 
+        if (req.body.hinh_thuc_thanh_toan == 'COD'){
+            updateOrderStatus(Client,'CHỜ XÁC NHẬN')
+            return res.send(response)
+        }
+        else if (req.body.hinh_thuc_thanh_toan == 'MOMO'){
+            const result = JSON.parse(await momoCall(req.body, Client));
+            // console.log(result)
+            if (result.resultCode != 0){
+                updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
+            }
+            response.exitcode = result.resultCode;
+            response.message  = result.message;
+            response.paymentURL = result.payUrl;
+            return res.send(response)
+        }
+        else if (req.body.hinh_thuc_thanh_toan == 'PAYPAL'){
+            const result = await paypalCall(req.body, Client);
+            console.log(result)
+            if (result.resultCode != 0){
+                updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
+            }
+            else updatePaymentToken(Client,result.token.token)
+            response.exitcode   = result.resultCode;
+            response.message    = result.message;
+            response.paymentURL = result.payUrl;
+            return res.send(response)
+        }
+        else if (req.body.hinh_thuc_thanh_toan == 'VNPAY'){
+            const result = await vnpayCall(req.body, Client);
+            // console.log(result)
+            if (result.resultCode != 0){
+                updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
+            }
+            response.exitcode = result.resultCode;
+            response.message  = result.message;
+            response.paymentURL = result.payUrl;
+            return res.send(response)
+        }
+    }
+    catch (e){
+        response.exitcode=1
+        response.message = e
+    }
+        
     updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
-    res.send(response)
+    return res.send(response)
 });
 
 router.get('/momo_camon', async function(req, res, next) {
@@ -163,15 +184,14 @@ router.get('/momo_camon', async function(req, res, next) {
     console.log(Client)
     if (resultCode == 0){
         updateOrderStatus(Client,'CHỜ XÁC NHẬN')
-        // res.redirect(process.env.SUCCESS)
-        res.send('thanh cong')
-        return
+        //return res.redirect(process.env.SUCCESS)
+        return res.send('thanh cong')
     }
     else
         updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
-        res.send('that bai')
-        // res.redirect(process.env.FAIL)
-        return
+        return res.send('that bai')
+        //return res.redirect(process.env.FAIL)
+        
 });
 
 router.get('/paypal_camon_success', async function(req, res, next) {
@@ -186,12 +206,12 @@ router.get('/paypal_camon_success', async function(req, res, next) {
         if (error) {
             updateOrderStatus('','THANH TOÁN THẤT BẠI',req.query.token)
             // res.redirect(process.env.FAIL)
-            res.send("that bai")
+            return res.send("that bai")
         } else {
             console.log(JSON.stringify(payment));
             updateOrderStatus('','CHỜ XÁC NHẬN',req.query.token)
             // res.redirect(process.env.SUCCESS)
-            res.send("thanh cong")
+            return res.send("thanh cong")
         }
     });
 });
@@ -199,7 +219,7 @@ router.get('/paypal_camon_success', async function(req, res, next) {
 router.get('/paypal_camon_fail', async function(req, res, next) {
     // console.log(req)
     updateOrderStatus('','THANH TOÁN THẤT BẠI',req.query.token)
-    res.send('that bai')
+    return res.send('that bai')
     // res.redirect(process.env.FAIL)
 });
 
@@ -230,19 +250,18 @@ router.get('/vnpay_camon', function (req, res, next) {
         
         if (rspCode=='00'){
             updateOrderStatus(Client,'CHỜ XÁC NHẬN')
-            // res.redirect(process.env.SUCCESS)
-            res.send('sucess')
+            //return res.redirect(process.env.SUCCESS)
+            return res.send('sucess')
         }
         else {
             updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
-            // res.redirect(process.env.FAIL)
-            res.send('fail')
-        // res.send("ahihi")
+            //return res.redirect(process.env.FAIL)
+            return res.send('fail')
         }
     }
     else {
-        // res.redirect(process.env.FAIL)
-        res.send("1231245")
+        //return res.redirect(process.env.FAIL)
+        return res.send("1231245")
     }
 });
 
