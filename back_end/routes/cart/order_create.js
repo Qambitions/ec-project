@@ -4,6 +4,7 @@ var knexQuery = require('../../db_connect');
 var {momoCall}  = require('./momo');
 var {paypalCall}  = require('./paypal');
 var {vnpayCall,vnpay_sortObject}  = require('./vnpay');
+var {isArray} = require('../../utils/tools');
 const paypal = require('paypal-rest-sdk');
 require("dotenv").config();
 const crypto = require("crypto");
@@ -47,32 +48,30 @@ async function addOrder(props, Client){
         quan_tp: props.dia_chi.quan_tp,
         tp_tinh: props.dia_chi.tp_tinh
     })
-    const makh = await knexQuery.select('makh').from('don_hang')
+    const res = await knexQuery.select('madh').from('don_hang')
     .where('makh','=',Client.makh)
     .andWhere('trang_thai','=','WAIT FOR PAYMENT')
-    console.log(makh)
+    console.log(res)
+    return res[0]
+
 }
 
-async function addItems(props, Client){
-    await knexQuery('don_hang')
-    .insert({
-        makh: Client.makh,
-        macn: props.macn,
-        ma_voucher: props.ma_voucher,
-        phi_san_pham:props.tong_phi,
-        phi_van_chuyen: props.phi_van_chuyen,
-        phi_giam: props.phi_giam,
-        hinh_thuc_thanh_toan: props.hinh_thuc_thanh_toan,
-        hinh_thuc_giao_hang: props.hinh_thuc_giao_hang,
-        so_nha_duong: props.dia_chi.so_nha_duong,
-        phuong_xa: props.dia_chi.phuong_xa,
-        quan_tp: props.dia_chi.quan_tp,
-        tp_tinh: props.dia_chi.tp_tinh
-    })
-    const makh = await knexQuery.select('makh').from('don_hang')
-    .where('makh','=',Client.makh)
-    .andWhere('trang_thai','=','WAIT FOR PAYMENT')
-    console.log(makh)
+async function addItems(items, order){
+
+    const data = items.map(x => {
+        return {
+            madh: order.madh,
+            masp: x.masp,
+            ma_voucher: x.ma_voucher,
+            so_luong_mua: x.so_luong_mua,
+            gia_phai_tra: x.gia_phai_tra
+        };
+    });
+    
+    await knexQuery('chi_tiet_don_hang')
+    .insert(data).catch(error => {
+        console.log(error)
+    });
 }
 
 async function updateOrderStatus(Client, status, token=false){
@@ -110,8 +109,9 @@ router.post('/', async (req, res, next) =>{
         "message": "Tạo đơn hàng THẤT BẠI",
         "paymentURL":"",
     }
-    try{
-        const Client = await checkClient(req.headers);
+
+    const Client = await checkClient(req.headers);
+    try {
         if (typeof(Client) == "undefined"){
             response.exitcode = 106
             response.message = "Token không tồn tại"
@@ -123,9 +123,22 @@ router.post('/', async (req, res, next) =>{
             response.message = "Tồn tại đơn hàng đang chờ thanh toán"
             return res.send(response)
         }
+
+        if (isArray(req.body.items) != true){
+            response.exitcode = 101
+            response.message = "Thiếu/sai trường dữ liệu items"
+            return res.send(response)
+        }
+
+        if (req.body.items.length > 10){
+            response.exitcode = 108
+            response.message = "Số lượng items quá nhiều!!"
+            return res.send(response)
+        }
+
         // console.log(req.body)
-        addOrder(req.body, Client);
-        // addItems(req.body, Client);
+        var order = await addOrder(req.body, Client);
+        var items_add = addItems(req.body.items, order);
 
         if (req.body.hinh_thuc_thanh_toan == 'COD'){
             updateOrderStatus(Client,'CHỜ XÁC NHẬN')
@@ -165,13 +178,16 @@ router.post('/', async (req, res, next) =>{
             response.paymentURL = result.payUrl;
             return res.send(response)
         }
+        
     }
-    catch (e){
+    catch (e) {
+        console.log(e)
         response.exitcode=1
         response.message = e
+        updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
     }
         
-    updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
+    
     return res.send(response)
 });
 
