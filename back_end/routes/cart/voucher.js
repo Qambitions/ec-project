@@ -11,7 +11,9 @@ async function queryVoucher(props){
                         AND phan_loai = 'donhang'
                     `
     
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows
 }
 

@@ -17,7 +17,9 @@ async function queryItem(props){
         rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
     }
     else if (typeof props.masp != 'undefined') rawSQL += ` AND masp = '${props.masp}' `
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows
 }
 

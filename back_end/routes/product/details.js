@@ -13,7 +13,9 @@ async function queryItem(props){
                     where masp = '${props.masp}'
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows[0]
 }
 
@@ -26,7 +28,9 @@ async function queryItemStar(props){
                     order by sao
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows
 }
 
@@ -37,7 +41,9 @@ async function queryComment(props){
                     left join khach_hang kh on kh.makh = dg.makh 
                     where masp = '${props.masp}'
                     `
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows
 }
 
@@ -49,7 +55,9 @@ async function queryStock(props){
                     group by masp
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     if (result.rowCount == 0){
         return 0
     }

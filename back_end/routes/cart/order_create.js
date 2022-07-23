@@ -17,7 +17,9 @@ async function checkClient(props){
                     where kh_token = '${crypto.createHmac("sha256", secret).update(props.token).digest("base64")}' 
                     and kh.kh_token is not null
                     `
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows[0]
 }
 
@@ -28,7 +30,9 @@ async function checkOrder(Client){
                     where makh = '${Client.makh}' 
                     and dh.TRANG_THAI = 'WAIT FOR PAYMENT'
                     `
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows[0]
 }
 
@@ -50,7 +54,9 @@ async function addOrder(props, Client){
     })
     const res = await knexQuery.select('madh').from('don_hang')
     .where('makh','=',Client.makh)
-    .andWhere('trang_thai','=','WAIT FOR PAYMENT')
+    .andWhere('trang_thai','=','WAIT FOR PAYMENT').catch(error => {
+        console.log(error)
+    });
     console.log(res)
     return res[0]
 
@@ -82,14 +88,18 @@ async function updateOrderStatus(Client, status, token=false){
         .andWhere('trang_thai','=','WAIT FOR PAYMENT')
         .update({
             trang_thai: status
-        })
+        }).catch(error => {
+            console.log(error)
+        });
     }
     else {
         await knexQuery('don_hang')
         .where('payment_token','=',token)
         .update({
             trang_thai: status
-        })
+        }).catch(error => {
+            console.log(error)
+        });
     }
 }
 
@@ -100,7 +110,9 @@ async function updatePaymentToken(Client, token){
     .andWhere('trang_thai','=','WAIT FOR PAYMENT')
     .update({
         payment_token: token
-    })
+    }).catch(error => {
+        console.log(error)
+    });
 }
 
 router.post('/', async (req, res, next) =>{

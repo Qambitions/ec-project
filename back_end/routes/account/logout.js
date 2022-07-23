@@ -12,7 +12,9 @@ async function updateToken(props,token){
     .whereRaw(`kh_token  = '${crypto.createHmac("sha256", secret).update(props.token).digest("base64")}'`)
     .update({
       kh_token: null
-    })
+    }).catch(error => {
+      console.log(error)
+    });
   }
 
 router.post('/', async (req, res, next) =>{

@@ -12,7 +12,9 @@ async function queryAdmin(props){
                     AND mat_khau = '${crypto.createHmac("sha256", secret).update(props.password).digest("base64")}'
                   `
   // return knexQuery.select().from("store_admin");
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+  });
   return result.rows[0]
 }
 
@@ -22,17 +24,21 @@ async function queryUser(props){
                     AND mat_khau = '${crypto.createHmac("sha256", secret).update(props.password).digest("base64")}'
                   `
   // return knexQuery.select().from("store_admin");
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+  });
   return result.rows[0]
 }
 
 async function updateToken(props,token){
   var password = crypto.createHmac("sha256", secret).update(props.password).digest("base64")
   await knexQuery('khach_hang')
-  .whereRaw(`(email_kh  = '${props.username}' or sdt_kh = '${props.username}') and mat_khau = '${password}'`)
+  .whereRaw(`(email_kh  = '${props.username}' or sdt_kh = '${props.username}') and mat_khau = '${crypto.createHmac("sha256", secret).update(props.password).digest("base64")}'`)
   .update({
     kh_token: crypto.createHmac("sha256", secret).update(token).digest("base64"),
-  })
+  }).catch(error => {
+    console.log(error)
+  });
 }
 
 router.post('/', async (req, res, next) =>{

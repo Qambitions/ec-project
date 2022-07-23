@@ -23,7 +23,9 @@ async function queryItem(props){
                     where to_tsvector(convertTVkdau(ten_sp) || ' ' || convertTVkdau(mo_ta) || ' ' || convertTVkdau(lh.ten_lh)) @@ to_tsquery('${string_search}'))
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows
 }
 
@@ -43,7 +45,7 @@ router.get('/', async (req, res, next) =>{
             '4': 0,
             '5': 0,
         }
-        
+        // console.log(itemsInformation)
         for (var i=0; i<itemsInformation.length; i++){
             star.avg = itemsInformation[i].sao 
             itemsInformation[i].sao = star

@@ -12,7 +12,9 @@ async function queryUser(props){
                         WHERE kh_token  = '${crypto.createHmac("sha256", secret).update(props.token).digest("base64")}'
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows[0]
 }
 
