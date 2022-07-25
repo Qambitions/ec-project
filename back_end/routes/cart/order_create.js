@@ -154,6 +154,8 @@ router.post('/', async (req, res, next) =>{
 
         if (req.body.hinh_thuc_thanh_toan == 'COD'){
             updateOrderStatus(Client,'CHỜ XÁC NHẬN')
+            response.exitcode = 0
+            response.message = "TẠO ĐƠN HÀNG THÀNH CÔNG"
             return res.send(response)
         }
         else if (req.body.hinh_thuc_thanh_toan == 'MOMO'){
