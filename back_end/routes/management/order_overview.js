@@ -13,12 +13,12 @@ async function queryOrderOverview(props){
 }
 
 async function queryTotalOrder(props){
-    const rawSQL = `SELECT count(*)
-                    FROM don_hang dh 
-                  `
+  const rawSQL = `SELECT count(*)
+                  FROM don_hang dh 
+                `
 
-  const result = await knexQuery.raw(rawSQL)
-  return result.rows[0].count
+const result = await knexQuery.raw(rawSQL)
+return result.rows[0].count
 }
 
 router.get('/', async (req, res, next) =>{
