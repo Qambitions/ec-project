@@ -3,11 +3,16 @@ var router = express.Router();
 var knexQuery = require('../../db_connect');
 
 async function queryInventoryOverview(props){
-    const rawSQL = `SELECT masp, ten_sp, 
-                    FROM san_pham
-                    where (malh = '${props.malh}' or '${props.malh}' is null)
-                    limit '${props.limit}' offset '${props.offset}'
+  var rawSQL = `SELECT sp.masp, ten_sp, kho.so_luong_ton
+                    FROM san_pham sp
+                    left join kho on sp.masp = kho.masp
+                    where kho.macn = '${props.macn}'
                   `
+  if (typeof props.malh != 'undefined'){
+    rawSQL += ` and malh = '${props.malh}' ` 
+  }
+  rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
+                  
 
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
@@ -16,10 +21,12 @@ async function queryInventoryOverview(props){
 }
 
 async function queryTotalInventory(props){
-    const rawSQL = `SELECT count(*)
+    var rawSQL = `SELECT count(*)
                     FROM san_pham dh 
-                    where (malh = '${props.malh}' or '${props.malh}' is null)
                   `
+    if (typeof props.malh != 'undefined'){
+      rawSQL += ` and malh = '${props.malh}' ` 
+    }
 
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
@@ -41,7 +48,7 @@ router.get('/', async (req, res, next) =>{
     }
     req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
     req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
-    req.query.malh = (typeof req.query.malh === 'undefined') ? 'null' : req.query.malh;
+    // req.query.malh = (typeof req.query.malh === 'undefined') ? 'null' : req.query.malh;
 
     const InventoryOverview = await queryInventoryOverview(req.query);
     const totalInventory = await queryTotalInventory(req.query);
