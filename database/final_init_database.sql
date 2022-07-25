@@ -250,6 +250,28 @@ CREATE TABLE STORE_ADMIN (
 ALTER TABLE VOUCHER
 ADD CONSTRAINT TG_SU_DUNG_VOUCHER CHECK(TG_KET_THUC > TG_BAT_DAU);
 
+--=================================================
+CREATE FUNCTION insert_new_item_to_inventory() RETURNS TRIGGER AS
+$BODY$
+begin
+    
+	 INSERT into kho (MASP,MACN)
+        select new.masp, macn
+        from chi_nhanh cn;
+           RETURN new;
+END;
+$BODY$
+language plpgsql;
+
+create TRIGGER tao_san_pham_moi
+     AFTER INSERT ON SAN_PHAM
+     FOR EACH ROW
+     EXECUTE PROCEDURE insert_new_item_to_inventory();
+   
+--=======================================================
+
+
+
 -- 1, 1
 INSERT INTO CAP_BAC (LOAI_CAP_BAC, PHAN_TRAM_GIAM_GIA) 
 VALUES 
@@ -730,7 +752,11 @@ VALUES
 (200025, 205, 87, 50),
 (200040, 205, 171, 82),
 (200047, 205, 251, 55),
-(200050, 205, 90, 200);
+(200050, 205, 90, 200)
+on conflict on CONSTRAINT PK_BAN 
+do update 
+set SO_LUONG_TON = EXCLUDED.SO_LUONG_TON,
+	SO_LUONG_DA_BAN = EXCLUDED.SO_LUONG_DA_BAN;
 
 --
 INSERT INTO DANH_GIA (MAKH, MASP, NOI_DUNG, NGAY_DANG, SAO) 
@@ -790,17 +816,56 @@ create TRIGGER trig_copy_don_hang
 CREATE FUNCTION update_diem_tich_luy() RETURNS TRIGGER AS
 $BODY$
 begin
-    UPDATE khach_hang as kh
-    set tong_diem_tich_luy = tong_diem_tich_luy + new.diem_tich_luy,
-   		tong_so_don_da_mua = tong_so_don_da_mua + 1
-    where kh.makh = new.makh
-    and new.trang_thai = 'WAIT FOR PAYMENT';
-   
---   	UPDATE khach_hang as kh
---    set tong_diem_tich_luy = tong_diem_tich_luy + new.diem_tich_luy
---    where kh.makh = new.makh
---    and new.trang_thai = 'WAIT FOR PAYMENT';
-	
+	case
+		when new.trang_thai = 'ĐÃ GIAO THÀNH CÔNG' then
+				with chi_tiet as(
+			   		select * 
+			   		from chi_tiet_don_hang ctdh 
+			   		where new.madh = ctdh.madh 
+			   ), 
+			   step2 as(
+				    UPDATE khach_hang as kh
+				    set tong_diem_tich_luy = tong_diem_tich_luy + new.diem_tich_luy,
+				   		tong_so_don_da_mua = tong_so_don_da_mua + 1
+				    where kh.makh = new.makh
+				   	returning *
+				)
+			 	-- step 3
+			   UPDATE san_pham as sp
+			    set tong_da_ban = tong_da_ban + (select so_luong_mua from chi_tiet ct where sp.masp = ct.masp)
+			    where sp.masp in (select masp from chi_tiet);
+		when new.trang_thai = 'THANH TOÁN THẤT BẠI' then 
+				UPDATE khach_hang as kh
+			    set tong_so_don_da_huy = tong_so_don_da_huy + 1
+			    where kh.makh = new.makh;
+		when new.trang_thai = 'ĐÃ XÁC NHẬN' then 
+				with chi_tiet as(
+			   		select * 
+			   		from chi_tiet_don_hang ctdh 
+			   		where new.madh = ctdh.madh 
+			   )
+				UPDATE kho 
+			    set so_luong_ton = so_luong_ton - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
+			    	so_luong_da_ban = so_luong_da_ban + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+			    where kho.macn = new.macn
+			    and kho.masp in (select masp from chi_tiet);
+		
+		when (new.trang_thai = 'HỦY ĐƠN HÀNG' 
+		and (old.trang_thai = 'ĐÃ XÁC NHẬN' or old.trang_thai = 'ĐANG GIAO')) then 
+				with chi_tiet as(
+				   		select * 
+				   		from chi_tiet_don_hang ctdh 
+				   		where new.madh = ctdh.madh 
+				 )
+				UPDATE kho 
+			    set so_luong_ton = so_luong_ton + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
+			    	so_luong_da_ban = so_luong_da_ban - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+			    where kho.macn = new.macn
+			    and kho.masp in (select masp from chi_tiet);
+		
+		else null;
+	end case;
+
     RETURN null;
 END;
 $BODY$
@@ -810,7 +875,7 @@ create TRIGGER trig_update_diem_tich_luy_don_hang
      AFTER INSERT OR UPDATE ON DON_HANG
      FOR EACH ROW
      EXECUTE PROCEDURE update_diem_tich_luy();
-   
+        
 --==============================================
 --CREATE USER ngoc_dieu WITH PASSWORD '20010714';
 --GRANT select, insert, update, delete  ON ALL TABLES IN SCHEMA public TO dev_acc;
