@@ -47,10 +47,7 @@ async function addOrder(props, Client){
         phi_giam: props.phi_giam,
         hinh_thuc_thanh_toan: props.hinh_thuc_thanh_toan,
         hinh_thuc_giao_hang: props.hinh_thuc_giao_hang,
-        so_nha_duong: props.dia_chi.so_nha_duong,
-        phuong_xa: props.dia_chi.phuong_xa,
-        quan_tp: props.dia_chi.quan_tp,
-        tp_tinh: props.dia_chi.tp_tinh
+        id_dia_chi_giao: props.id_dia_chi_giao
     })
     const res = await knexQuery.select('madh').from('don_hang')
     .where('makh','=',Client.makh)
