@@ -9,14 +9,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 var order_overview = require('./management/order_overview.js');
+var order_detail = require('./management/order_detail.js');
 var user_overview = require('./management/user_overview.js');
 var user_detail = require('./management/user_detail.js');
 var inventory_overview_product = require('./management/inventory_overview_product.js');
+
 
 app.use('/order_overview', order_overview);
 app.use('/user_overview', user_overview);
 app.use('/inventory_overview_product', inventory_overview_product);
 app.use('/user_detail', user_detail);
+app.use('/order_detail', order_detail);
 
 app.use(function(req, res, next) {
     next(createError(404));
