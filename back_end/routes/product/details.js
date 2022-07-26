@@ -82,7 +82,7 @@ async function queryChiNhanhCon(props){
     const branch_unavailable = await knexQuery.raw(rawSQL)
 
     return {branch_available: branch_available.rows, 
-            branch_unavailable: branch_available.rows}
+            branch_unavailable: branch_unavailable.rows}
 }
 
 router.get('/', async (req, res, next) =>{
