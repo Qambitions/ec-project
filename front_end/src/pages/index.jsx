@@ -10,9 +10,14 @@ import ErrorPage from "./Error";
 import Footer from "../components/Footer";
 import { ProductDetail } from "../components/ProductDetail";
 import Payment from "./Payment";
-import Admin from "./Admin/AdminLayout";
+import Admin from "./Admin/AdminDashboard";
 import OrderDashboard from "./Admin/OrderDashboard";
 import UserDashboard from "./Admin/UserDashboard";
+import StockDashboard from "./Admin/StockDashboard";
+import UserDetail from "./Admin/UserDetail";
+import OrderDetail from "./Admin/OrderDetail";
+import CategoryDashboard from "./Admin/CategoryDashboard";
+import CategoryDetail from "./Admin/CategoryDetail";
 export default function Pages(){
     return(
             <Routes>
@@ -38,9 +43,11 @@ export default function Pages(){
                 <Route path="/admin" element={<Admin/>}/>
                 <Route path="/admin/order" element={<OrderDashboard/>}/>
                 <Route path="/admin/user" element={<UserDashboard/>}/>
-
-
-
+                <Route path="/admin/stock" element={<StockDashboard/>}/>
+                <Route path="/admin/user/detail" element={<UserDetail/>}/>
+                <Route path="/admin/order/detail" element={<OrderDetail/>}/>
+                <Route path="/admin/stock/category" element={<CategoryDashboard/>}/>
+                <Route path="/admin/category/detail" element={<CategoryDetail/>}/>
             </Routes>
     )
 }
