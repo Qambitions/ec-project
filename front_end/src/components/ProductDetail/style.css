@@ -125,7 +125,7 @@
 .rating__container_red{
     background-color: #E04A4A;
     height: 0.6rem;
-    width: 80%;
+    width: 100%;
 }
 
 .rating__overview_right_col:nth-child(3){

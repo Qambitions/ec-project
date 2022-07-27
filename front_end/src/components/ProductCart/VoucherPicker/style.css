@@ -1,0 +1,15 @@
+.checkout__picker:hover{
+    cursor: pointer;
+}
+
+.checkout__picker{
+    padding: 0.5rem 1rem;
+}
+
+.checkout__picker label:nth-child(1){
+    font-weight: 700;
+}
+
+.checkout__picker label:nth-child(2){
+    color: #08A2AC;
+}
