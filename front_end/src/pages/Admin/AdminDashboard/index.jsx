@@ -5,7 +5,6 @@
 // import AdminNavbar from "../../../components/NavBar/Navbar";
 // import Widget from "../../../components/widget/Widget";
 // import { Avatar, Card, Skeleton, Switch } from 'antd';
-// import "./style.css";
 
 
 // const { Header, Content, Footer, Sider } = Layout;
@@ -63,7 +62,7 @@
 
 
 import React from "react";
-
+import "./style.css";
 // react-bootstrap components
 import {
   Badge,
@@ -86,7 +85,7 @@ import {FiUsers} from "react-icons/fi";
 import {BsBoxSeam, BsNewspaper} from "react-icons/bs";
 import { Route, Routes } from "react-router-dom";
 import UserDashboard from "../UserDashboard";
-
+import AdminNavbar from "../../../components/NavBar/Navbar";
 import Sidebar from "../../../components/sidebar/Sidebar";
 
 
@@ -117,45 +116,148 @@ const dashboards = [
     }
   ];
 
+  const data = [
+    {
+      id: '20/07/2022',
+      price: 100000,
+      quantity: 2,
+    },
+    {
+      id: '21/07/2022',
+      price: 1000000,
+      quantity: 1,
+    },
+    {
+      id: '22/07/2022',
+      price: 1000000,
+      quantity: 1,
+    },
+    {
+      id: '23/07/2022',
+      price: 1000000,
+      quantity: 17,
+    },
+
+];
+const topProducts = [
+  {
+    name: 'Chuồng mèo',
+    quantity: 12,
+  },
+  {
+    name: 'Súp',
+    quantity: 12,
+  },
+  {
+    name: 'Sữa tắm mèo',
+    quantity: 23,
+  },
+  {
+    name: 'Bóng',
+    quantity: 29,
+  },
+  {
+    name: 'Plapla',
+    quantity: 45,
+  },
+  {
+    name: 'pleple',
+    quantity: 50,
+  },
+
+];
 export default function Dashboard() {
   return (
     <>
       <Container fluid>
-        
-        <Row>
+      
+        <Row style={{backgroundColor: "#F5F5F5"}}>
           <Col lg="2">
             <Sidebar/>
           </Col>
 
           <Col>
-
           <Row>
-
-          {dashboards.map((prop, key) => {
-              return (
-                <Col lg="6">
-                  <Card className={prop.color}>
-                    <Card.Body>
-                      <Row>
-                        <Col xs="5">
-                          <div className="fa-3x">
-                            {prop.icon}
-                          </div>
-                        </Col>
-                        <Col xs="7">
-                          <div className="numbers">
-                            <p className="card-category">{prop.name}</p>
-                            <h3 className="fw-bold">{prop.value}</h3>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              );
-          })}
-
+          <AdminNavbar 
+          title="Dashboard"/>
           </Row>
+          <br/>
+          <Row >
+          <div className="home-content">
+            <div className="overview-boxes">
+              {dashboards.map((prop, key) => {
+                return (
+                  <div class="box">
+                      <div class="right-side">
+                        <div class="box-topic">{prop.name}</div>
+                        <div class="number">{prop.value}</div>
+                        <div class="indicator">
+                          <span class="text">Up from yesterday</span>
+                        </div>
+                      </div>
+                      <span style={{padding: "20px", borderRadius: "5px"}} className={prop.color}> {prop.icon}</span>
+                    </div>
+                  
+                );
+                })}
+              </div>
+            </div>
+          </Row>
+    <div class="home-content">
+
+      <div class="sales-boxes">
+        <div class="recent-sales box">
+          <div class="title">Daily Sales</div>
+          <div class="sales-details">
+          <div className="container cart-body">
+                <div className="checkout-main">
+                    <div className="checkout-main-row checkout__product_header">
+                        <div className="checkout-main-col-1 fw-bold">Ngày</div>         
+                        <div className="checkout-main-col-2 fw-bold">Tổng sản phẩm</div>
+                        <div className="checkout-main-col-3 fw-bold">Tổng tiền</div>
+                    </div>
+                    {data.map((product, index) => {
+                  return (
+                    <div  className="checkout-main-row">
+                      <div className="checkout-main-col-1">
+                          <label>{product.id}</label>
+                    </div>
+
+                    <div className="checkout-main-col-2">
+                        <div className="checkout-product-info">
+                            <label id='product-price'>{product.quantity}</label>
+                        </div>
+                    </div>
+                    <div className="checkout-main-col-3">
+                    <label>{product.price} đ</label>
+
+                    </div>
+                </div>
+                  )
+              })}
+              </div>
+              </div>
+          </div>
+        </div>
+        <div class="top-sales box">
+          <div class="title">Top Selling Product</div>
+          <ul class="top-sales-details">
+          {topProducts.map((prop, key) => {
+                return (
+                  <li>
+                    <a href="#">
+                      <span class="product">{prop.name}</span>
+                    </a>
+                    <span class="quantity">{prop.quantity}</span>
+                  </li>
+                  
+                );
+                })}
+            
+          </ul>
+        </div>
+      </div>
+    </div>
           </Col>
         </Row>
         
