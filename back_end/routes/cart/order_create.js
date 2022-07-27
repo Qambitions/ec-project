@@ -138,8 +138,11 @@ router.post('/', async (req, res, next) =>{
             response.message = "Thiếu/sai trường dữ liệu items"
             return res.send(response)
         }
+        var sum_qty = 0
+        for(var i = 0; i < req.body.items.length;i++)
+            sum_qty += req.body.items[i].so_luong_mua
 
-        if (req.body.items.length > 10){
+        if (req.body.items.length > 10 && sum_qty > 20){
             response.exitcode = 108
             response.message = "Số lượng items quá nhiều!!"
             return res.send(response)

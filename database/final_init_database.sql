@@ -58,7 +58,7 @@ CREATE TABLE PHIEU_NHAP_HANG (
 	MAPN INT GENERATED ALWAYS AS IDENTITY(START WITH 10000 INCREMENT BY 1),
 	MANPP INT,
 	MACN INT,
-	NGAY_LAP timestamp NOT NULL,
+	NGAY_LAP timestamp default current_timestamp,
 	TONG_TIEN_NHAP NUMERIC DEFAULT 0,
 	TONG_SO_MAT_HANG INT DEFAULT 0,
 	
@@ -81,6 +81,7 @@ CREATE TABLE VOUCHER (
 	TG_BAT_DAU timestamp NOT NULL,
 	TG_KET_THUC timestamp,
 	PHAN_LOAI TEXT,
+	SO_LUONG_VOUCHER int default 50,
 
 	CONSTRAINT PK_VOUCHER PRIMARY KEY (MA_VOUCHER)
 );
@@ -99,33 +100,6 @@ CREATE TABLE HINH_THUC_GIAO_HANG (
 	CONSTRAINT PK_HINH_THUC_GIAO_HANG PRIMARY KEY (MAHT)
 );
 
-CREATE TABLE DON_HANG (
-	MADH INT PRIMARY key GENERATED ALWAYS AS IDENTITY(START WITH 500000 INCREMENT BY 1),
-	MAKH INT,
-	MACN INT,
-	MA_VOUCHER INT,
-	PHI_SAN_PHAM NUMERIC DEFAULT 0,
-	PHI_VAN_CHUYEN NUMERIC DEFAULT 0,
-	PHI_GIAM NUMERIC DEFAULT 0,
-	HINH_THUC_THANH_TOAN TEXT,
-	HINH_THUC_GIAO_HANG TEXT,
-	TONG_PHI NUMERIC GENERATED ALWAYS AS (PHI_SAN_PHAM + PHI_VAN_CHUYEN - PHI_GIAM) STORED,
-	SO_NHA_DUONG TEXT,
-	PHUONG_XA TEXT,
-	QUAN_TP TEXT,
-	TP_TINH TEXT,
-	TRANG_THAI text default 'WAIT FOR PAYMENT',
-	THOI_GIAN timestamp default current_timestamp,
-	DIEM_TICH_LUY numeric  GENERATED ALWAYS AS (0.001*PHI_SAN_PHAM - 0.001*PHI_GIAM) STORED,
-	PAYMENT_TOKEN TEXT,
-	
-
-	CONSTRAINT FK_DH_KH FOREIGN KEY (MAKH)  REFERENCES KHACH_HANG(MAKH),
-	CONSTRAINT FK_DH_CN  FOREIGN KEY (MACN)  REFERENCES CHI_NHANH (MACN),
-	CONSTRAINT FK_DH_VOUCHER FOREIGN KEY (MA_VOUCHER) REFERENCES VOUCHER(MA_VOUCHER),
-	CONSTRAINT FK_DH_THANH_TOAN FOREIGN KEY (HINH_THUC_THANH_TOAN) REFERENCES HINH_THUC_THANH_TOAN(MAHT),
-	CONSTRAINT FK_DH_GIAO_HANG FOREIGN KEY  (HINH_THUC_GIAO_HANG) REFERENCES HINH_THUC_GIAO_HANG(MAHT)
-);
 
 CREATE TABLE SAN_PHAM (
 	MASP INT GENERATED ALWAYS AS IDENTITY(START WITH 200000 INCREMENT BY 1),
@@ -174,6 +148,32 @@ CREATE TABLE DIA_CHI_KH (
 	
 	CONSTRAINT FK_DC_KH FOREIGN KEY(MAKH) REFERENCES KHACH_HANG(MAKH),
 	CONSTRAINT PK_DIA_CHI_KH PRIMARY KEY(MAKH, STT)
+);
+
+CREATE TABLE DON_HANG (
+	MADH INT PRIMARY key GENERATED ALWAYS AS IDENTITY(START WITH 500000 INCREMENT BY 1),
+	MAKH INT,
+	MACN INT,
+	MA_VOUCHER INT,
+	PHI_SAN_PHAM NUMERIC DEFAULT 0,
+	PHI_VAN_CHUYEN NUMERIC DEFAULT 0,
+	PHI_GIAM NUMERIC DEFAULT 0,
+	HINH_THUC_THANH_TOAN TEXT,
+	HINH_THUC_GIAO_HANG TEXT,
+	TONG_PHI NUMERIC GENERATED ALWAYS AS (PHI_SAN_PHAM + PHI_VAN_CHUYEN - PHI_GIAM) STORED,
+	TRANG_THAI text default 'WAIT FOR PAYMENT',
+	THOI_GIAN timestamp default current_timestamp,
+	DIEM_TICH_LUY numeric  GENERATED ALWAYS AS (0.001*PHI_SAN_PHAM - 0.001*PHI_GIAM) STORED,
+	PAYMENT_TOKEN TEXT,
+	ID_DIA_CHI_GIAO INT, 
+	
+	
+	CONSTRAINT FK_DH_KH FOREIGN KEY (MAKH)  REFERENCES KHACH_HANG(MAKH),
+	CONSTRAINT FK_DH_CN  FOREIGN KEY (MACN)  REFERENCES CHI_NHANH (MACN),
+	CONSTRAINT FK_DH_VOUCHER FOREIGN KEY (MA_VOUCHER) REFERENCES VOUCHER(MA_VOUCHER),
+	CONSTRAINT FK_DC_KH_DH FOREIGN KEY(MAKH,ID_DIA_CHI_GIAO) REFERENCES DIA_CHI_KH(MAKH,STT),
+	CONSTRAINT FK_DH_THANH_TOAN FOREIGN KEY (HINH_THUC_THANH_TOAN) REFERENCES HINH_THUC_THANH_TOAN(MAHT),
+	CONSTRAINT FK_DH_GIAO_HANG FOREIGN KEY  (HINH_THUC_GIAO_HANG) REFERENCES HINH_THUC_GIAO_HANG(MAHT)
 );
 
 create table LICH_SU_GIA (
@@ -539,20 +539,34 @@ VALUES
 (10010, 200064, 10, 90000),
 (10010, 200063, 10, 65000);
 
--- 500000, 1
-INSERT INTO DON_HANG (MAKH, MACN, PHI_SAN_PHAM, PHI_VAN_CHUYEN, HINH_THUC_THANH_TOAN, HINH_THUC_GIAO_HANG, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH, TRANG_THAI) 
+--
+INSERT INTO DIA_CHI_KH (MAKH, STT, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH, DISTRICTID, MAC_DINH) 
 VALUES 
-(1000000, 200, 279000, 35000, N'COD' ,'GHN', N'227 Nguyễn Văn Cừ', N'7', N'5', N'HCM', N'ĐÃ XÁC NHẬN'),
-(1000003, 208, 327000, 20000, N'MOMO','GHN', N'324 Nguyễn Văn Linh', N'2', N'7', N'HCM', N'ĐÃ GIAO'),
-(1000008, 203, 175000, 35000, N'MOMO','GHN', N'112 Nguyễn Văn Trỗi', N'6', N'Đà Lạt', N'Lâm Đồng', N'ĐANG GIAO'),
-(1000001, 201, 612500, 45000, N'COD' ,'GHTK_NORM', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'ĐÃ HỦY'),
-(1000005, 200, 535000, 30000, N'COD' ,'GHTK_NORM', N'51 Hùng Vương', N'5', N'Vũng Tàu', N'Bà Rịa - Vũng Tàu', N'CHỜ XÁC NHẬN'),
-(1000012, 205, 564500, 45000, N'MOMO','GHN', N'147 Nguyễn Tri Phương', N'4', N'5', N'HCM', N'ĐÃ GIAO'),
-(1000002, 205, 310000, 20000, N'MOMO','GHN', N'50 Võ Văn Kiệt', N'An Lạc', N'Bình Tân', N'HCM', N'CHỜ XÁC NHẬN'),
-(1000002, 208, 410000, 20000, N'MOMO','GHN', N'491 Hậu Giang', N'11', N'6', N'HCM', N'CHỜ XÁC NHẬN'),
-(1000002, 203, 460000, 20000, N'MOMO','GHTK_FAST', N'9 Trần Hưng Đạo', N'Nguyễn Thái Bình', N'1', N'HCM', N'ĐANG GIAO'),
-(1000001, 202, 420000, 45000, N'COD' ,'GHN', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN'),
-(1000001, 205, 480000, 45000, N'COD' ,'GHN', N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội', N'CHỜ XÁC NHẬN');
+(1000000, 1, N'227 Nguyễn Văn Cừ', N'7', N'5', N'HCM','1447', TRUE),
+(1000000, 2, N'85 Nguyễn Tất Thành', N'5', N'2', N'HCM','1443', FALSE),
+(1000001, 1, N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội','3440' , TRUE),
+(1000002, 1, N'50 Võ Văn Kiệt', N'An Lạc', N'Bình Tân', N'HCM','1458', TRUE),
+(1000002, 2, N'491 Hậu Giang', N'11', N'6', N'HCM','1448', FALSE),
+(1000002, 3, N'9 Trần Hưng Đạo', N'Nguyễn Thái Bình', N'1', N'HCM','1442', FALSE),
+(1000003, 1, N'324 Nguyễn Văn Linh', N'2', N'7', N'HCM','1449', TRUE),
+(1000005, 1, N'51 Hùng Vương', N'5', N'Vũng Tàu', N'Bà Rịa - Vũng Tàu','1544', TRUE),
+(1000008, 1, N'112 Nguyễn Văn Trỗi', N'6', N'Đà Lạt', N'Lâm Đồng','1550', TRUE),
+(1000012, 1, N'147 Nguyễn Tri Phương', N'4', N'5', N'HCM','1446', TRUE);
+
+-- 500000, 1
+INSERT INTO DON_HANG (MAKH, MACN, PHI_SAN_PHAM, PHI_VAN_CHUYEN, HINH_THUC_THANH_TOAN, HINH_THUC_GIAO_HANG, ID_DIA_CHI_GIAO,TRANG_THAI) 
+VALUES 
+(1000000, 200, 279000, 35000, N'COD' ,'GHN', 1, N'ĐÃ XÁC NHẬN'),
+(1000003, 208, 327000, 20000, N'MOMO','GHN', 1, N'ĐÃ GIAO'),
+(1000008, 203, 175000, 35000, N'MOMO','GHN', 1, N'ĐANG GIAO'),
+(1000001, 201, 612500, 45000, N'COD' ,'GHTK_NORM', 1, N'ĐÃ HỦY'),
+(1000005, 200, 535000, 30000, N'COD' ,'GHTK_NORM', 1, N'CHỜ XÁC NHẬN'),
+(1000012, 205, 564500, 45000, N'MOMO','GHN', 1, N'ĐÃ GIAO'),
+(1000002, 205, 310000, 20000, N'MOMO','GHN', 1, N'CHỜ XÁC NHẬN'),
+(1000002, 208, 410000, 20000, N'MOMO','GHN', 1, N'CHỜ XÁC NHẬN'),
+(1000002, 203, 460000, 20000, N'MOMO','GHTK_FAST', 1, N'ĐANG GIAO'),
+(1000001, 202, 420000, 45000, N'COD' ,'GHN', 1, N'CHỜ XÁC NHẬN'),
+(1000001, 205, 480000, 45000, N'COD' ,'GHN',1, N'CHỜ XÁC NHẬN');
 
 --
 INSERT INTO CHI_TIET_DON_HANG (MADH, MASP, MA_VOUCHER, SO_LUONG_MUA, GIA_PHAI_TRA) 
@@ -577,20 +591,6 @@ VALUES
 (500009, 200047, NULL, 1, 245000),
 (500010, 200040, NULL, 1, 180000),
 (500010, 200050, NULL, 1, 300000);
-
---
-INSERT INTO DIA_CHI_KH (MAKH, STT, SO_NHA_DUONG, PHUONG_XA, QUAN_TP, TP_TINH, DISTRICTID, MAC_DINH) 
-VALUES 
-(1000000, 1, N'227 Nguyễn Văn Cừ', N'7', N'5', N'HCM','1447', TRUE),
-(1000000, 2, N'85 Nguyễn Tất Thành', N'5', N'2', N'HCM','1443', FALSE),
-(1000001, 1, N'37 Nguyễn Thị Minh Khai', N'6', N'7', N'Hà Nội','3440' , TRUE),
-(1000002, 1, N'50 Võ Văn Kiệt', N'An Lạc', N'Bình Tân', N'HCM','1458', TRUE),
-(1000002, 2, N'491 Hậu Giang', N'11', N'6', N'HCM','1448', FALSE),
-(1000002, 3, N'9 Trần Hưng Đạo', N'Nguyễn Thái Bình', N'1', N'HCM','1442', FALSE),
-(1000003, 1, N'324 Nguyễn Văn Linh', N'2', N'7', N'HCM','1449', TRUE),
-(1000005, 1, N'51 Hùng Vương', N'5', N'Vũng Tàu', N'Bà Rịa - Vũng Tàu','1544', TRUE),
-(1000008, 1, N'112 Nguyễn Văn Trỗi', N'6', N'Đà Lạt', N'Lâm Đồng','1550', TRUE),
-(1000012, 1, N'147 Nguyễn Tri Phương', N'4', N'5', N'HCM','1446', TRUE);
 
 --
 INSERT INTO TRANG_THAI_DH (MADH, TRANG_THAI, THOI_GIAN) 
@@ -843,12 +843,17 @@ begin
 			   		select * 
 			   		from chi_tiet_don_hang ctdh 
 			   		where new.madh = ctdh.madh 
-			   )
-				UPDATE kho 
-			    set so_luong_ton = so_luong_ton - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
-			    	so_luong_da_ban = so_luong_da_ban + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
-			    where kho.macn = new.macn
-			    and kho.masp in (select masp from chi_tiet);
+			    ),step1 as(
+					UPDATE kho 
+				    set so_luong_ton = so_luong_ton - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
+				    	so_luong_da_ban = so_luong_da_ban + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+				    where kho.macn = new.macn
+				    and kho.masp in (select masp from chi_tiet)
+				    returning *
+			    )
+			    update voucher v
+			    set so_luong_voucher = so_luong_voucher - 1
+			    where v.ma_voucher = new.ma_voucher;
 		
 		when (new.trang_thai = 'HỦY ĐƠN HÀNG' 
 		and (old.trang_thai = 'ĐÃ XÁC NHẬN' or old.trang_thai = 'ĐANG GIAO')) then 
@@ -856,12 +861,17 @@ begin
 				   		select * 
 				   		from chi_tiet_don_hang ctdh 
 				   		where new.madh = ctdh.madh 
-				 )
-				UPDATE kho 
-			    set so_luong_ton = so_luong_ton + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
-			    	so_luong_da_ban = so_luong_da_ban - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
-			    where kho.macn = new.macn
-			    and kho.masp in (select masp from chi_tiet);
+				 ), step2 as (
+					UPDATE kho 
+				    set so_luong_ton = so_luong_ton + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
+				    	so_luong_da_ban = so_luong_da_ban - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+				    where kho.macn = new.macn
+				    and kho.masp in (select masp from chi_tiet)
+				    returning *
+				)
+				update voucher v
+			    set so_luong_voucher = so_luong_voucher + 1
+			    where v.ma_voucher = new.ma_voucher;
 		
 		else null;
 	end case;
