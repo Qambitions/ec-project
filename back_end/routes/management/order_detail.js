@@ -27,6 +27,32 @@ async function queryOrderItems(props){
   return result.rows
 }
 
+async function changeOrderStatus(props){
+  await knexQuery('don_hang')
+  .where('madh','=',props.madh)
+  .update({
+    trang_thai:props.trang_thai_moi
+  }).catch(error => {
+    console.log(error)
+  });
+}
+
+function checkFlow(props){
+  if (upper(props.trang_thai_hien_tai) == 'CHỜ XÁC NHẬN' &&
+      upper(props.trang_thai_moi) == 'ĐÃ XÁC NHẬN') 
+        return true
+
+  if (upper(props.trang_thai_hien_tai) == 'ĐÃ XÁC NHẬN' &&
+      (upper(props.trang_thai_moi) == 'ĐANG GIAO' || upper(props.trang_thai_moi) == 'HỦY ĐƠN HÀNG'))
+        return true
+
+  if (upper(props.trang_thai_hien_tai) == 'ĐANG GIAO' &&
+      (upper(props.trang_thai_moi) == 'ĐÃ GIAO THÀNH CÔNG' || upper(props.trang_thai_moi) == 'HỦY ĐƠN HÀNG'))
+        return true
+
+  return false
+}
+
 router.get('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
@@ -36,14 +62,12 @@ router.get('/', async (req, res, next) =>{
     try {
       if (req.headers.magic_pass != 'LamZauKhumKho'){
           response.message = "sai Pass ròi!!"
-          res.send(response)
-          return
+          return res.send(response)
       }
       if (typeof(req.query.madh) == "undefined"){
         response.exitcode = 101
         response.message = "chưa có thông tin đơn hàng"
-        res.send(response)
-        return
+        return res.send(response)
       }
       const orderOverview = await queryOrderDetail(req.query);
       var dia_chi = {
@@ -75,8 +99,43 @@ router.get('/', async (req, res, next) =>{
     catch (e){
       response.message = e
     }
-    
-    res.send(response)
+    return res.send(response)
+});
+
+router.post('/', async (req, res, next) =>{
+  var response = {
+        "exitcode": 1,
+        "message": "Sai thông tin/sản phẩm không tồn tại",
+    }
+    try {
+      if (req.headers.magic_pass != 'LamZauKhumKho'){
+          response.message = "sai Pass ròi!!"
+          return res.send(response)
+      }
+      if (typeof(req.body.madh) == "undefined" || 
+          typeof(req.body.trang_thai_moi) == "undefined" ||
+          typeof(req.body.trang_thai_hien_tai) == "undefined"){
+        response.exitcode = 101
+        response.message = "Thiếu trường dữ liệu cần thiết"
+        return res.send(response)
+      }
+      if (checkFlow(req.body)){
+        changeOrderStatus(req.body)
+        response.exitcode = 0
+        response.message = "Cập nhật trạng thái thành công"
+        return res.send(response)
+      }
+      else {
+        response.exitcode = 101
+        response.message = "Chuyển đổi trạng thái không đúng trình tự"
+        return res.send(response)
+        
+      }
+    }
+    catch (e){
+      response.message = e
+    }
+    return res.send(response)
 });
 
 module.exports = router;
