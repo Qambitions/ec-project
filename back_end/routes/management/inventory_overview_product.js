@@ -48,6 +48,7 @@ router.get('/', async (req, res, next) =>{
     }
     req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
     req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
+    req.query.offset = req.query.offset * req.query.limit
     // req.query.malh = (typeof req.query.malh === 'undefined') ? 'null' : req.query.malh;
 
     const InventoryOverview = await queryInventoryOverview(req.query);

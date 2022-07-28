@@ -29,6 +29,7 @@ router.get('/', async (req, res, next) =>{
     try{
       req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
       req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
+      req.query.offset = req.query.offset * req.query.limit
       const purhchaseOverview = await queryPurchaseOverview(req.query);
       response.exitcode = 0
       response.message = "lấy thông tin thành công"

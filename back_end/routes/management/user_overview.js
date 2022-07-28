@@ -38,6 +38,7 @@ router.get('/', async (req, res, next) =>{
     try{
       req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
       req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
+      req.query.offset = req.query.offset * req.query.limit
       const userOverview = await queryUserOverview(req.query);
       const totalUser = await queryTotalUser(req.query);
       response.exitcode = 0
