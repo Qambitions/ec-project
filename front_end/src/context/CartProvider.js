@@ -4,6 +4,7 @@ const CartContext = createContext({});
 
 
 export const CartProvider = ({ children }) =>{
+    const [selectAllChecked,setSelectAllChecked] = useState(false);
     const [totalQuantity, setTotalQuantity] = useState(0);
     const [tempPay, setTempPay] = useState(0);
     const [totalPay, setTotalPay]=useState(0);
@@ -34,7 +35,6 @@ export const CartProvider = ({ children }) =>{
 
     const addItem = (id,quantity) =>{
         //set global state for store cart
-
         setTotalQuantity(totalQuantity+1);
         // setItmes(items.push({itemID:id,quantity:quantity}));
         addToLocalStore(id,quantity);
@@ -59,12 +59,21 @@ export const CartProvider = ({ children }) =>{
     const upDateQuantity = (id,oldQuantiy,newQuantity) =>{
     }
 
-    const removeAll = ()=>{
-        localStorage.removeItem("cart");
+    const removeAllItems = ()=>{
+        var cart = [];
+        localStorage.setItem("cart",JSON.stringify(cart));
+    }
+
+    const getTempPay = ()=>{
+        return tempPay;
+    }
+
+    const calTempPay = (amount) =>{
+        setTempPay(tempPay+amount);
     }
 
     return (
-        <CartContext.Provider value={{addItem,removeItem, removeAll,upDateQuantity}}>
+        <CartContext.Provider value={{addItem,removeItem, removeAllItems,upDateQuantity, calTempPay,getTempPay,setSelectAllChecked}}>
             {children}
         </CartContext.Provider>
     )

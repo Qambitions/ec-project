@@ -10,9 +10,10 @@ import {
 } from "../../components/TransactionPopUp";
 import { useEffect } from "react";
 import { useContext } from "react";
+import CartContext from "../../context/CartProvider";
 
 export default function Cart() {
-  const [total, setInvoice] = useState(0);
+  const cartContext = useContext(CartContext);
   const [items, setItems] = useState(JSON.parse(localStorage.getItem("cart")));
   var paymentType = "";
   const handleSubmit = (event) => {
@@ -31,19 +32,34 @@ export default function Cart() {
     }
   };
 
-  const getCartInfo = () => {
-    let itemsList = localStorage.getItem("cart");
-    itemsList = JSON.parse(itemsList);
-    setItems(itemsList);
-    console.log(items);
-  };
-
   const handleChange = (event) => {
     const target = event.target;
     const value = target.value;
     paymentType = value;
   };
 
+  const handleSelect = (e) => {
+    const { id, checked } = e.target;
+    if (id === "selectAll") {
+      let tmpSelection = items.map((item) => {
+        return { ...item, isChecked: checked };
+      });
+      cartContext.setSelectAllChecked(true);
+      console.log(tmpSelection);
+      setItems(tmpSelection);
+    } else {
+      let tmpSelection = items.map((item) =>
+        item.itemID === id ? { ...item, isChecked: checked } : item
+      );
+      console.log(tmpSelection);
+      setItems(tmpSelection);
+    }
+  };
+
+  const handleRemoveAll = () => {
+    setItems([]);
+    cartContext.removeAllItems();
+  };
   useEffect(() => {
     // console.log(items);
   }, []);
@@ -56,21 +72,27 @@ export default function Cart() {
           <div className="checkout-main">
             <div className="checkout-main-row checkout__product_header">
               <div className="checkout-main-col-1">
-                <input type="checkbox"></input>
+                <input
+                  type="checkbox"
+                  id="selectAll"
+                  checked={!items.some((item) => item?.isChecked !== true)}
+                  onChange={handleSelect}
+                ></input>
               </div>
               <div className="checkout-main-col-2">Sản phẩm</div>
               <div className="checkout-main-col-3">Đơn giá</div>
               <div className="checkout-main-col-3">Số lượng</div>
               <div className="checkout-main-col-3">Thành tiền</div>
               <div className="checkout-main-col-3">
-                <IoTrashBin />
+                <IoTrashBin onClick={handleRemoveAll} />
               </div>
             </div>
             {items.map((item) => (
               <ProductCart
                 key={item.itemID}
-                // updateTotal={(total) => setInvoice(total)}
                 obj={item}
+                handleSelect={handleSelect}
+                isChecked={item.isChecked}
               />
             ))}
             <VoucherPopUp />
@@ -82,7 +104,8 @@ export default function Cart() {
               <div className="container__flex">
                 <label>Tạm tính:</label>
                 <span>
-                  1 <text>đ</text>
+                  {cartContext.getTempPay()}
+                  <text>đ</text>
                 </span>
               </div>
               <div className="container__flex">
