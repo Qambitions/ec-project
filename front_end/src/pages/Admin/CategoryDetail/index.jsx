@@ -53,7 +53,7 @@ export default function CategoryDetail(){
             <Card.Body className="table-full-width table-responsive px-0">
               <Table className="table-hover">
                 <thead>
-                  <tr style={{backgroundColor: "#F0C9C9"}}>
+                  <tr style={{backgroundColor: "#FF9B7F"}}>
                     <th>Mã sản phẩm</th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng tồn</th>

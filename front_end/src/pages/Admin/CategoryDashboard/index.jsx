@@ -1,4 +1,6 @@
 import React from "react";
+import "./style.css";
+
 import {
     Badge,
     Button,
@@ -28,32 +30,35 @@ export default function CategoryDashboard(){
         },
         {
             name: "Mỹ phẩm & Làm đẹp",
-            img: "http://loremflickr.com/320/150?random=4",
+            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+
         },
         {
             name: "Thời trang",
-            img: "http://loremflickr.com/320/150?random=4",
+            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+
         },
         {
             name: "Đồ chơi",
-            img: "http://loremflickr.com/320/150?random=4",
+            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+
         },
         {
             name: "Y tế",
-            img: "http://loremflickr.com/320/150?random=4",
+            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+
         },
         {
             name: "Chuồng thú",
-            img: "http://loremflickr.com/320/150?random=4",
+            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+
         },
 
     ];
     return (<>
         <Container fluid>
-          <Row>
-            <Col lg="2">
-                <Sidebar/>
-            </Col>
+        <Row style={{backgroundColor: "#F5F5F5"}}>
+        <Col lg="2"><Sidebar/></Col>
           <Col>
           <Row>
           <AdminNavbar 
@@ -66,15 +71,27 @@ export default function CategoryDashboard(){
           return (
             <Col sm="4">
             <Card onClick={handleRowCLick}>
-              <img src={item.img} className="img-fluid"/>
-              <h2>{item.name}</h2>
+              <div className="row">
+              <a class="portfolio-item" href="#action">
+                <div class="text">
+                    <div class="text-content">
+                        <h2 >{item.name}</h2>
+                    </div>
+                </div>
+                <img class="img-wrap" src={item.img} alt="portfolio" />
+            </a>
+              </div>
+              
             </Card>
             </Col>
+            
+            
           )
       })}
            
             
           </Row>
+          
           </Col>
             </Row>
         </Container>

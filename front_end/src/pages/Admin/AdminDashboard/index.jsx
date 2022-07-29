@@ -1,66 +1,3 @@
-// import {Layout} from "antd";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import OrderDashboard from "../OrderDashboard";
-// import Sidebar from "../../../components/sidebar/Sidebar";
-// import AdminNavbar from "../../../components/NavBar/Navbar";
-// import Widget from "../../../components/widget/Widget";
-// import { Avatar, Card, Skeleton, Switch } from 'antd';
-
-
-// const { Header, Content, Footer, Sider } = Layout;
-// const { Meta } = Card;
-// export default function Admin() {
-//   return (
-//     <>
-//     <Layout >
-//     <div className="row">
-//       <div className="col-2"><Sidebar/></div>
-//      <div className="col-10">
-//      <AdminNavbar 
-//      title="THỐNG KÊ"/>
-//        <div className="row">
-//         <Card style={{ width: 300, marginTop: 16 }}>
-//           <Meta
-//             avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-//             title="Card title"
-//             description="This is the description"
-//           />
-//         </Card>
-
-//          <div className="col-5">
-//             <div class="card text-white bg-primary mb-3">
-//                 <div class="card-header">USERS</div>
-//                 <div class="card-body">
-//                   <h5 class="card-title">1234</h5>
-//                 </div>
-//             </div>
-//          </div>
-
-//          <div className="col-5">
-//             <div class="card text-white bg-info mb-3">
-//                 <div class="card-header">ORDERS</div>
-//                 <div class="card-body">
-//                   <h5 class="card-title">1234</h5>
-//                 </div>
-//             </div>
-//          </div>
-
-//        </div>
-
-       
-
-//     </div>
-//     </div>
-//     </Layout>
-   
-    
-
-//     </>
-    
-//   );
-// }
-
-
 import React from "react";
 import "./style.css";
 // react-bootstrap components
@@ -87,7 +24,8 @@ import { Route, Routes } from "react-router-dom";
 import UserDashboard from "../UserDashboard";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import Sidebar from "../../../components/sidebar/Sidebar";
-
+import {Layout, Menu } from "antd";
+const { Header, Content, Footer, Sider } = Layout;
 
 const dashboards = [
   {
@@ -168,14 +106,8 @@ const topProducts = [
 ];
 export default function Dashboard() {
   return (
-    <>
-      <Container fluid>
-      
         <Row style={{backgroundColor: "#F5F5F5"}}>
-          <Col lg="2">
-            <Sidebar/>
-          </Col>
-
+        <Col lg="2"><Sidebar/></Col>
           <Col>
           <Row>
           <AdminNavbar 
@@ -260,8 +192,6 @@ export default function Dashboard() {
     </div>
           </Col>
         </Row>
-        
-      </Container>
-    </>
+
   );
 }

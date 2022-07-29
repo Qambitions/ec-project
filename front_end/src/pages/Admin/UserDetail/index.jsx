@@ -15,7 +15,6 @@ import {Link} from "react-router-dom";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 export default function UserDetail(){
     return (<>
-        <Container fluid>
           <Row>
             <Col lg="2">
                 <Sidebar/>
@@ -28,7 +27,7 @@ export default function UserDetail(){
             <Card.Body className="table-full-width table-responsive px-0">
               <Table>
                 <thead>
-                  <tr style={{backgroundColor: "#F0C9C9"}}>
+                  <tr style={{backgroundColor: "#FF9B7F"}}>
                     <th>Mã khách hàng</th>
                     <th>Email</th>
                     <th>Cấp bậc</th>
@@ -84,7 +83,6 @@ export default function UserDetail(){
           </Row>
           </Col>
             </Row>
-        </Container>
 
     </>);
 }

@@ -36,7 +36,6 @@ export default function OrderDetail(){
 
 ];
     return (<>
-        <Container fluid>
           <Row>
             <Col lg="2">
                 <Sidebar/>
@@ -49,7 +48,7 @@ export default function OrderDetail(){
           <Card.Body className="table-full-width table-responsive px-0">
             <Table>
               <thead>
-                <tr style={{backgroundColor: "#F0C9C9"}}>
+                <tr style={{backgroundColor: "#FF9B7F"}}>
                   <th>Mã đơn hàng</th>
                   <th>Thời gian</th>
                   <th>Tổng tiền</th>
@@ -83,7 +82,7 @@ export default function OrderDetail(){
           </Row>
 
           <Row>
-            <h3>Chi tiết đơn hàng</h3>
+          <h3>Chi tiết đơn hàng</h3>
             <div className="body">
             <div className="container cart-body">
                 <div className="checkout-main">
@@ -141,7 +140,7 @@ export default function OrderDetail(){
                 </div>
                 </div>
 
-                <div className="checkout-aside">
+                <div className="checkout-aside" style={{margin:"10px"}}>
                     <div className="checkout-product-invoice">
                         <h4>Nguyễn Thị Ngọc Diệu </h4>
                         <hr/>
@@ -169,7 +168,6 @@ export default function OrderDetail(){
           </Col>
             </Row>
             
-        </Container>
 
     </>);
 }

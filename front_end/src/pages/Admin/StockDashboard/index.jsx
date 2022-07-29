@@ -15,12 +15,11 @@ import {Link} from "react-router-dom";
 
 export default function StockDashboard(){
     return (<>
-        <Container fluid>
           <Row>
             <Col lg="2">
                 <Sidebar/>
             </Col>
-          <Col>
+          <Col style={{backgroundColor: "#F5F5F5"}}>
             <btn className="btn">
                 <Link to="/admin/stock/category"><h3>Quản lý sản phẩm</h3></Link>
             </btn>
@@ -29,7 +28,6 @@ export default function StockDashboard(){
             </btn>
           </Col>
             </Row>
-        </Container>
 
     </>);
 }

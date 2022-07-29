@@ -1,38 +1,31 @@
 import "./sidebar.css";
-// import DashboardIcon from "@mui/icons-material/Dashboard";
-// import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-
+import {useState} from 'react';
 import {MdDashboard} from "react-icons/md";
 import {FiUsers} from "react-icons/fi";
 import {BsBoxSeam, BsNewspaper} from "react-icons/bs";
-// import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-// import CreditCardIcon from "@mui/icons-material/CreditCard";
-// import StoreIcon from "@mui/icons-material/Store";
-// import InsertChartIcon from "@mui/icons-material/InsertChart";
-// import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
-// import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-// import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-// import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
-// import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
-// import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import Logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
+import {Layout, Menu } from "antd";
+const { Header, Content, Footer, Sider } = Layout;
 
 export default function Sidebar() {
+  const [isActive, setIsActive] = useState(false);
+
+  const handleClick =() => {
+    setIsActive(!isActive);}
+
   return (
     <div className="sidebar">
-      <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span><img src={Logo} alt="logo"  className="logo"></img></span>
+      <Link to="/" style={{ textDecoration: "none" }} className="top">
+          <img src={Logo} alt="logo" className="logo"></img>
         </Link>
-      </div>
       <hr />
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
           <Link to="/admin" style={{ textDecoration: "none" }}>
           <li>
-            <MdDashboard className="icon" />
+            <MdDashboard className="fa-3x" style={{color: "black"}}/>
             <span>Dashboard</span>
           </li>
           </Link>
@@ -40,19 +33,19 @@ export default function Sidebar() {
           <p className="title">LISTS</p>
           <Link to="/admin/user" style={{ textDecoration: "none" }}>
             <li>
-              <FiUsers className="icon" />
+              <FiUsers className="fa-3x" style={{color: "black"}}/>
               <span>Users</span>
             </li>
           </Link>
           <Link to="/admin/stock" style={{ textDecoration: "none" }}>
             <li>
-              <BsBoxSeam className="icon" />
+              <BsBoxSeam className="fa-3x" style={{color: "black"}}/>
               <span>Stock</span>
             </li>
           </Link>
           <Link to="/admin/order" style={{ textDecoration: "none" }}>
           <li>
-            <BsNewspaper className="icon" />
+            <BsNewspaper className="fa-3x" style={{color: "black"}}/>
             <span>Orders</span>
           </li>
           </Link>    

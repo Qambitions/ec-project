@@ -10,7 +10,7 @@ import ErrorPage from "./Error";
 import Footer from "../components/Footer";
 import { ProductDetail } from "../components/ProductDetail";
 import Payment from "./Payment";
-import Admin from "./Admin/AdminDashboard";
+import Dashboard from "./Admin/AdminDashboard";
 import OrderDashboard from "./Admin/OrderDashboard";
 import UserDashboard from "./Admin/UserDashboard";
 import StockDashboard from "./Admin/StockDashboard";
@@ -40,7 +40,7 @@ export default function Pages(){
                 <Route path="/user/dang-nhap" element={<SignInWindow/>}/>
                 <Route path="/user/dang-ky" element={<SignUpWindow/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
-                <Route path="/admin" element={<Admin/>}/>
+                <Route path="/admin" element={<Dashboard/>}/>
                 <Route path="/admin/order" element={<OrderDashboard/>}/>
                 <Route path="/admin/user" element={<UserDashboard/>}/>
                 <Route path="/admin/stock" element={<StockDashboard/>}/>
