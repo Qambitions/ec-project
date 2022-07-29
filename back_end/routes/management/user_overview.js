@@ -27,7 +27,7 @@ router.get('/', async (req, res, next) =>{
         "exitcode": 1,
         "message": "",
         "total":"",
-        "list_order":"",
+        "list_user":"",
     }
     if (req.headers.magic_pass != 'LamZauKhumKho'){
         response.message = "sai Pass ròi!!"
@@ -43,7 +43,7 @@ router.get('/', async (req, res, next) =>{
       const totalUser = await queryTotalUser(req.query);
       response.exitcode = 0
       response.message = "lấy thông tin thành công"
-      response.list_order = userOverview
+      response.list_user = userOverview
       response.total  =  totalUser
     }
     catch (e){

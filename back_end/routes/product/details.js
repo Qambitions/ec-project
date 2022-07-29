@@ -135,7 +135,7 @@ router.get('/', async (req, res, next) =>{
             'comment' : comment,
             'ten_npp' : itemsInformation.ten_npp,
             'branch_available': chi_nhanh_con.branch_available,
-            'branch_available': chi_nhanh_con.branch_unavailable
+            'branch_unavailable': chi_nhanh_con.branch_unavailable
         };
         
         
