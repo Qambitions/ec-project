@@ -80,8 +80,3 @@
           .colorOption:nth-child(3){
               background-color: darkblue;
           }
-
-
-.active {
-  background-color: aqua;
-}
