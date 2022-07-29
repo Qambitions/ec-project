@@ -35,6 +35,11 @@ export default function OrderDetail(){
     },
 
 ];
+  const method = {
+    payment: "Paypal",
+    delivery: "GHTK"
+  };
+  
     return (<>
           <Row>
             <Col lg="2">
@@ -151,11 +156,23 @@ export default function OrderDetail(){
                             <label>227 Nguyễn Văn Cừ</label>
                         </div>
                         <hr/>
-                        <text><FaShippingFast/></text>
-                        <label>Giao hàng nhanh</label>
+                        <label>
+                          {method.delivery == "GHTK" ? <>
+                          <img style={{height:"40px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/287535036_424202986024765_8691090997415472965_n_vqls2y.png"}></img>
+                          </>
+                          : method.delivery == "GHN" ? <>
+                            <img style={{height:"40px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/286088489_5050087261779690_4284998344429746518_n_ioqia7.png"}></img>
+                          </> : null}
+                        </label>
                         <hr/>
-                        <text><MdPayment/></text>
-                        <label>Thanh toán bằng Momo</label>
+                        <label>
+                          {method.payment == "Momo" ? <>
+                          <img style={{height:"20px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/momo-logo-ED8A3A0DF2-seeklogo.com_pnirvg.png"}></img>
+                          <label>&nbsp;&nbsp;Thanh toán bằng Momo</label></>
+                          : method.payment == "Paypal" ? <>
+                          <img style={{height:"20px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832639/icon/888870_wptg5q.png"}></img>
+                          <label>&nbsp;&nbsp;Thanh toán bằng Paypal</label></> : null}
+                        </label>
                     </div>
                     <div>
                 </div>
@@ -171,3 +188,9 @@ export default function OrderDetail(){
 
     </>);
 }
+
+<div className='footer__icon_container_vertical'>
+                            <img style={{height:"35px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/286088489_5050087261779690_4284998344429746518_n_ioqia7.png"}></img>
+                            <img style={{height:"35px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/287535036_424202986024765_8691090997415472965_n_vqls2y.png"}></img>
+                            <img style={{height:"35px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656573798/icon/Logo-Viettel-Post-Transparent_zw5rmz.webp"}></img>
+                        </div>

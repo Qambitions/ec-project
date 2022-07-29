@@ -18,6 +18,8 @@ import UserDetail from "./Admin/UserDetail";
 import OrderDetail from "./Admin/OrderDetail";
 import CategoryDashboard from "./Admin/CategoryDashboard";
 import CategoryDetail from "./Admin/CategoryDetail";
+import ImportDashboard from "./Admin/ImportDashboard";
+import ImportDetail from "./Admin/ImportDetail";
 export default function Pages(){
     return(
             <Routes>
@@ -48,6 +50,10 @@ export default function Pages(){
                 <Route path="/admin/order/detail" element={<OrderDetail/>}/>
                 <Route path="/admin/stock/category" element={<CategoryDashboard/>}/>
                 <Route path="/admin/category/detail" element={<CategoryDetail/>}/>
+                <Route path="/admin/stock/import" element={<ImportDashboard/>}/>
+                <Route path="/admin/import/detail" element={<ImportDetail/>}/>
+
+
             </Routes>
     )
 }

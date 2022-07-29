@@ -31,6 +31,7 @@ export default function AdminNavbar (props) {
                     />
                   </div>
                 </div>
+
               </Card.Body>
               {props.text ? <>
                 <Card.Body>
@@ -39,6 +40,9 @@ export default function AdminNavbar (props) {
                   <h5> {props.text}: &nbsp;&nbsp;&nbsp;&nbsp;</h5>
                   <h1 className="text-custom"> {props.count}</h1>
                     </div>
+                    {props.button ? <>
+     <button className="btn fw-bold">Tạo mới phiếu nhập</button>
+                  </> : null}
                     <div className='search-bar'>
             <input className="search-bar-search-field"placeholder='Tìm kiếm'></input>
             <div className='search-icon'><BsSearch/></div>
