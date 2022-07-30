@@ -28,28 +28,7 @@ export default function Cart() {
     }
   };
 
-  const handleSelect = (e) => {
-    const { id, checked } = e.target;
-    console.log(id);
-    if (id === "selectAll") {
-      let tmpSelection = items.map((item) => {
-        return { ...item, isChecked: checked };
-      });
-      var cart = localStorage.getItem("cart");
-      cart = cart ? JSON.parse(cart) : [];
-      for (var i in cart) {
-        console.log("id", cart[i].itemID);
-        cartContext.updateItemCheck(cart[i].itemID);
-      }
-      setItems(tmpSelection);
-    } else {
-      let tmpSelection = items.map((item) =>
-        item.itemID === id ? { ...item, isChecked: checked } : item
-      );
-      cartContext.updateItemCheck(id);
-      setItems(tmpSelection);
-    }
-  };
+  const handleSelect = (e) => {};
 
   useEffect(() => {
     setItems(JSON.parse(localStorage.getItem("cart")));

@@ -84,12 +84,6 @@ export default function ProductCart(props) {
 
   function handleSelect(e) {
     props.handleSelect(e);
-    var pay = card.price * card.quantity;
-    if (card.isChecked) {
-      cartContext.calTempPay(pay * -1);
-    } else {
-      cartContext.calTempPay(pay);
-    }
   }
 
   return (
