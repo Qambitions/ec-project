@@ -31,7 +31,7 @@ export default function HomepageSection(props) {
           <h1>{props.header}</h1>
           <img src={props.icon}></img>
         </div>
-        <Link to={`/${props.malh}`}>
+        <Link to={`/view/${props.malh}`}>
           Xem tất cả
           <img
             style={{ height: "20px" }}
