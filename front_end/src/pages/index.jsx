@@ -43,7 +43,8 @@ export default function Pages(){
                 <Route path="/user/dang-ky" element={<SignUpWindow/>}/>
                 <Route path="/error" element={<ErrorPage/>}/>
                 <Route path="/admin" element={<Dashboard/>}/>
-                <Route path="/admin/order" element={<OrderDashboard/>}/>
+                <Route path="/admin/order" element={<OrderDashboard limit={10}
+                                                                    offset={1}/>}/>
                 <Route path="/admin/user" element={<UserDashboard/>}/>
                 <Route path="/admin/stock" element={<StockDashboard/>}/>
                 <Route path="/admin/user/detail" element={<UserDetail/>}/>
