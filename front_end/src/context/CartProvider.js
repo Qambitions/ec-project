@@ -4,76 +4,117 @@ const CartContext = createContext({});
 
 
 export const CartProvider = ({ children }) =>{
-    const [selectAllChecked,setSelectAllChecked] = useState(false);
-    const [totalQuantity, setTotalQuantity] = useState(0);
-    const [tempPay, setTempPay] = useState(0);
-    const [totalPay, setTotalPay]=useState(0);
-    const [discount, setDiscount]=useState(0);
-
-    const addToLocalStore = (id,quantity) =>{
+    const [cartInfo,setCartInfo]=useState({
+        totalPay:0,
+        discount:0,
+        totalPay:0,
+        tempPay:0,
+        totalQuantity:0,
+    })
+    const addItem = (id,quantity,isCheck) =>{
         //add items cart into local storage
         var cart = localStorage.getItem("cart");
         cart = cart ? JSON.parse(cart) : [];
         // Add new data to localStorage Array
-        console.log(cart);
         let flag = true;
         for(var i in cart){
             if(cart[i].itemID===id){
+                cart[i].isChecked=isCheck;
                 cart[i].quantity += quantity;
                 flag = false;
                 break;
             }
         }       
         if(flag){
-            cart.push({itemID:id,quantity:quantity});
+            cart.push({itemID:id,quantity:quantity,isChecked:isCheck});
         }
-       console.log(cart);
         // Save back to localStorage 
         localStorage.setItem("cart", JSON.stringify(cart));
-
-    }
-
-    const addItem = (id,quantity) =>{
-        //set global state for store cart
-        setTotalQuantity(totalQuantity+1);
-        // setItmes(items.push({itemID:id,quantity:quantity}));
-        addToLocalStore(id,quantity);
+        setCartInfo(prevState=>{return{...prevState,totalQuantity: cartInfo.totalQuantity+quantity}})
     }
 
     const removeItem = (id) =>{
         var cart = localStorage.getItem("cart");
         cart = cart ? JSON.parse(cart) : [];
-        console.log(cart);
         var i;
         for( i in cart){
             if(cart[i].itemID===id){
+                setCartInfo(prevState=>{return{...prevState,totalQuantity: cartInfo.totalQuantity-cart[i].quantity}})
                 cart.splice(i,1)
                 break;
             }
         }       
-       console.log(cart);
         // Save back to localStorage 
         localStorage.setItem("cart", JSON.stringify(cart));
     }
 
-    const upDateQuantity = (id,oldQuantiy,newQuantity) =>{
+    const upDateQuantity = (id,quantity) =>{
+        //add items cart into local storage
+        var cart = localStorage.getItem("cart");
+        cart = cart ? JSON.parse(cart) : [];
+        // Add new data to localStorage Array
+        for(var i in cart){
+            if(cart[i].itemID===id){
+                setCartInfo(prevState=>{return{...prevState,totalQuantity: cartInfo.totalQuantity-cart[i].quantity+quantity}})
+                cart[i].quantity = quantity;
+                break;
+            }
+        }       
+        // Save back to localStorage 
+        localStorage.setItem("cart", JSON.stringify(cart));
     }
 
     const removeAllItems = ()=>{
         var cart = [];
         localStorage.setItem("cart",JSON.stringify(cart));
-    }
-
-    const getTempPay = ()=>{
-        return tempPay;
+        setCartInfo(prevState=>{return{...prevState,totalQuantity: 0}})
+        setCartInfo(prevState=>{return{...prevState,tempPay: 0}})
     }
 
     const calTempPay = (amount) =>{
-        setTempPay(tempPay+amount);
+        console.log("am",parseInt(amount))
+        setCartInfo(prevState=>{return{...prevState,tempPay: cartInfo.tempPay+parseInt(amount)}})
     }
 
+    const getTempPay = ()=>{
+        return cartInfo.tempPay;
+    }
+
+    const getTotalPay = ()=>{
+        return cartInfo.totalPay;
+    }
+
+    const getTotalQuantity = () =>{
+        return cartInfo.totalQuantity;
+    }
+    
+    const getDiscount = () =>{
+        return cartInfo.discount;
+    }
+
+    const setTempPay =(amount)=>{
+        setCartInfo(prevState=>{return{...prevState,tempPay: amount}})
+    }
+
+    const updateItemCheck =(id)=>{
+        var cart = localStorage.getItem("cart");
+        cart = cart ? JSON.parse(cart) : [];
+        for(var i in cart){
+            if(cart[i].itemID===id){
+                var isChecked = cart[i].isChecked;
+                cart[i].isChecked = !isChecked;
+                break;
+            }
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    const value = {addItem,removeItem, removeAllItems,upDateQuantity, 
+        calTempPay,setTempPay,getTempPay,getTotalPay,
+        getDiscount,getTotalQuantity,updateItemCheck,cartInfo}
+
     return (
-        <CartContext.Provider value={{addItem,removeItem, removeAllItems,upDateQuantity, calTempPay,getTempPay,setSelectAllChecked}}>
+        <CartContext.Provider value={value}>
             {children}
         </CartContext.Provider>
     )

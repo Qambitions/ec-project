@@ -32,13 +32,7 @@ export function ProductDetail() {
   }, []);
 
   const handleAddToCart = () => {
-    // if (authContext.auth.valid) {
-    //   cartContext.addItem(id, quantity);
-    // } else {
-    //   navigate("/user/dang-nhap", { replace: true });
-    // }
-    cartContext.addItem(id, quantity);
-    // cartContext.removeItem(id);
+    cartContext.addItem(id, quantity, false);
   };
 
   const fetchDetail = async () => {

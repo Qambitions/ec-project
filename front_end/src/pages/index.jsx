@@ -12,6 +12,8 @@ import { ProductDetail } from "../components/ProductDetail";
 import Payment from "./Payment";
 import CategoryPage from "./CategoryPage";
 import Catalog from "../components/Catalog";
+import CustomerDashboard from "./CustomerDashboard";
+import Orders from "./CustomerDashboard/Orders";
 
 export default function Pages() {
   return (
@@ -33,6 +35,10 @@ export default function Pages() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/view/:categories" element={<CategoryPage />} />
         <Route path="/search/:str" element={<Catalog />} />
+        <Route path="user">
+          <Route path="/user/myorder" element={<Orders />}></Route>
+          <Route path="/user/account" element={<CustomerDashboard />}></Route>
+        </Route>
       </Route>
       <Route path="/user/dang-nhap" element={<SignInWindow />} />
       <Route path="/user/dang-ky" element={<SignUpWindow />} />
