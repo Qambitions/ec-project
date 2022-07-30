@@ -1,0 +1,75 @@
+.img-wrap {
+    max-width: 100%;
+    height: auto;
+  }
+
+.portfolio-item {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  max-width: 400px;
+  margin: auto auto 1rem;
+}
+  .portfolio-item .text {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    text-align: left;
+  }
+  .portfolio-item .text .text-content {
+    color: #fff;
+    margin: auto 2rem 2rem;
+    background-color: #FF6A6A;
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+
+  text {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: #fff;
+    text-align: left;
+  }
+
+  .text-faded {
+    color: #afb8c1;
+  }
+
+@media (min-width: 992px){
+    .portfolio-col {
+        flex: 0 0 auto;
+        width: 50%;
+        }
+    .portfolio-item {
+        max-width: none;
+        margin: 0;
+        }
+
+    .portfolio-item .text .text-content {
+        transition: opacity 0.25s;
+        margin-left: 5rem;
+        margin-right: 5rem;
+        margin-bottom: 5rem;
+        font-size: 1.2rem;
+    }
+    .portfolio-item img {
+        transition: -webkit-clip-path 0.25s ease-out;
+        transition: clip-path 0.25s ease-out;
+        transition: clip-path 0.25s ease-out, -webkit-clip-path 0.25s ease-out;
+        -webkit-clip-path: inset(-1px);
+                clip-path: inset(-1px);
+    }
+    .portfolio-item:hover img {
+        -webkit-clip-path: inset(2rem);
+                clip-path: inset(2rem);
+    }
+    .portfolio-item:hover .text {
+        background-color: #F0C9C9;
+        -webkit-clip-path: inset(2rem);
+                clip-path: inset(2rem);
+    }
+}
