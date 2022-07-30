@@ -1,30 +1,39 @@
-import React, { useState } from "react";
-import {FaBars} from 'react-icons/fa';
-import {AiOutlineClose} from 'react-icons/ai';
-import {GiHamburgerMenu} from 'react-icons/gi';
-import {FiUsers} from 'react-icons/fi';
-import {BsBoxSeam} from 'react-icons/bs';
-import {FaWpforms} from 'react-icons/fa';
-import { Link,  Routes, Route, Outlet, useNavigate  } from 'react-router-dom';
-import logo from '../../../assets/logo.png';
+import React, { useEffect, useState } from "react";
+import { useNavigate  } from 'react-router-dom';
 import Sidebar from "../../../components/sidebar/Sidebar";
 import './style.css';
 import AdminNavbar from "../../../components/NavBar/Navbar";
-
 import {
-  Badge,
-  Button,
   Card,
-  Navbar,
-  Nav,
   Table,
-  Container,
-  Row,
-  Col,
 } from "react-bootstrap";
 
+import axios from "../../../api/axios";
+const {REACT_APP_MAGIC_PASS} = process.env;
+const GETORDER_URL = "/management/order_overview";
 
-export default function OrderDashboard() {
+export default function OrderDashboard(props) {
+  const [orders, setOrders] = useState([]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    await axios(GETORDER_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      },
+      params: { limit: props.limit, offset: props.offset },
+    }).then((res) => {
+      console.log(res.data.list_order);
+      setTotal(res.data.total);
+      setOrders(res.data.list_order);
+    });
+  };
 
   const data = [
     {
@@ -77,7 +86,7 @@ export default function OrderDashboard() {
      <AdminNavbar 
      title="Quản lý đơn hàng"
      text ="Tổng số đơn hàng"
-     count = "1234"/>
+     count = {total}/>
      <Card className="card-plain table-plain-bg">
           <Card.Body className="table-full-width table-responsive px-0">
             <Table className="table-hover">
@@ -90,28 +99,27 @@ export default function OrderDashboard() {
                 </tr>
               </thead>
               <tbody>
-      {data.map((item, index) => {
+      {orders.map((item, index) => {
           return (
             <tr onClick={handleRowCLick}>
               <td>
                 <div class="d-flex align-items-center">
                   <div class="ms-3">
-                    <p class="fw-bold mb-1">{item.id}</p>
+                    <p class="fw-bold mb-1">{item.madh}</p>
                   </div>
                 </div>
               </td>
               <td>
-                <p class="fw-normal mb-1">{item.time}</p>
+                <p class="fw-normal mb-1">{item.thoi_gian}</p>
 
               </td>
-              <td>{item.total}</td>
+              <td>{item.tong_phi}</td>
               <td>
-              {item.status == "Chờ xác nhận" ? <span className="badge badge-wait">{item.status}</span> : 
-              item.status == "Đã xác nhận" ? <span className="badge badge-confirmed">{item.status}</span> :
-              item.status == "Đang giao" ? <span className="badge badge-delivering">{item.status}</span> :
-              item.status == "Đã giao" ? <span className="badge badge-delivered">{item.status}</span> :
-              <span className="badge badge-cancel">{item.status}</span>}
-                
+              {item.trang_thai == "CHỜ XÁC NHẬN" ? <span className="badge badge-wait">{item.trang_thai}</span> : 
+              item.trang_thai == "ĐÃ XÁC NHẬN" ? <span className="badge badge-confirmed">{item.trang_thai}</span> :
+              item.trang_thai == "ĐANG GIAO" ? <span className="badge badge-delivering">{item.trang_thai}</span> :
+              item.trang_thai == "ĐÃ GIAO" ? <span className="badge badge-delivered">{item.trang_thai}</span> :
+              <span className="badge badge-cancel">{item.trang_thai}</span>}   
               </td>
 
             </tr>
