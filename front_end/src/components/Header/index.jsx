@@ -1,54 +1,85 @@
-import logo from '../../assets/logo.png';
-import React from 'react';
-import { BsCart2,BsBell,BsPersonFill } from "react-icons/bs";
+import logo from "../../assets/logo.png";
+import React, { useEffect } from "react";
+import { BsCart2, BsBell, BsPersonFill } from "react-icons/bs";
 import { AiOutlineHome, AiOutlineQuestionCircle } from "react-icons/ai";
-import SearchBar from '../SearchBar';
-import './style.css'
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import SearchBar from "../SearchBar";
+import "./style.css";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../../context/AuthProvider";
+import Dropdown from "react-bootstrap/Dropdown";
+import CustomToggle from "../CustomDropDownToggle/customDropDownToggle";
+import Cookies from "js-cookie";
 
-
-
-export default function Header(){
-    const [goToSignIn, setGoToSignIn] = React.useState(false);
-    const [logout, setLogout] = useState(false);
-
-    const handleLogout = () =>{
-        Cookies.remove('token');
-        Cookies.remove('uid');
-        Cookies.remove('sdt_kh');
-        Cookies.remove('tenkh');
-        setLogout(true);
+export default function Header() {
+  const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [loggedState, setLoggedState] = useState();
+  const toggleCart = () => {
+    if (Cookies.get("token")) {
+      navigate("/gio-hang", { replace: true });
+    } else {
+      navigate("/user/dang-nhap", { replace: true });
     }
+  };
 
-    return(
-        <div className="container header">
-            <a href='/'><img className="logo" src={logo} alt={logo}></img></a>
-            <SearchBar/>
-            <div className="head__nav_signin_menu">
-                    <a href='/'><AiOutlineQuestionCircle/>Cần giúp đỡ</a>
-                    <a href='/'>< AiOutlineHome/>Hệ thống cửa hàng</a>
-                    <a href='/'><BsBell/> </a>
-                    <a href='/gio-hang'><BsCart2/></a>
-            {Cookies.get('token') ? (          
-                    <>
-                        <button onClick={handleLogout}>Logout</button>
-                        <div className='container__flex'>
-                            <button className='user__dropdown'><BsPersonFill/></button>
-                        </div>
-                    </>      
-                ):(                
-                    <div className='container__flex' style={{columnGap:"1rem"}}>
-                        <BsPersonFill style={{ fontSize:"1.5rem"}}/>
-                        <div className='container__flex_col'>
-                            <Link to={'/user/dang-nhap'}>Đăng nhập/</Link>
-                            <Link to={'/user/dang-ky'}>Đăng ký</Link>
-                        </div>
-                    </div>
-                )
-            }
+  const toggleLogout = () => {
+    setLoggedState();
+    authContext.toggleLogout();
+  };
+
+  useEffect(() => {
+    if (Cookies.get("token")) {
+      setLoggedState(Cookies.get("token"));
+    }
+  }, []);
+
+  return (
+    <div className="container header">
+      <Link to="/">
+        <img className="logo" src={logo} alt={logo}></img>
+      </Link>
+      <SearchBar />
+      <div className="head__nav_signin_menu">
+        <Link to="/">
+          <AiOutlineQuestionCircle />
+          Cần giúp đỡ
+        </Link>
+        <Link to="/">
+          <AiOutlineHome />
+          Hệ thống cửa hàng
+        </Link>
+        <Link to="/">
+          <BsBell />{" "}
+        </Link>
+        <a onClick={toggleCart}>
+          <BsCart2 />
+        </a>
+        {loggedState ? (
+          <Dropdown align="end">
+            <Dropdown.Toggle
+              as={CustomToggle}
+              id="dropdown-custom-components"
+            ></Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item eventKey="1">Tài khoản của tôi</Dropdown.Item>
+              <Dropdown.Item eventKey="2">Đơn hàng của tôi</Dropdown.Item>
+              <Dropdown.Item eventKey="3" onClick={toggleLogout}>
+                Đăng xuất
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (
+          <div className="container__flex" style={{ columnGap: "1rem" }}>
+            <BsPersonFill style={{ fontSize: "1.5rem" }} />
+            <div className="container__flex_col">
+              <Link to={"/user/dang-nhap"}>Đăng nhập/</Link>
+              <Link to={"/user/dang-ky"}>Đăng ký</Link>
             </div>
-        </div>
-    )
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

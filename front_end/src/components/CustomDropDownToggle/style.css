@@ -1,0 +1,10 @@
+.user__dropdown{
+    border:1px solid black;
+    border-radius:50%;
+    height: 3em;
+    width: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0.5rem;
+}

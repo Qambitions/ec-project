@@ -1,10 +1,13 @@
+.cart h3{
+    font-weight: 700;
+}
+
 .checkout-main-col-1{
     width: 3%;
 }
 .checkout-main-col-2{
     text-align: left;
     width: 40%;
-    /* padding: 0 1rem; */
 }
 .checkout-main-col-3{
     width: 10%;
@@ -31,11 +34,13 @@
     align-items: center;
     background-color: white;
     border-radius: 2px;
-    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .checkout__product_header{
     background-color: #EAEAEA;
+    padding: 0.5rem 0;
+    font-weight: 600;
 }
 
 .checkout-main-header{
@@ -56,6 +61,41 @@
     width: 100%;
     background-color: white;
     border-top: 3px solid #FF5D5D;
+}
+
+.checkout-product-invoice h4{
+    padding: 0 1rem;
+    padding-top: 1rem;
+    font-weight: 700;
+}
+
+.checkout-product-invoice .container__flex{
+    justify-content: space-between;
+    padding: 0 1.5rem;
+}
+
+.checkout-product-invoice .container__flex span{
+    font-weight: 600;
+}
+
+.checkout-product-invoice .container__flex text{
+    text-decoration: underline;
+}
+
+.checkout-product-invoice .container__flex p{
+    padding-left: 1.5rem;
+}
+
+
+.checkout-product-invoice .container__flex:nth-child(6) span{
+    color: #f64545;
+    font-weight: 600;
+}
+
+.checkout-product-invoice p{
+    padding-left: 1.5rem;
+    color: rgba(0, 0, 0, 0.46);
+    font-size: 0.8rem;
 }
 
 .checkout-product-info{
@@ -81,6 +121,7 @@
 .checkout__aside_coupon{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background: rgba(217, 217, 217, 0.41);
     margin: 10px 15px 10px 15px;
     padding: 0 15px;
@@ -98,10 +139,12 @@
     height: 50px;
     width: 60px;
     border-bottom-right-radius: 100%;
+    z-index: -99;
 }
 
 .checkout__aside_coupon_icon{
     height: 50px;
     position: absolute;
+    /* z-index:-1; */
     margin-left: 1rem;
 }

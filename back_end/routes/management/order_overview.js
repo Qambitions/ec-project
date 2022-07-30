@@ -13,12 +13,12 @@ async function queryOrderOverview(props){
 }
 
 async function queryTotalOrder(props){
-    const rawSQL = `SELECT count(*)
-                    FROM don_hang dh 
-                  `
+  const rawSQL = `SELECT count(*)
+                  FROM don_hang dh 
+                `
 
-  const result = await knexQuery.raw(rawSQL)
-  return result.rows[0].count
+const result = await knexQuery.raw(rawSQL)
+return result.rows[0].count
 }
 
 router.get('/', async (req, res, next) =>{
@@ -28,20 +28,27 @@ router.get('/', async (req, res, next) =>{
         "total":"",
         "list_order":"",
     }
-    if (req.headers.magic_pass != 'LamZauKhumKho'){
-        response.message = "sai Pass ròi!!"
-        res.send(response)
-        return
+    try{
+      if (req.headers.magic_pass != 'LamZauKhumKho'){
+          response.message = "sai Pass ròi!!"
+          res.send(response)
+          return
+      }
+      req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
+      req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
+      req.query.offset = req.query.offset * req.query.limit
+      const orderOverview = await queryOrderOverview(req.query);
+      const totalOrder = await queryTotalOrder(req.query);
+      response.exitcode = 0
+      response.message = "lấy thông tin thành công"
+      response.list_order = orderOverview
+      response.total  =  totalOrder
     }
-    req.body.limit = (typeof req.body.limit === 'undefined') ? 5 : req.body.limit;
-    req.body.offset = (typeof req.body.offset === 'undefined') ? 0 : req.body.offset;
-    const orderOverview = await queryOrderOverview(req.body);
-    const totalOrder = await queryTotalOrder(req.body);
-    response.exitcode = 0
-    response.message = "lấy thông tin thành công"
-    response.list_order = orderOverview
-    response.total  =  totalOrder
-    res.send(response)
+    catch (e){
+      response.exitcode= 1
+      response.message = e
+    }
+    return res.send(response)
     
 });
 

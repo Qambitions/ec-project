@@ -30,3 +30,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.search-icon:hover{
+    cursor: pointer;
+}
