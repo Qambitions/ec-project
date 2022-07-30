@@ -102,7 +102,7 @@ router.get('/', async (req, res, next) =>{
     return res.send(response)
 });
 
-router.post('/', async (req, res, next) =>{
+router.post('/change_status', async (req, res, next) =>{
   var response = {
         "exitcode": 1,
         "message": "Sai thông tin/sản phẩm không tồn tại",
