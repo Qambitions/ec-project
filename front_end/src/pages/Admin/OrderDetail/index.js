@@ -40,7 +40,6 @@ export default function OrderDetail(){
       setDetail(res.data.order);
       setProducts(res.data.order.items);
       setAddress(res.data.order.dia_chi);
-      console.log(res.data.order);
     });
   };
   const method = {
@@ -48,16 +47,34 @@ export default function OrderDetail(){
     delivery: "GHTK"
   };
   const [value, setValue] = useState(detail.trang_thai);
+
   const postDeliveryStatus = async (newStatus, curr) => {
-    await axios.post(POST_DELIVERY_STATUS, {
+    console.log('Trạng thái mới: ',newStatus);
+    var postData = {
+        madh: order_id, 
+        trang_thai_moi: newStatus,
+        trang_thai_hien_tai: curr
+    };
+    
+    let axiosConfig = {
       headers: {
         "Content-Type": "application/json",
         "magic_pass": REACT_APP_MAGIC_PASS
-      },
-      body: { madh: order_id, trang_thai_moi: newStatus, trang_thai_hien_tai: curr},
-    }).then((res) => {
-      console.log(res.data.message);
-    });
+      }
+    };
+
+  await axios.post(POST_DELIVERY_STATUS, postData, axiosConfig).then((res) => {
+    console.log(res.data.message);
+  });
+    // await axios.post(POST_DELIVERY_STATUS, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "magic_pass": REACT_APP_MAGIC_PASS
+    //   },
+    //   body: { madh: order_id, trang_thai_moi: newStatus, trang_thai_hien_tai: curr},
+    // }).then((res) => {
+    //   console.log(res.data.message);
+    // });
   };
     return (<>
           <Row>
@@ -115,7 +132,7 @@ export default function OrderDetail(){
             </Table>
           </Card.Body>
             
-          <button className="btn" onClick={postDeliveryStatus(value, detail.trang_thai)}>Cập nhật</button>
+          <button className="btn" onClick={() => postDeliveryStatus(value, detail.trang_thai)}>Cập nhật</button>
         </Card>
           </Row>
           <Row>
