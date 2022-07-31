@@ -20,10 +20,15 @@ async function queryItem(props){
                     where masp in (select masp
                     from san_pham sp 
                     left join loai_hang lh on sp.malh = lh.malh 
-                    where to_tsvector(convertTVkdau(ten_sp) || ' ' || convertTVkdau(mo_ta) || ' ' || convertTVkdau(lh.ten_lh)) @@ to_tsquery('${string_search}'))
+                    where to_tsvector(convertTVkdau(lower(ten_sp)) || ' ' || 
+                        convertTVkdau(lower(mo_ta)) || ' ' || 
+                        convertTVkdau(lower(lh.ten_lh)) || ' ') @@ to_tsquery(lower('${string_search}'))
+                    or to_tsvector(lower(ten_sp) || ' ' || lower(mo_ta) || ' ' || lower(lh.ten_lh)) @@ to_tsquery(lower('${props.search_str}')))
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows
 }
 
@@ -43,7 +48,7 @@ router.get('/', async (req, res, next) =>{
             '4': 0,
             '5': 0,
         }
-        
+        // console.log(itemsInformation)
         for (var i=0; i<itemsInformation.length; i++){
             star.avg = itemsInformation[i].sao 
             itemsInformation[i].sao = star

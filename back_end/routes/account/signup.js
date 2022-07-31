@@ -10,7 +10,9 @@ async function checkAvailable(props){
                     WHERE email_kh  = '${props.email_kh}'
                     or sdt_kh = '${props.sdt_kh}'
                   `
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+  });
   return result.rows[0]
 }
 
@@ -28,7 +30,9 @@ async function addAccount(props){
                     WHERE email_kh  = '${props.email_kh}'
                     or sdt_kh = '${props.sdt_kh}'
                   `
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+  });
   // console.log(result.rows[0])
 
   await knexQuery('dia_chi_kh')
@@ -41,7 +45,9 @@ async function addAccount(props){
     quan_tp: props.quan_tp,
     tp_tinh: props.tp_tinh,
     mac_dinh: true
-  })
+  }).catch(error => {
+    console.log(error)
+  });
 }
 
 router.post('/', async (req, res, next) =>{

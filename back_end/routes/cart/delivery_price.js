@@ -2,16 +2,21 @@ var express = require('express');
 var axios = require('axios');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
+require("dotenv").config();
+const crypto = require("crypto");
+const secret = process.env.SECRET_KEY;
 
 async function checkClient(props){
     const rawSQL = ` 
                     select *
                     from khach_hang kh 
-                    where kh.kh_token = '${props.token}' 
+                    where kh.kh_token = '${crypto.createHmac("sha256", secret).update(props.token).digest("base64")}' 
                     and kh.kh_token is not null
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows[0]
 }
 
@@ -22,7 +27,9 @@ async function queryBranch(){
 
                     `
     // return knexQuery.select().from("store_admin");
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows
 }
 
@@ -115,7 +122,11 @@ router.post('/', async (req, res, next) =>{
     }
 
     const Client = await checkClient(req.headers);
-    if (typeof(Client) == "undefined" || typeof(req.body.dia_chi) == "undefined" || typeof(req.body.sum_weight) == "undefined"){
+    if (typeof(Client) == "undefined" || 
+        typeof(req.body.dia_chi) == "undefined" || 
+        typeof(req.body.sum_weight) == "undefined" || 
+        typeof(req.headers) == "undefined"){
+
         response.exitcode = 106
         response.message = "Token không tồn tại / thiếu trường dữ liệu"
         res.send(response)

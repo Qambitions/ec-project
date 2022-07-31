@@ -17,7 +17,9 @@ async function queryItem(props){
         rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
     }
     else if (typeof props.masp != 'undefined') rawSQL += ` AND masp = '${props.masp}' `
-    const result = await knexQuery.raw(rawSQL)
+    const result = await knexQuery.raw(rawSQL).catch(error => {
+        console.log(error)
+    });
     return result.rows
 }
 
@@ -25,6 +27,7 @@ async function queryItem(props){
 router.get('/', async (req, res, next) =>{
     req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
     req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;
+    req.query.offset = req.query.offset * req.query.limit
     var response = {
         "exitcode": 101,
         "message": "Thông tin sai / không có sản phẩm",

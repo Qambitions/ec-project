@@ -8,11 +8,23 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+var purchase_overview = require('./management/purchase_overview.js');
+var purchase_detail = require('./management/purchase_detail.js');
 var order_overview = require('./management/order_overview.js');
+var order_detail = require('./management/order_detail.js');
 var user_overview = require('./management/user_overview.js');
+var user_detail = require('./management/user_detail.js');
+var inventory_overview_product = require('./management/inventory_overview_product.js');
+var inventory_detail_product = require('./management/inventory_detail_product.js');
 
+app.use('/purchase_detail', purchase_detail);
+app.use('/purchase_overview', purchase_overview);
 app.use('/order_overview', order_overview);
 app.use('/user_overview', user_overview);
+app.use('/inventory_overview_product', inventory_overview_product);
+app.use('/inventory_detail_product', inventory_detail_product);
+app.use('/user_detail', user_detail);
+app.use('/order_detail', order_detail);
 
 app.use(function(req, res, next) {
     next(createError(404));

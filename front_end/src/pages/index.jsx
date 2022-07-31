@@ -43,6 +43,16 @@ export default function Pages() {
       <Route path="/user/dang-nhap" element={<SignInWindow />} />
       <Route path="/user/dang-ky" element={<SignUpWindow />} />
       <Route path="*" element={<ErrorPage />} />
+      <Route path="/admin" element={<Dashboard/>}/>
+      <Route path="/admin/order" element={<OrderDashboard/>}/>
+      <Route path="/admin/user" element={<UserDashboard/>}/>
+      <Route path="/admin/stock" element={<StockDashboard/>}/>
+      <Route path="/admin/user/detail" element={<UserDetail/>}/>
+      <Route path="/admin/order/:order_id" element={<OrderDetail/>}/>
+      <Route path="/admin/stock/category" element={<CategoryDashboard/>}/>
+      <Route path="/admin/category/detail" element={<CategoryDetail/>}/>
+      <Route path="/admin/stock/import" element={<ImportDashboard/>}/>
+      <Route path="/admin/import/detail" element={<ImportDetail/>}/>
     </Routes>
   );
 }
