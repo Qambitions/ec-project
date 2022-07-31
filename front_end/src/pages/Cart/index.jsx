@@ -4,17 +4,13 @@ import ProductCart from "../../components/ProductCart";
 import { IoTrashBin } from "react-icons/io5";
 import VoucherPopUp from "../../components/ProductCart/VoucherPopUp";
 import { VoucherPicker } from "../../components/ProductCart/VoucherPicker";
-import {
-  SuccessTransaction,
-  FailTransaction,
-} from "../../components/TransactionPopUp";
 import { useEffect } from "react";
 import { useContext } from "react";
 import CartContext from "../../context/CartProvider";
 
 export default function Cart() {
   const cartContext = useContext(CartContext);
-  const [items, setItems] = useState(JSON.parse(localStorage.getItem("cart")));
+  const [items, setItems] = useState([]);
   var paymentType = "";
   const handleSubmit = (event) => {
     if (paymentType === "MoMo") {
@@ -32,37 +28,16 @@ export default function Cart() {
     }
   };
 
-  const handleChange = (event) => {
-    const target = event.target;
-    const value = target.value;
-    paymentType = value;
-  };
+  const handleSelect = (e) => {};
 
-  const handleSelect = (e) => {
-    const { id, checked } = e.target;
-    if (id === "selectAll") {
-      let tmpSelection = items.map((item) => {
-        return { ...item, isChecked: checked };
-      });
-      cartContext.setSelectAllChecked(true);
-      console.log(tmpSelection);
-      setItems(tmpSelection);
-    } else {
-      let tmpSelection = items.map((item) =>
-        item.itemID === id ? { ...item, isChecked: checked } : item
-      );
-      console.log(tmpSelection);
-      setItems(tmpSelection);
-    }
-  };
+  useEffect(() => {
+    setItems(JSON.parse(localStorage.getItem("cart")));
+  }, [cartContext.cartInfo.totalQuantity]);
 
   const handleRemoveAll = () => {
     setItems([]);
     cartContext.removeAllItems();
   };
-  useEffect(() => {
-    // console.log(items);
-  }, []);
 
   return (
     <>
@@ -87,19 +62,26 @@ export default function Cart() {
                 <IoTrashBin onClick={handleRemoveAll} />
               </div>
             </div>
-            {items.map((item) => (
-              <ProductCart
-                key={item.itemID}
-                obj={item}
-                handleSelect={handleSelect}
-                isChecked={item.isChecked}
-              />
-            ))}
-            <VoucherPopUp />
+            {items.length === 0 ? (
+              <labe>Mua hàng đi</labe>
+            ) : (
+              <>
+                {" "}
+                {items.map((item) => (
+                  <ProductCart
+                    key={item.itemID}
+                    obj={item}
+                    handleSelect={handleSelect}
+                    isChecked={item.isChecked}
+                  />
+                ))}
+              </>
+            )}
           </div>
           <div className="checkout-aside">
             <div className="checkout-product-invoice">
               <h4>Hóa đơn của bạn</h4>
+              <label>{cartContext.getTotalQuantity()}</label>
               <hr />
               <div className="container__flex">
                 <label>Tạm tính:</label>
@@ -118,7 +100,7 @@ export default function Cart() {
               <div className="container__flex">
                 <label>Tổng cộng: </label>
                 <span>
-                  123231 <text>đ</text>
+                  {cartContext.getTotalPay()} <text>đ</text>
                 </span>
               </div>
               <p>(đã bao gồm VAT)</p>

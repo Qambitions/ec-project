@@ -10,51 +10,58 @@ const GET_PRODUCT = "/product/details";
 
 export default function ProductCart(props) {
   const [isRemove, setIsRemove] = useState(false);
+  const [card, setCard] = useState({});
   const cartContext = useContext(CartContext);
   const obj = props.obj;
-  var [card, setCard] = useState({
-    quantity: parseInt(obj.quantity),
-    itemID: obj.itemID,
-    pdName: "",
-    pdBrand: "",
-    price: 175000,
-    pay: 175000,
-    img: "",
-  });
-
   const getProductInfo = async () => {
     await axios
       .get(GET_PRODUCT, {
-        params: { masp: card.itemID },
+        params: { masp: obj.itemID },
       })
-      .then((res) =>
+      .then((res) => {
         setCard((prevState) => {
           return {
             ...prevState,
+            quantity: parseInt(obj.quantity),
+            itemID: obj.itemID,
             img: res.data.item.hinh_anh,
             pdName: res.data.item.tensp,
             pdBrand: res.data.item.ten_npp,
+            price: res.data.item.gia_ban_giam,
+            isChecked: props.isChecked,
           };
-        })
-      );
+        });
+      });
   };
-
   useEffect(() => {
     getProductInfo();
+    console.log("card" + card.itemID, card.isChecked);
+    if (card.isChecked) {
+      cartContext.calTempPay(card.price * card.quantity);
+    }
   }, []);
 
-  useEffect(() => {
-    console.log(card);
-    setCard((prevState) => {
-      return { ...prevState, pay: card.price * card.quantity };
-    });
-  }, [card.quantity, card.isChecked]);
+  const handleUpdateAmount = (isIncrease) => {
+    console.log("is call", card.isChecked);
+    if (card.isChecked) {
+      if (isIncrease) {
+        cartContext.calTempPay(card.price);
+      } else {
+        cartContext.calTempPay(card.price * -1);
+      }
+    }
+  };
+
+  const handleQuantity = () => {
+    cartContext.upDateQuantity(card.itemID, card.quantity);
+  };
 
   var increaseQuantity = () => {
     if (card.quantity < 50) {
       setCard((prevState) => {
         return { ...prevState, quantity: card.quantity++ };
       });
+      handleUpdateAmount(true);
     }
   };
 
@@ -63,10 +70,8 @@ export default function ProductCart(props) {
       setCard((prevState) => {
         return { ...prevState, quantity: card.quantity-- };
       });
+      handleUpdateAmount(false);
     }
-    var mycart = localStorage.getItem("cart");
-    mycart = JSON.parse(mycart);
-    mycart[{ itemdi: "2000001" }] = 2;
   };
 
   const handleRemove = () => {
@@ -79,11 +84,6 @@ export default function ProductCart(props) {
 
   function handleSelect(e) {
     props.handleSelect(e);
-    if (!props.isChecked) {
-      cartContext.calTempPay(card.pay);
-    } else {
-      cartContext.calTempPay(-card.pay);
-    }
   }
 
   return (
@@ -94,7 +94,7 @@ export default function ProductCart(props) {
             type="checkbox"
             id={card.itemID}
             onChange={handleSelect}
-            checked={props?.isChecked || false}
+            checked={props.isChecked || false}
           ></input>
         </div>
         <div className="checkout-main-col-2">
@@ -129,6 +129,7 @@ export default function ProductCart(props) {
               className="checkout__product_input_quantity"
               type="number"
               value={card.quantity}
+              onChange={handleQuantity}
             ></input>
             <button
               className="checkout__product_increase"
@@ -140,7 +141,7 @@ export default function ProductCart(props) {
         </div>
         <div className="checkout-main-col-3 checkout__product_info">
           <span>
-            <label id="product-pay">{card.pay}</label>đ
+            <label id="product-pay">{card.price * card.quantity}</label>đ
           </span>
         </div>
         <div className="checkout-main-col-3">
