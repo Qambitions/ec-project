@@ -1,0 +1,64 @@
+  .btn {
+    display: inline-block;
+    margin: 10px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #FF9B7F;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    padding: 1.25rem 2.5rem;
+  }
+  
+  .btn:hover {
+    opacity: 70%;
+  }
+  
+  .btn-blue {
+    color: #fff;
+    background-color: #1D809F;
+  }
+  
+  @media (min-width: 992px) {
+    .masthead {
+        height: 100vh;
+    }
+    .masthead h1, .masthead .h1 {
+    font-size: 7rem;
+    }
+  }
+
+
+  .badge-wait {
+    background-color: #FEFBB2;
+    color: #000;
+  }
+
+  .badge-confirmed {
+    background-color: #C1FEB2;
+    color: #000;
+  }
+
+  .badge-delivering {
+    background-color: #B2FEFE;
+    color: #000;
+  }
+
+  .badge-delivered {
+    background-color: #FFA1A1;
+    color: #000;
+  }
+  .badge-cancel {
+    background-color: #D3D3D3;
+    color: #000;
+  }
+ 
+
+  .bg-custom{
+    background-color: #D3D3D3;
+  }

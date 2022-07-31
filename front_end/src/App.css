@@ -3,6 +3,7 @@
     box-sizing: border-box;
     padding: 0;
     scroll-behavior: smooth;
+    font-family: 'K2D', sans-serif;
 }
 
 .container{
@@ -11,6 +12,7 @@
     min-width: 70%;
     width: 1200px;
     margin: 0.5rem auto;
+    padding: 0;
 }
 
 .button_pink{
