@@ -81,10 +81,10 @@ export default function OrderDashboard(props) {
               </td>
               <td>{item.tong_phi} đ</td>
               <td>
-              {item.trang_thai === "CHỜ XÁC NHẬN" ? <span className="badge badge-wait">{item.trang_thai}</span> : 
-              item.trang_thai === "ĐÃ XÁC NHẬN" ? <span className="badge badge-confirmed">{item.trang_thai}</span> :
-              item.trang_thai === "ĐANG GIAO" ? <span className="badge badge-delivering">{item.trang_thai}</span> :
-              item.trang_thai === "ĐÃ GIAO" ? <span className="badge badge-delivered">{item.trang_thai}</span> :
+              {item.trang_thai.normalize() === "CHỜ XÁC NHẬN".normalize() ? <span className="badge badge-wait">{item.trang_thai}</span> : 
+              item.trang_thai.normalize() === "ĐÃ XÁC NHẬN".normalize() ? <span className="badge badge-confirmed">{item.trang_thai}</span> :
+              item.trang_thai.normalize() === "ĐANG GIAO".normalize() ? <span className="badge badge-delivering">{item.trang_thai}</span> :
+              item.trang_thai.normalize() === "ĐÃ GIAO".normalize() ? <span className="badge badge-delivered">{item.trang_thai}</span> :
               <span className ="badge badge-cancel">{item.trang_thai}</span>}   
               </td>
               
