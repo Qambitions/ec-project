@@ -5,6 +5,7 @@ var knexQuery = require('../../db_connect');
 async function queryOrderOverview(props){
     const rawSQL = `SELECT madh, (thoi_gian + interval '7 hours') as thoi_gian,tong_phi, trang_thai 
                     FROM don_hang dh 
+                    order by madh
                     limit '${props.limit}' offset '${props.offset}'
                   `
 

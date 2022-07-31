@@ -51,8 +51,8 @@ async function checkInventory(props){
 }
 
 async function checkFlow(props){
-  if (props.trang_thai_hien_tai.toUpperCase() == 'CHỜ XÁC NHẬN' &&
-      props.trang_thai_moi.toUpperCase() == 'ĐÃ XÁC NHẬN'){
+  if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'CHỜ XÁC NHẬN'.normalize() &&
+      props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ XÁC NHẬN'.normalize()){
       var status = await checkInventory(props);
       if (status.length == 0)
         return true
@@ -61,15 +61,26 @@ async function checkFlow(props){
       }
   }
 
-  if (props.trang_thai_hien_tai.toUpperCase() == 'ĐÃ XÁC NHẬN' &&
-      (props.trang_thai_moi.toUpperCase() == 'ĐANG GIAO' || props.trang_thai_moi.toUpperCase() == 'HỦY ĐƠN HÀNG'))
+  if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'ĐÃ XÁC NHẬN'.normalize() &&
+      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐANG GIAO'.normalize() || props.trang_thai_moi.toUpperCase() == 'HỦY ĐƠN HÀNG'.normalize()))
         return true
 
-  if (props.trang_thai_hien_tai.toUpperCase() == 'ĐANG GIAO' &&
-      (props.trang_thai_moi.toUpperCase() == 'ĐÃ GIAO THÀNH CÔNG' || props.trang_thai_moi.toUpperCase() == 'HỦY ĐƠN HÀNG'))
+  if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'ĐANG GIAO'.normalize() &&
+      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ GIAO THÀNH CÔNG'.normalize() || props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()))
         return true
 
   return false
+}
+
+async function checkStatus(props){
+ const rawSQL = `SELECT trang_thai
+                  FROM don_hang dh
+                  WHERE dh.madh = '${props.madh}' 
+                `
+  const result = await knexQuery.raw(rawSQL)
+  // console.log(result)
+  // console.log(props.trang_thai_hien_tai.normalize() ,result.rows[0].trang_thai.normalize()   , result.rows[0].trang_thai.normalize()  == props.trang_thai_hien_tai.normalize() )
+  return result.rows[0].trang_thai.normalize()  == props.trang_thai_hien_tai.normalize()
 }
 
 router.get('/', async (req, res, next) =>{
@@ -138,7 +149,12 @@ router.post('/change_status', async (req, res, next) =>{
         response.message = "Thiếu trường dữ liệu cần thiết"
         return res.send(response)
       }
-  
+      if (await checkStatus(req.body) == false){
+        response.exitcode = 117
+        response.message = "Trạng thái đơn hàng bị sai"
+        return res.send(response)
+      }
+
       var checkedFlow = await checkFlow(req.body)
       if (checkedFlow == true){
         changeOrderStatus(req.body)
