@@ -4,7 +4,7 @@ var knexQuery = require('../../db_connect');
 
 async function queryOrderDetail(props){
     const rawSQL = `SELECT madh, (thoi_gian + interval '7 hours') as thoi_gian,tong_phi, trang_thai, 
-                    dh.HINH_THUC_THANH_TOAN, dh.HINH_THUC_GIAO_HANG, 
+                    dh.hinh_thuc_thanh_toan, dh.hinh_thuc_giao_hang, 
                     dh.phi_san_pham, dh.phi_van_chuyen, dh.phi_giam,
                     dc.SO_NHA_DUONG, dc.PHUONG_XA, dc.QUAN_TP, dc.TP_TINH,
                     kh.tenkh, kh.sdt_kh 
@@ -19,8 +19,9 @@ async function queryOrderDetail(props){
 }
 
 async function queryOrderItems(props){
-  const rawSQL = `select masp, so_luong_mua, gia_phai_tra, thanh_tien_mua
-                  from chi_tiet_don_hang
+  const rawSQL = `select ctdh.masp, so_luong_mua, gia_phai_tra, thanh_tien_mua, sp.ten_sp, sp.hinh_anh
+                  from chi_tiet_don_hang ctdh
+                  left join san_pham sp on sp.masp = ctdh.masp 
                   where madh = '${props.madh}'
                 `
   const result = await knexQuery.raw(rawSQL)
@@ -37,17 +38,35 @@ async function changeOrderStatus(props){
   });
 }
 
-function checkFlow(props){
-  if (upper(props.trang_thai_hien_tai) == 'CHỜ XÁC NHẬN' &&
-      upper(props.trang_thai_moi) == 'ĐÃ XÁC NHẬN') 
+async function checkInventory(props){
+  const rawSQL = `SELECT ctdh.masp
+                  FROM chi_tiet_don_hang ctdh 
+                  LEFT JOIN don_hang dh on dh.madh = ctdh.madh 
+                  LEFT JOIN kho k on k.masp = ctdh.masp and k.macn = dh.macn 
+                  WHERE dh.madh = '${props.madh}' 
+                  AND k.so_luong_ton - ctdh.so_luong_mua < 0
+                `
+  const result = await knexQuery.raw(rawSQL)
+  return result.rows
+}
+
+async function checkFlow(props){
+  if (props.trang_thai_hien_tai.toUpperCase() == 'CHỜ XÁC NHẬN' &&
+      props.trang_thai_moi.toUpperCase() == 'ĐÃ XÁC NHẬN'){
+      var status = await checkInventory(props);
+      if (status.length == 0)
+        return true
+      else {
+        return status
+      }
+  }
+
+  if (props.trang_thai_hien_tai.toUpperCase() == 'ĐÃ XÁC NHẬN' &&
+      (props.trang_thai_moi.toUpperCase() == 'ĐANG GIAO' || props.trang_thai_moi.toUpperCase() == 'HỦY ĐƠN HÀNG'))
         return true
 
-  if (upper(props.trang_thai_hien_tai) == 'ĐÃ XÁC NHẬN' &&
-      (upper(props.trang_thai_moi) == 'ĐANG GIAO' || upper(props.trang_thai_moi) == 'HỦY ĐƠN HÀNG'))
-        return true
-
-  if (upper(props.trang_thai_hien_tai) == 'ĐANG GIAO' &&
-      (upper(props.trang_thai_moi) == 'ĐÃ GIAO THÀNH CÔNG' || upper(props.trang_thai_moi) == 'HỦY ĐƠN HÀNG'))
+  if (props.trang_thai_hien_tai.toUpperCase() == 'ĐANG GIAO' &&
+      (props.trang_thai_moi.toUpperCase() == 'ĐÃ GIAO THÀNH CÔNG' || props.trang_thai_moi.toUpperCase() == 'HỦY ĐƠN HÀNG'))
         return true
 
   return false
@@ -77,7 +96,6 @@ router.get('/', async (req, res, next) =>{
         "tp_tinh":orderOverview.tp_tinh,
       }
       const orderItems = await queryOrderItems(req.query);
-      console.log(orderItems)
       response.exitcode = 0
       response.message = "lấy thông tin thành công"
       response.order = {
@@ -89,8 +107,8 @@ router.get('/', async (req, res, next) =>{
         "phi_giam":orderOverview.phi_giam,
         "trang_thai": orderOverview.trang_thai,
         "dia_chi": dia_chi,
-        "giao_hang": orderOverview.giao_hang,
-        "thanh_toan": orderOverview.thanh_toan,
+        "giao_hang": orderOverview.hinh_thuc_giao_hang,
+        "thanh_toan": orderOverview.hinh_thuc_thanh_toan,
         "tenkh":orderOverview.tenkh,
         "sdt_kh":orderOverview.sdt_kh,
         "items" : orderItems
@@ -106,6 +124,7 @@ router.post('/change_status', async (req, res, next) =>{
   var response = {
         "exitcode": 1,
         "message": "Sai thông tin/sản phẩm không tồn tại",
+        "items" : ""
     }
     try {
       if (req.headers.magic_pass != 'LamZauKhumKho'){
@@ -119,17 +138,24 @@ router.post('/change_status', async (req, res, next) =>{
         response.message = "Thiếu trường dữ liệu cần thiết"
         return res.send(response)
       }
-      if (checkFlow(req.body)){
+  
+      var checkedFlow = await checkFlow(req.body)
+      if (checkedFlow == true){
         changeOrderStatus(req.body)
         response.exitcode = 0
         response.message = "Cập nhật trạng thái thành công"
         return res.send(response)
       }
-      else {
-        response.exitcode = 101
+      else if (checkedFlow == false) {
+        response.exitcode = 114
         response.message = "Chuyển đổi trạng thái không đúng trình tự"
         return res.send(response)
-        
+      }
+      else {
+        response.exitcode = 116
+        response.message = "tồn tại mã hàng bị thiếu hàng" 
+        response.items = checkedFlow
+        return res.send(response)
       }
     }
     catch (e){
