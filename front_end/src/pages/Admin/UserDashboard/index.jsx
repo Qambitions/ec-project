@@ -19,6 +19,10 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import { useNavigate } from "react-router-dom";
 
+import axios from "../../../api/axios";
+const {REACT_APP_MAGIC_PASS} = process.env;
+const GET_ORDER_DETAIL_URL = "/management/order_detail";
+const POST_DELIVERY_STATUS = "/management/order_detail/change_status";
 
   
 

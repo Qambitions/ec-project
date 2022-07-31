@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import Sidebar from "../../../components/sidebar/Sidebar";
 import './style.css';
 import AdminNavbar from "../../../components/NavBar/Navbar";
+import moment from "moment";
 import {
   Card,
   Table,
 } from "react-bootstrap";
-
 import axios from "../../../api/axios";
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GETORDER_URL = "/management/order_overview";
+
+
+
+
 
 export default function OrderDashboard(props) {
   const [orders, setOrders] = useState([]);
@@ -19,6 +23,7 @@ export default function OrderDashboard(props) {
   useEffect(() => {
     fetchOrders();
   }, []);
+
 
   const fetchOrders = async () => {
     await axios(GETORDER_URL, {
@@ -34,50 +39,11 @@ export default function OrderDashboard(props) {
       setOrders(res.data.list_order);
     });
   };
-
-  const data = [
-    {
-      id: '001',
-      time: '01/07/2022',
-      total: 150000,
-      status: 'Chờ xác nhận'
-    },
-  
-    {
-      id: '002',
-      time: '01/07/2022',
-      total: 200000,
-      status: 'Đã xác nhận'
-    },
-    {
-      id: '003',
-      time: '06/07/2022',
-      total: 200000,
-      status: 'Đang giao'
-    },
-    {
-      id: '004',
-      time: '15/07/2022',
-      total: 200000,
-      status: 'Đã giao'
-    },
-    {
-      id: '005',
-      time: '20/07/2022',
-      total: 400000,
-      status: 'Đã hủy'
-    }
-
-  ];
-  const navigate = useNavigate();
   // const handleRowCLick = (id) => {
-  //  navigate(`/${id}`);
-  // } 
-  const handleRowCLick = () => {
-   navigate("/admin/order/detail");
-  } 
-
-  
+  const navigate = useNavigate();
+  const handleRowCLick = (id) => {
+    navigate(`/admin/order/${id}`);
+   }  
   return (
     <>
       <div className="row">
@@ -101,7 +67,7 @@ export default function OrderDashboard(props) {
               <tbody>
       {orders.map((item, index) => {
           return (
-            <tr onClick={handleRowCLick}>
+            <tr onClick={()=> handleRowCLick(item.madh)}>
               <td>
                 <div class="d-flex align-items-center">
                   <div class="ms-3">
@@ -110,18 +76,18 @@ export default function OrderDashboard(props) {
                 </div>
               </td>
               <td>
-                <p class="fw-normal mb-1">{item.thoi_gian}</p>
-
+                <p class="fw-normal mb-1">{moment(item.thoi_gian).format("HH:mm:ss DD/MM/YYYY")}</p>
+                
               </td>
-              <td>{item.tong_phi}</td>
+              <td>{item.tong_phi} đ</td>
               <td>
-              {item.trang_thai == "CHỜ XÁC NHẬN" ? <span className="badge badge-wait">{item.trang_thai}</span> : 
-              item.trang_thai == "ĐÃ XÁC NHẬN" ? <span className="badge badge-confirmed">{item.trang_thai}</span> :
-              item.trang_thai == "ĐANG GIAO" ? <span className="badge badge-delivering">{item.trang_thai}</span> :
-              item.trang_thai == "ĐÃ GIAO" ? <span className="badge badge-delivered">{item.trang_thai}</span> :
-              <span className="badge badge-cancel">{item.trang_thai}</span>}   
+              {item.trang_thai === "CHỜ XÁC NHẬN" ? <span className="badge badge-wait">{item.trang_thai}</span> : 
+              item.trang_thai === "ĐÃ XÁC NHẬN" ? <span className="badge badge-confirmed">{item.trang_thai}</span> :
+              item.trang_thai === "ĐANG GIAO" ? <span className="badge badge-delivering">{item.trang_thai}</span> :
+              item.trang_thai === "ĐÃ GIAO" ? <span className="badge badge-delivered">{item.trang_thai}</span> :
+              <span className ="badge badge-cancel">{item.trang_thai}</span>}   
               </td>
-
+              
             </tr>
           )
       })}
@@ -131,7 +97,6 @@ export default function OrderDashboard(props) {
             </Table>
           </Card.Body>
         </Card>
-      
       </div>
 
       </div>

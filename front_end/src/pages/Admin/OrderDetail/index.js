@@ -1,45 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-    Badge,
-    Button,
     Card,
-    Navbar,
-    Nav,
     Table,
-    Container,
     Row,
     Col,
   } from "react-bootstrap";
 import Sidebar from "../../../components/sidebar/Sidebar";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import AdminNavbar from "../../../components/NavBar/Navbar";
-import { IoTrashBin } from "react-icons/io5";
-import {FaShippingFast} from "react-icons/fa";
-import {MdPattern, MdPayment} from "react-icons/md";
-import { useState } from 'react';
+import moment from "moment";
 
+
+import axios from "../../../api/axios";
+const {REACT_APP_MAGIC_PASS} = process.env;
+const GET_ORDER_DETAIL_URL = "/management/order_detail";
+const POST_DELIVERY_STATUS = "/management/order_detail/change_status";
 
 export default function OrderDetail(){
-  const data = [
-    {
-      id: '001',
-      name: "Súp cá cho mèo",
-      price: 100000,
-      quantity: 2,
-    },
-    {
-      id: '112',
-      name: "Chuồng mèo",
-      price: 1000000,
-      quantity: 1,
-    },
+  const {order_id} = useParams();
 
-];
+  const [detail, setDetail] = useState({});
+  const [address, setAddress] = useState({});
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchOrderDetail();
+  }, []);
+
+
+  const fetchOrderDetail = async () => {
+    await axios(GET_ORDER_DETAIL_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      },
+      params: { madh: order_id },
+    }).then((res) => {
+      setDetail(res.data.order);
+      setProducts(res.data.order.items);
+      setAddress(res.data.order.dia_chi);
+      console.log(res.data.order);
+    });
+  };
   const method = {
     payment: "Paypal",
     delivery: "GHTK"
   };
-  
+  const [value, setValue] = useState(detail.trang_thai);
+  const postDeliveryStatus = async (newStatus, curr) => {
+    await axios.post(POST_DELIVERY_STATUS, {
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      },
+      body: { madh: order_id, trang_thai_moi: newStatus, trang_thai_hien_tai: curr},
+    }).then((res) => {
+      console.log(res.data.message);
+    });
+  };
     return (<>
           <Row>
             <Col lg="2">
@@ -65,17 +84,29 @@ export default function OrderDetail(){
               <td>
                 <div class="d-flex align-items-center">
                   <div class="ms-3">
-                    <p class="fw-bold mb-1">001</p>
+                    <p class="fw-bold mb-1">{detail.madh}</p>
                   </div>
                 </div>
               </td>
               <td>
-                <p class="fw-normal mb-1">13:00:19 26/07/2022</p>
+                <p class="fw-normal mb-1">{moment(detail.thoi_gian).format("HH:mm:ss DD/MM/YYYY")}</p>
               </td>
-              <td>100000</td>
+              <td>{detail.tong_phi}</td>
               <td>
-              <span className="badge badge-delivered">Đã giao</span>
-                
+              {/* {detail.trang_thai === "CHỜ XÁC NHẬN" ? <span className="badge badge-wait">{detail.trang_thai}</span> : 
+              detail.trang_thai === "ĐÃ XÁC NHẬN" ? <span className="badge badge-confirmed">{detail.trang_thai}</span> :
+              detail.trang_thai === "ĐANG GIAO" ? <span className="badge badge-delivering">{detail.trang_thai}</span> :
+              detail.trang_thai === "ĐÃ GIAO" ? <span className="badge badge-delivered">{detail.trang_thai}</span> :
+              <span className ="badge badge-cancel">{detail.trang_thai}</span>}    */}
+            <div className="input-group mb-3">
+              <select value={value} onChange={e => setValue(e.target.value)}>
+                <option value="CHỜ XÁC NHẬN">CHỜ XÁC NHẬN</option>
+                <option value="ĐÃ XÁC NHẬN">ĐÃ XÁC NHẬN</option>
+                <option value="ĐANG GIAO">ĐANG GIAO</option>
+                <option value="ĐÃ GIAO">ĐÃ GIAO</option>
+                <option value="ĐÃ HỦY">ĐÃ HỦY</option>
+              </select>
+                  </div>
               </td>
 
             </tr>
@@ -83,9 +114,10 @@ export default function OrderDetail(){
     </tbody>
             </Table>
           </Card.Body>
+            
+          <button className="btn" onClick={postDeliveryStatus(value, detail.trang_thai)}>Cập nhật</button>
         </Card>
           </Row>
-
           <Row>
           <h3>Chi tiết đơn hàng</h3>
             <div className="body">
@@ -98,80 +130,85 @@ export default function OrderDetail(){
                         <div className="checkout-main-col-3">Số lượng</div>
                         <div className="checkout-main-col-3">Thành tiền</div>
                     </div>
-                    {data.map((product, index) => {
+                    {products.map((product, index) => {
                   return (
                     <div  className="checkout-main-row">
                       <div className="checkout-main-col-1">
-                          <label>{product.id}</label>
+                          <label>{product.masp}</label>
                     </div>
                     <div className="checkout-main-col-2">
                         <div className="checkout__product-card">
                             <a href="https://www.petmart.vn/sup-thuong-cho-meo-vi-ca-ngu-ca-chep-ciao-tuna-bonito">
-                            <img className="checkout__cart_product_img" src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656065284/food/sup-thuong-cho-meo-vi-ca-ngu-ca-chep-ciao-tuna-bonito_h9a9du.webp"}></img>
+                            <img className="checkout__cart_product_img" src={product.hinh_anh}></img>
                             </a>
-                            <p>{product.name}</p>
+                            <p>{product.ten_sp}</p>
                         </div>
                     </div>
                     <div className="checkout-main-col-3">
                         <div className="checkout-product-info">
-                            <label id='product-price'>{product.price}</label>
+                            <label id='product-price'>{product.gia_phai_tra}</label>
                         </div>
                     </div>
                     <div className="checkout-main-col-3">
-                    <label>{product.quantity}</label>
+                    <label>{product.so_luong_mua}</label>
 
                     </div>
-                    <div className="checkout-main-col-3">{product.price * product.quantity}</div>
+                    <div className="checkout-main-col-3">{product.thanh_tien_mua}</div>
                 </div>
                   )
               })}
                 <div  className="checkout-main-row">
                 <div className="checkout-main-col-2">Phí sản phẩm: </div>
-                <div className="checkout-main-col-3">100000 </div>
+                <div className="checkout-main-col-3">{detail.phi_san_pham}</div>
 
                 </div>
                 <div  className="checkout-main-row">
                 <div className="checkout-main-col-2">Phí vận chuyển: </div>
-                <div className="checkout-main-col-3">15000 </div>
+                <div className="checkout-main-col-3">{detail.phi_van_chuyen} </div>
 
                 </div>
                 <div  className="checkout-main-row">
                 <div className="checkout-main-col-2">Phí giảm: </div>
-                <div className="checkout-main-col-3">10000 </div>
+                <div className="checkout-main-col-3">{detail.phi_giam} </div>
                 </div>
                 <div  className="checkout-main-row">
                 <div className="checkout-main-col-2">Tổng tiền: </div>
-                <h5 className="checkout-main-col-3">100000 </h5>
+                <h5 className="checkout-main-col-3">{detail.tong_phi}</h5>
                 </div>
                 </div>
 
                 <div className="checkout-aside" style={{margin:"10px"}}>
                     <div className="checkout-product-invoice">
-                        <h4>Nguyễn Thị Ngọc Diệu </h4>
+                        <h4>{detail.tenkh}</h4>
                         <hr/>
                         <div>
-                            <label>0987654321</label>
+                            <label>{detail.sdt_kh}</label>
                         </div>
                         <div>
-                            <label>227 Nguyễn Văn Cừ</label>
+                            <label>{address.so_nha_duong}, phường {address.phuong_xa}, quận (huyện) {address.quan_tp}, {address.tp_tinh}</label>
                         </div>
                         <hr/>
                         <label>
-                          {method.delivery == "GHTK" ? <>
+                          {["GHTK" ,"GHTK_NORM", "GHTK_FAST"].includes(detail.giao_hang) ? <>
                           <img style={{height:"40px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/287535036_424202986024765_8691090997415472965_n_vqls2y.png"}></img>
                           </>
-                          : method.delivery == "GHN" ? <>
+                          : detail.giao_hang == "GHN" ? <>
                             <img style={{height:"40px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/286088489_5050087261779690_4284998344429746518_n_ioqia7.png"}></img>
                           </> : null}
                         </label>
                         <hr/>
                         <label>
-                          {method.payment == "Momo" ? <>
+                          {detail.thanh_toan == "MOMO" ? <>
                           <img style={{height:"20px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/momo-logo-ED8A3A0DF2-seeklogo.com_pnirvg.png"}></img>
                           <label>&nbsp;&nbsp;Thanh toán bằng Momo</label></>
-                          : method.payment == "Paypal" ? <>
+                          : detail.thanh_toan == "PAYPAL" ? <>
                           <img style={{height:"20px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832639/icon/888870_wptg5q.png"}></img>
-                          <label>&nbsp;&nbsp;Thanh toán bằng Paypal</label></> : null}
+                          <label>&nbsp;&nbsp;Thanh toán bằng Paypal</label></>: 
+                          detail.thanh_toan == "VNPAY" ? <>
+                          <img style={{height:"20px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656773206/icon/icon-payment-method-vnpay_zh2dfi.png"}></img>
+                          <label>&nbsp;&nbsp;Thanh toán bằng Paypal</label></> : <>   
+                          <img style={{height:"20px"}} src={"https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832640/icon/2543174_viafmp.png"}></img>
+                          <label>&nbsp;&nbsp;Thanh toán khi nhận hàng</label></>}
                         </label>
                     </div>
                     <div>
