@@ -46,7 +46,7 @@ export default function Pages(){
                 <Route path="/admin/order" element={<OrderDashboard/>}/>
                 <Route path="/admin/user" element={<UserDashboard/>}/>
                 <Route path="/admin/stock" element={<StockDashboard/>}/>
-                <Route path="/admin/user/detail" element={<UserDetail/>}/>
+                <Route path="/admin/user/:user_id" element={<UserDetail/>}/>
                 <Route path="/admin/order/:order_id" element={<OrderDetail/>}/>
                 <Route path="/admin/stock/category" element={<CategoryDashboard/>}/>
                 <Route path="/admin/category/detail" element={<CategoryDetail/>}/>

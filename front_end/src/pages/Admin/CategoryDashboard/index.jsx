@@ -26,31 +26,31 @@ export default function CategoryDashboard(){
     const type = [
         {
             name: "Thức ăn",
-            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+            img: "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1659319834/category/food_spgzt9.jpg",
         },
         {
             name: "Mỹ phẩm & Làm đẹp",
-            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+            img: "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1659319833/category/beauty_fjbhq3.jpg",
 
         },
         {
             name: "Thời trang",
-            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+            img: "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1659321092/category/fashion1_bzswql.jpg",
 
         },
         {
             name: "Đồ chơi",
-            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+            img: "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1659321095/category/toy1_w7ndho.jpg",
 
         },
         {
             name: "Y tế",
-            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+            img: "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1659321214/category/drug1_coxe4s.jpg",
 
         },
         {
             name: "Chuồng thú",
-            img: "https://happydog_en_sb.cstatic.io/440x440/f/69110/480x480/c90b13149a/hd-vet-new-product-slider-packshots-sensible-11kg-300g.png",
+            img: "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1659320879/category/house1_b2yloj.jpg",
 
         },
 
