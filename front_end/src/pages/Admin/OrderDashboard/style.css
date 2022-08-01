@@ -53,11 +53,15 @@
     background-color: #FFA1A1;
     color: #000;
   }
-  .badge-cancel {
+  .badge-cancel, .badge-block {
     background-color: #D3D3D3;
     color: #000;
   }
  
+  .badge-active {
+    background-color: #C1FFA4;
+    color: #000;
+  }
 
   .bg-custom{
     background-color: #D3D3D3;

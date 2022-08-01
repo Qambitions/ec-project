@@ -32,14 +32,13 @@ export default function OrderDashboard(props) {
         "Content-Type": "application/json",
         "magic_pass": REACT_APP_MAGIC_PASS
       },
-      params: { limit: props.limit, offset: props.offset },
+      params: {offset: props.offset },
     }).then((res) => {
       console.log(res.data.list_order);
       setTotal(res.data.total);
       setOrders(res.data.list_order);
     });
   };
-  // const handleRowCLick = (id) => {
   const navigate = useNavigate();
   const handleRowCLick = (id) => {
     navigate(`/admin/order/${id}`);
@@ -84,7 +83,7 @@ export default function OrderDashboard(props) {
               {item.trang_thai.normalize() === "CHỜ XÁC NHẬN".normalize() ? <span className="badge badge-wait">{item.trang_thai}</span> : 
               item.trang_thai.normalize() === "ĐÃ XÁC NHẬN".normalize() ? <span className="badge badge-confirmed">{item.trang_thai}</span> :
               item.trang_thai.normalize() === "ĐANG GIAO".normalize() ? <span className="badge badge-delivering">{item.trang_thai}</span> :
-              item.trang_thai.normalize() === "ĐÃ GIAO".normalize() ? <span className="badge badge-delivered">{item.trang_thai}</span> :
+              ["ĐÃ GIAO THÀNH CÔNG".normalize() ,"ĐÃ GIAO".normalize()].includes(item.trang_thai.normalize()) ? <span className="badge badge-delivered">{item.trang_thai}</span> :
               <span className ="badge badge-cancel">{item.trang_thai}</span>}   
               </td>
               
@@ -98,7 +97,6 @@ export default function OrderDashboard(props) {
           </Card.Body>
         </Card>
       </div>
-
       </div>
       
     </>
