@@ -14,6 +14,16 @@ import CategoryPage from "./CategoryPage";
 import Catalog from "../components/Catalog";
 import CustomerDashboard from "./CustomerDashboard";
 import Orders from "./CustomerDashboard/Orders";
+import Dashboard from "./Admin/AdminDashboard";
+import OrderDashboard from "./Admin/OrderDashboard";
+import UserDashboard from "./Admin/UserDashboard";
+import StockDashboard from "./Admin/StockDashboard";
+import UserDetail from "./Admin/UserDetail";
+import OrderDetail from "./Admin/OrderDetail";
+import CategoryDashboard from "./Admin/CategoryDashboard";
+import CategoryDetail from "./Admin/CategoryDetail";
+import ImportDashboard from "./Admin/ImportDashboard";
+import ImportDetail from "./Admin/ImportDetail";
 
 export default function Pages() {
   return (
