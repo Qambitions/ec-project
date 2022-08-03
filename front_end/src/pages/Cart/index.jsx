@@ -10,6 +10,7 @@ import CartContext from "../../context/CartProvider";
 
 export default function Cart() {
   const cartContext = useContext(CartContext);
+  const [selectAll, setSelectAll] = useState();
   const [items, setItems] = useState([]);
   var paymentType = "";
   const handleSubmit = (event) => {
@@ -28,11 +29,48 @@ export default function Cart() {
     }
   };
 
-  const handleSelect = (e) => {};
+  const handleSelect = (e) => {
+    const { id, value } = e.target;
+
+    if (id === "selectAll") {
+      var cart = localStorage.getItem("cart");
+      cart = cart ? JSON.parse(cart) : [];
+      for (var i in cart) {
+        let tmp = cart[i].isChecked;
+
+        let checked = document.getElementById("selectAll").checked;
+        if (checked === true) {
+          if (tmp === false) {
+            document.getElementById(cart[i].itemID).click();
+            cart[i].isChecked = !tmp;
+          }
+        } else {
+          if (tmp === true) {
+            cart[i].isChecked = !tmp;
+            document.getElementById(cart[i].itemID).click();
+          }
+        }
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+    setItems(JSON.parse(localStorage.getItem("cart")));
+    let isChecked = !JSON.parse(localStorage.getItem("cart")).some(
+      (item) => item?.isChecked !== true
+    );
+    setSelectAll(isChecked);
+    console.log(id);
+  };
 
   useEffect(() => {
     setItems(JSON.parse(localStorage.getItem("cart")));
   }, [cartContext.cartInfo.totalQuantity]);
+
+  useEffect(() => {
+    let isChecked = !JSON.parse(localStorage.getItem("cart")).some(
+      (item) => item?.isChecked !== true
+    );
+    setSelectAll(isChecked);
+  }, [items]);
 
   const handleRemoveAll = () => {
     setItems([]);
@@ -50,7 +88,7 @@ export default function Cart() {
                 <input
                   type="checkbox"
                   id="selectAll"
-                  checked={!items.some((item) => item?.isChecked !== true)}
+                  checked={selectAll}
                   onChange={handleSelect}
                 ></input>
               </div>
@@ -81,12 +119,12 @@ export default function Cart() {
           <div className="checkout-aside">
             <div className="checkout-product-invoice">
               <h4>Hóa đơn của bạn</h4>
-              <label>{cartContext.getTotalQuantity()}</label>
+              <label>{cartContext.cartInfo.totalQuantity}</label>
               <hr />
               <div className="container__flex">
                 <label>Tạm tính:</label>
                 <span>
-                  {cartContext.getTempPay()}
+                  {cartContext.cartInfo.tempPay}
                   <text>đ</text>
                 </span>
               </div>
@@ -100,7 +138,7 @@ export default function Cart() {
               <div className="container__flex">
                 <label>Tổng cộng: </label>
                 <span>
-                  {cartContext.getTotalPay()} <text>đ</text>
+                  {cartContext.cartInfo.totalPay} <text>đ</text>
                 </span>
               </div>
               <p>(đã bao gồm VAT)</p>

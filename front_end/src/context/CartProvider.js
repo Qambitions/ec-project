@@ -30,7 +30,7 @@ export const CartProvider = ({ children }) =>{
         }
         // Save back to localStorage 
         localStorage.setItem("cart", JSON.stringify(cart));
-        setCartInfo(prevState=>{return{...prevState,totalQuantity: cartInfo.totalQuantity+quantity}})
+        setCartInfo(prevState=>{return{...prevState,totalQuantity: prevState.totalQuantity+quantity}})
     }
 
     const removeItem = (id) =>{
@@ -39,7 +39,7 @@ export const CartProvider = ({ children }) =>{
         var i;
         for( i in cart){
             if(cart[i].itemID===id){
-                setCartInfo(prevState=>{return{...prevState,totalQuantity: cartInfo.totalQuantity-cart[i].quantity}})
+                setCartInfo(prevState=>{return{...prevState,totalQuantity: prevState.totalQuantity-cart[i].quantity}})
                 cart.splice(i,1)
                 break;
             }
@@ -55,7 +55,7 @@ export const CartProvider = ({ children }) =>{
         // Add new data to localStorage Array
         for(var i in cart){
             if(cart[i].itemID===id){
-                setCartInfo(prevState=>{return{...prevState,totalQuantity: cartInfo.totalQuantity-cart[i].quantity+quantity}})
+                setCartInfo(prevState=>{return{...prevState,totalQuantity: prevState.totalQuantity-cart[i].quantity+quantity}})
                 cart[i].quantity = quantity;
                 break;
             }
@@ -72,8 +72,10 @@ export const CartProvider = ({ children }) =>{
     }
 
     const calTempPay = (amount) =>{
-        console.log("am",parseInt(amount))
-        setCartInfo(prevState=>{return{...prevState,tempPay: cartInfo.tempPay+parseInt(amount)}})
+        console.log("upd:",amount)
+        setCartInfo((prevState) => {
+            return { ...prevState, tempPay: prevState.tempPay + parseInt(amount) };
+          });
     }
 
     const getTempPay = ()=>{
@@ -111,7 +113,7 @@ export const CartProvider = ({ children }) =>{
 
     const value = {addItem,removeItem, removeAllItems,upDateQuantity, 
         calTempPay,setTempPay,getTempPay,getTotalPay,
-        getDiscount,getTotalQuantity,updateItemCheck,cartInfo}
+        getDiscount,getTotalQuantity,updateItemCheck,cartInfo,setCartInfo}
 
     return (
         <CartContext.Provider value={value}>

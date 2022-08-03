@@ -19,31 +19,43 @@ export default function ProductCart(props) {
         params: { masp: obj.itemID },
       })
       .then((res) => {
-        setCard((prevState) => {
-          return {
-            ...prevState,
-            quantity: parseInt(obj.quantity),
-            itemID: obj.itemID,
-            img: res.data.item.hinh_anh,
-            pdName: res.data.item.tensp,
-            pdBrand: res.data.item.ten_npp,
-            price: res.data.item.gia_ban_giam,
-            isChecked: props.isChecked,
-          };
+        setCard({
+          quantity: parseInt(obj.quantity),
+          itemID: obj.itemID,
+          img: res.data.item.hinh_anh,
+          pdName: res.data.item.tensp,
+          pdBrand: res.data.item.ten_npp,
+          price: res.data.item.gia_ban_giam,
+          pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
         });
       });
   };
   useEffect(() => {
     getProductInfo();
-    console.log("card" + card.itemID, card.isChecked);
-    if (card.isChecked) {
-      cartContext.calTempPay(card.price * card.quantity);
+    if (document.getElementById(obj.itemID) !== null) {
+      var cart = localStorage.getItem("cart");
+      cart = cart ? JSON.parse(cart) : [];
+      for (var i in cart) {
+        if (cart[i].itemID === obj.itemID) {
+          document.getElementById(obj.itemID).checked = cart[i].isChecked;
+          if (cart[i].isChecked === true) {
+            if (!isNaN(card.pay)) {
+              cartContext.calTempPay(card.pay);
+              console.log(card.pay);
+            } else {
+              cartContext.calTempPay(0);
+            }
+          }
+        }
+      }
     }
-  }, []);
+  }, [card.itemID]);
 
   const handleUpdateAmount = (isIncrease) => {
-    console.log("is call", card.isChecked);
-    if (card.isChecked) {
+    setCard((prevState) => {
+      return { ...prevState, pay: prevState.price * prevState.quantity };
+    });
+    if (document.getElementById(card.itemID).checked) {
       if (isIncrease) {
         cartContext.calTempPay(card.price);
       } else {
@@ -59,7 +71,7 @@ export default function ProductCart(props) {
   var increaseQuantity = () => {
     if (card.quantity < 50) {
       setCard((prevState) => {
-        return { ...prevState, quantity: card.quantity++ };
+        return { ...prevState, quantity: prevState.quantity++ };
       });
       handleUpdateAmount(true);
     }
@@ -68,7 +80,7 @@ export default function ProductCart(props) {
   var decreaseQuantity = () => {
     if (card.quantity > 1) {
       setCard((prevState) => {
-        return { ...prevState, quantity: card.quantity-- };
+        return { ...prevState, quantity: prevState.quantity-- };
       });
       handleUpdateAmount(false);
     }
@@ -76,6 +88,7 @@ export default function ProductCart(props) {
 
   const handleRemove = () => {
     cartContext.removeItem(card.itemID);
+    cartContext.calTempPay(card.pay * -1);
   };
 
   const toggleRemove = () => {
@@ -84,6 +97,14 @@ export default function ProductCart(props) {
 
   function handleSelect(e) {
     props.handleSelect(e);
+    cartContext.updateItemCheck(card.itemID);
+    if (!isNaN(card.pay)) {
+      if (document.getElementById(card.itemID).checked === true) {
+        cartContext.calTempPay(card.pay);
+      } else {
+        cartContext.calTempPay(card.pay * -1);
+      }
+    }
   }
 
   return (
@@ -91,10 +112,10 @@ export default function ProductCart(props) {
       <div className="checkout-main-row product__cart">
         <div className="checkout-main-col-1">
           <input
+            value={0}
             type="checkbox"
-            id={card.itemID}
+            id={obj.itemID}
             onChange={handleSelect}
-            checked={props.isChecked || false}
           ></input>
         </div>
         <div className="checkout-main-col-2">
