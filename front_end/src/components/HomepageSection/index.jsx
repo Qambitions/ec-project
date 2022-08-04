@@ -19,7 +19,6 @@ export default function HomepageSection(props) {
       },
       params: { malh: props.malh, limit: props.limit, offset: props.offset },
     }).then((res) => {
-      console.log(res.data.items);
       setProductCards(res.data.items);
     });
   };

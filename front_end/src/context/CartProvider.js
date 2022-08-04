@@ -69,6 +69,7 @@ export const CartProvider = ({ children }) =>{
         localStorage.setItem("cart",JSON.stringify(cart));
         setCartInfo(prevState=>{return{...prevState,totalQuantity: 0}})
         setCartInfo(prevState=>{return{...prevState,tempPay: 0}})
+        
     }
 
     const calTempPay = (amount) =>{

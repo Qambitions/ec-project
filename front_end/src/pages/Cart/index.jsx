@@ -14,18 +14,12 @@ export default function Cart() {
   const [items, setItems] = useState([]);
   var paymentType = "";
   const handleSubmit = (event) => {
-    if (paymentType === "MoMo") {
-      // momoCall();
-      console.log("Call momo api");
-    }
-    if (paymentType === "ZaloPay") {
-      console.log("Call zalo api");
-    }
-    if (paymentType === "VNPay") {
-      console.log("Call vnpay api");
-    }
-    if (paymentType === "PayPal") {
-      console.log("Call paypal api");
+    var cart = localStorage.getItem("cart");
+    cart = cart ? JSON.parse(cart) : [];
+    if (!cart.some((item) => item?.isChecked === true)) {
+      console.log("cart is empty");
+    } else {
+      console.log("get go");
     }
   };
 
