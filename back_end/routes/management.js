@@ -17,6 +17,7 @@ var user_detail = require('./management/user_detail.js');
 var inventory_overview_product = require('./management/inventory_overview_product.js');
 var inventory_detail_product = require('./management/inventory_detail_product.js');
 var main_dashboard = require('./management/main_dashboard.js');
+var create_po = require('./management/create_po.js');
 
 app.use('/purchase_detail', purchase_detail);
 app.use('/purchase_overview', purchase_overview);
@@ -27,6 +28,7 @@ app.use('/inventory_detail_product', inventory_detail_product);
 app.use('/user_detail', user_detail);
 app.use('/order_detail', order_detail);
 app.use('/main', main_dashboard);
+app.use('/create_po', create_po);
 
 app.use(function(req, res, next) {
     next(createError(404));
