@@ -66,6 +66,7 @@ export default function CategoryDashboard(){
           text ="Danh mục sản phẩm"
           count = "6"/>
           </Row>
+          <Link to="/admin/all-products"><h5 className="p-2">Xem tất cả {'>>'} </h5></Link>
           <Row>  
           {type.map((item, index) => {
           return (
