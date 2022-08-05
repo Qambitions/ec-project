@@ -51,8 +51,9 @@ export default function Pages(){
                 <Route path="/admin/stock/category" element={<CategoryDashboard/>}/>
                 <Route path="/admin/category/detail" element={<CategoryDetail/>}/>
                 <Route path="/admin/stock/import" element={<ImportDashboard/>}/>
-                <Route path="/admin/import/detail" element={<ImportDetail/>}/>
-
+                <Route path="/admin/import/:po_id" element={<ImportDetail/>}/>
+                <Route path="/admin/all-products" element={<CategoryDetail/>}/>
+                
 
             </Routes>
     )
