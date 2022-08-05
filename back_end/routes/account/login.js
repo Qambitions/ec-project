@@ -75,6 +75,7 @@ router.post('/', async (req, res, next) =>{
   catch (e){
     response.exitcode = 1
     response.message = e
+    response['warning'] = "có lỗi bất ngờ xảy ra..."
   }
   return res.send(response)
 });

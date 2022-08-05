@@ -204,6 +204,7 @@ router.post('/', async (req, res, next) =>{
         console.log(e)
         response.exitcode=1
         response.message = e
+        response['warning'] = "có lỗi bất ngờ xảy ra..."
         updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
     }
         

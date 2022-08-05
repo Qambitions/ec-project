@@ -32,9 +32,6 @@ async function pushPO(props){
         console.log(error)
         throw new Error(error);
     });
-    
-
-    
 }
 
 router.post('/', async (req, res, next) =>{
@@ -55,6 +52,7 @@ router.post('/', async (req, res, next) =>{
     catch (e){
       response.exitcode= 1
       response.message = "có lỗi xảy ra"
+      response['warning'] = "có lỗi bất ngờ xảy ra..."
     }
     return res.send(response)
     
