@@ -52,7 +52,9 @@ async function addOrder(props, Client){
     }).returning("madh").then(function (madh){
         // console.log(madh)
         res = madh
-    })
+    }).catch(error => {
+        console.log(error)
+    });
     // const res = await knexQuery.select('madh').from('don_hang')
     // .where('makh','=',Client.makh)
     // .andWhere('trang_thai','=','WAIT FOR PAYMENT').catch(error => {
