@@ -121,7 +121,7 @@ export default function OrderDetail(){
           <option value="ĐÃ GIAO">ĐÃ GIAO</option>
           <option value="ĐÃ HỦY">ĐÃ HỦY</option>
         </select>
-            </div>
+        </div>
         </td>
 
       </tr>
