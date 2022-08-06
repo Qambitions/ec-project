@@ -61,12 +61,22 @@ async function checkFlow(props){
       }
   }
 
+  if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'CHỜ XÁC NHẬN'.normalize() &&
+      (props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()
+      || props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ HỦY'.normalize()))
+        return true
+
   if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'ĐÃ XÁC NHẬN'.normalize() &&
-      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐANG GIAO'.normalize() || props.trang_thai_moi.toUpperCase() == 'HỦY ĐƠN HÀNG'.normalize()))
+      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐANG GIAO'.normalize() 
+      || props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()
+      || props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ HỦY'.normalize()))
         return true
 
   if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'ĐANG GIAO'.normalize() &&
-      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ GIAO THÀNH CÔNG'.normalize() || props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()))
+      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ GIAO THÀNH CÔNG'.normalize() 
+        || props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()
+        || props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ GIAO'.normalize()
+        || props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ HỦY'.normalize()))
         return true
 
   return false
