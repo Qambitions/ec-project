@@ -3,7 +3,6 @@ import {useState} from 'react';
 import {MdDashboard} from "react-icons/md";
 import {FiUsers} from "react-icons/fi";
 import {BsBoxSeam, BsNewspaper} from "react-icons/bs";
-import {RiCoupon2Line} from "react-icons/ri";
 import Logo from "../../assets/logo.png";
 import { Link} from "react-router-dom";
 
@@ -28,19 +27,10 @@ export default function Sidebar() {
     name: "Orders",
     logo: <BsNewspaper/>,
     path: "/admin/order"
-  },
-  {
-    name: "Vouchers",
-    logo: <RiCoupon2Line/>,
-    path: "/admin/voucher"
-  },
+  }
   
 ];
 
-  const [isActive, setIsActive] = useState(false);
-
-  const handleClick =() => {
-    setIsActive(!isActive);}
 
   return (
     <div className="sidebar">
