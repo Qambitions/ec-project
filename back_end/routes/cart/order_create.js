@@ -43,7 +43,7 @@ async function addOrder(props, Client){
         makh: Client.makh,
         macn: props.macn,
         ma_voucher: props.ma_voucher,
-        phi_san_pham:props.tong_phi,
+        phi_san_pham:props.phi_san_pham,
         phi_van_chuyen: props.phi_van_chuyen,
         phi_giam: props.phi_giam,
         hinh_thuc_thanh_toan: props.hinh_thuc_thanh_toan,
