@@ -1668,6 +1668,11 @@ begin
 				    where kho.macn = new.macn
 				    and kho.masp in (select masp from chi_tiet)
 				    returning *
+				), step3 as(
+					UPDATE khach_hang as kh
+				    set tong_so_don_da_huy = tong_so_don_da_huy + 1
+				    where kh.makh = new.makh
+				   	returning *
 				)
 				update voucher v
 			    set so_luong_voucher = so_luong_voucher + 1
