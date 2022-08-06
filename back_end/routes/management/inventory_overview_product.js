@@ -25,7 +25,7 @@ async function queryTotalInventory(props){
                     FROM san_pham dh 
                   `
     if (typeof props.malh != 'undefined'){
-      rawSQL += ` and malh = '${props.malh}' ` 
+      rawSQL += ` where malh = '${props.malh}' ` 
     }
 
   const result = await knexQuery.raw(rawSQL).catch(error => {
