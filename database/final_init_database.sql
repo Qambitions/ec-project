@@ -1617,7 +1617,7 @@ CREATE FUNCTION update_diem_tich_luy() RETURNS TRIGGER AS
 $BODY$
 begin
 	case
-		when new.trang_thai = 'ĐÃ GIAO THÀNH CÔNG' then
+		when (new.trang_thai = 'ĐÃ GIAO THÀNH CÔNG' or new.trang_thai = 'ĐÃ GIAO')  then
 				with chi_tiet as(
 			   		select * 
 			   		from chi_tiet_don_hang ctdh 
@@ -1655,7 +1655,7 @@ begin
 			    set so_luong_voucher = so_luong_voucher - 1
 			    where v.ma_voucher = new.ma_voucher;
 		
-		when (new.trang_thai = 'HỦY ĐƠN HÀNG' 
+		when ((new.trang_thai = 'HỦY ĐƠN HÀNG' or new.trang_thai = 'ĐÃ HỦY')
 		and (old.trang_thai = 'ĐÃ XÁC NHẬN' or old.trang_thai = 'ĐANG GIAO')) then 
 				with chi_tiet as(
 				   		select * 
