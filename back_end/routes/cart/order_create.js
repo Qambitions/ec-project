@@ -52,7 +52,9 @@ async function addOrder(props, Client){
     }).returning("madh").then(function (madh){
         // console.log(madh)
         res = madh
-    })
+    }).catch(error => {
+        console.log(error)
+    });
     // const res = await knexQuery.select('madh').from('don_hang')
     // .where('makh','=',Client.makh)
     // .andWhere('trang_thai','=','WAIT FOR PAYMENT').catch(error => {
@@ -202,6 +204,7 @@ router.post('/', async (req, res, next) =>{
         console.log(e)
         response.exitcode=1
         response.message = e
+        response['warning'] = "có lỗi bất ngờ xảy ra..."
         updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
     }
         

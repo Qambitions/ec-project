@@ -3,7 +3,8 @@ var router = express.Router();
 var knexQuery = require('../../db_connect');
 
 async function pushPO(props){
-    console.log(props)
+    // console.log(props)
+    var ma_phieu_nhap = null
     await knexQuery('phieu_nhap_hang')
     .insert({
         manpp           : props.manpp,
@@ -12,34 +13,31 @@ async function pushPO(props){
         tong_so_mat_hang: props.po_items.length
     }).returning('mapn').then(function (mapn){
         console.log(mapn)
-    })
-    .catch(error => {
+        ma_phieu_nhap = mapn
+    }).catch(error => {
         console.log(error)
     });
-    
 
-    // const data = items.map(x => {
-    //     return {
-    //         madh: order.madh,
-    //         masp: x.masp,
-    //         ma_voucher: x.ma_voucher,
-    //         so_luong_mua: x.so_luong_mua,
-    //         gia_phai_tra: x.gia_phai_tra
-    //     };
-    // });
+    const data = props.po_items.map(x => {
+        return {
+            mapn: ma_phieu_nhap[0].mapn,
+            masp: x.masp,
+            so_luong_nhap: x.so_luong_nhap,
+            don_gia_nhap: x.don_gia_nhap
+        };
+    });
     
-    // await knexQuery('chi_tiet_don_hang')
-    // .insert(data).catch(error => {
-    //     console.log(error)
-    // });
+    await knexQuery('chi_tiet_nhap_hang')
+    .insert(data).catch(error => {
+        console.log(error)
+        throw new Error(error);
+    });
 }
 
 router.post('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
         "message": "",
-        "po_items":"",
-        "tong_tien_nhap":"",
     }
     try{
       if (req.headers.magic_pass != 'LamZauKhumKho'){
@@ -49,13 +47,12 @@ router.post('/', async (req, res, next) =>{
       }
       const orderOverview = await pushPO(req.body);
       response.exitcode   = 0
-      response.message    = "lấy thông tin thành công"
-      response.list_order = orderOverview
-      response.total      =  totalOrder
+      response.message    = "Update thông tin thành công"
     }
     catch (e){
       response.exitcode= 1
-      response.message = e
+      response.message = "có lỗi xảy ra"
+      response['warning'] = "có lỗi bất ngờ xảy ra..."
     }
     return res.send(response)
     
