@@ -7,21 +7,24 @@ import {
     Col,
   } from "react-bootstrap";
 import Sidebar from "../../../components/sidebar/Sidebar";
-import {Link} from "react-router-dom";
 import AdminNavbar from "../../../components/NavBar/Navbar";
-
-import moment from "moment";
 import axios from "../../../api/axios";
+import {useParams} from "react-router-dom";
+
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PRODUCTS_URL = "/management/inventory_overview_product";
+const GET_BRANCH_URL = "/management/list_branch";
+
 
 export default function CategoryDetail(){
+  const {category_id} = useParams();
   const [value, setValue] = useState("200");
   const [total, setTotal] = useState(0);
   const [pdt, setPdt] = useState([]);
-
+  const [branches, setBranches] = useState([]);
   useEffect(() => {
     fetchProducts("200");
+    fetchBranchID();
   }, []);
 
 
@@ -32,7 +35,7 @@ export default function CategoryDetail(){
         "Content-Type": "application/json",
         "magic_pass": REACT_APP_MAGIC_PASS
       },
-      params: {macn: iVal },
+      params: {macn: iVal, malh: category_id },
     }).then((res) => {
       console.log(res.data.list_order);
       setPdt(res.data.list_order);
@@ -40,10 +43,24 @@ export default function CategoryDetail(){
     });
   };
 
+  const fetchBranchID = async () => {
+    await axios(GET_BRANCH_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      }
+    }).then((res) => {
+      setBranches(res.data.chi_nhanh);
+    });
+  };
+
   const handleChange = (e) => {
     setValue(e.target.value);
     fetchProducts(e.target.value);
   }
+
+
 
 
     return (<>
@@ -61,12 +78,13 @@ export default function CategoryDetail(){
         <div className="input-group p-4">
           <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
           <select value={value}  onChange={e => handleChange(e)} className="px-5">
-            <option value="200">200</option>
-            <option value="201">201</option>
-            <option value="202">202</option>
-            <option value="203">203</option>
-            <option value="204">204</option>
+            {branches.map((item, index) => {
+                return (
+                  <option value={item.macn}>{item.macn}</option>
+                )
+            })}
           </select>
+          
         </div>
 
           <Card className="card-plain table-plain-bg">

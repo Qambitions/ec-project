@@ -12,14 +12,18 @@ import moment from "moment";
 import axios from "../../../api/axios";
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PO_URL = "/management/purchase_overview";
+const GET_BRANCH_URL = "/management/list_branch";
 
 export default function ImportDashboard() {
   const [value, setValue] = useState("200");
+  const [branches, setBranches] = useState([]);
+
 
   const [po, setPO] = useState([]);
 
   useEffect(() => {
     fetchPurchaseOrders("200");
+    fetchBranchID();
   }, []);
 
 
@@ -34,6 +38,18 @@ export default function ImportDashboard() {
     }).then((res) => {
       console.log(res.data.list_purchase);
       setPO(res.data.list_purchase);
+    });
+  };
+
+  const fetchBranchID = async () => {
+    await axios(GET_BRANCH_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      }
+    }).then((res) => {
+      setBranches(res.data.chi_nhanh);
     });
   };
 
@@ -61,11 +77,11 @@ export default function ImportDashboard() {
      <div className="input-group p-4">
         <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
         <select value={value} onChange={e => handleChange(e)} className="px-5">
-          <option value="200">200</option>
-          <option value="201">201</option>
-          <option value="202">202</option>
-          <option value="203">203</option>
-          <option value="204">204</option>
+          {branches.map((item, index) => {
+          return (
+            <option value={item.macn}>{item.macn}</option>
+          )
+      })}
         </select>
         </div>
      <Card className="card-plain table-plain-bg">
