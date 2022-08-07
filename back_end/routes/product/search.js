@@ -14,7 +14,7 @@ async function queryItem(props){
     const rawSQL = ` 
                     select masp, ten_sp, hinh_anh, luot_danh_gia, sao, gia_ban, 
                     tong_da_ban,phan_tram_giam_gia, 
-                    giam_toi_da, gia_ban - GREATEST(gia_ban*COALESCE(phan_tram_giam_gia,0),COALESCE(giam_toi_da,0)) as gia_ban_giam
+                    giam_toi_da, gia_ban - ROUND(LEAST(gia_ban*COALESCE(phan_tram_giam_gia::numeric/100,0),COALESCE(giam_toi_da,0))) as gia_ban_giam
                     from san_pham sp        
                     left join voucher v on sp.ma_voucher = v.ma_voucher
                     where masp in (select masp
