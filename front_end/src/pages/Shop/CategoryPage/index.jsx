@@ -1,17 +1,13 @@
 import "./style.css";
-import ProductCard from "../../components/ProductCard";
+import ProductCard from "../../../components/ProductCard";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import axios from "../../api/axios";
+import axios from "../../../api/axios";
 import { useParams } from "react-router-dom";
 const GETVIEW_URL = "/product/view";
-const SEARCH_URL = "/product/search";
 export default function CategoryPage(props) {
   let { categories } = useParams();
   const [productCards, setProductCards] = useState([]);
-  useEffect(() => {
-    fetchDetail();
-  }, [categories]);
 
   const fetchDetail = async () => {
     await axios(GETVIEW_URL, {
@@ -21,10 +17,13 @@ export default function CategoryPage(props) {
       },
       params: { malh: categories, limit: 15, offset: 0 },
     }).then((res) => {
-      console.log(res.data.item);
-      setProductCards(res.data.item);
+      setProductCards(res.data.items);
     });
   };
+
+  useEffect(() => {
+    fetchDetail();
+  }, []);
 
   return (
     <div className="body">

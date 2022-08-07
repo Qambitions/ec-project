@@ -1,5 +1,5 @@
 import "./style.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { SignInErrorMessageBox } from "./SignInErrorMessageBox";
 import { useRef, useState, useEffect, useContext } from "react";
@@ -12,7 +12,8 @@ const LOGIN_URL = "/account/login";
 export default function SignInForm() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const userRef = useRef();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -73,7 +74,8 @@ export default function SignInForm() {
           );
           setUsername("");
           setPassword("");
-          navigate("/", { replace: true });
+          navigate(from, { replace: true });
+          authContext.setAuth({ user: username, role: [1, 2] });
         } else {
         }
         setExitCode(res.data.exitcode);

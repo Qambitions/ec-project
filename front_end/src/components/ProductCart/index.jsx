@@ -26,6 +26,7 @@ export default function ProductCart(props) {
           pdName: res.data.item.tensp,
           pdBrand: res.data.item.ten_npp,
           price: res.data.item.gia_ban_giam,
+          weight: res.data.item.khoi_luong,
           pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
         });
       });
@@ -41,9 +42,12 @@ export default function ProductCart(props) {
           if (cart[i].isChecked === true) {
             if (!isNaN(card.pay)) {
               cartContext.calTempPay(card.pay);
+              cartContext.calWeight(card.weight);
               console.log(card.pay);
+              console.log(card.weight);
             } else {
               cartContext.calTempPay(0);
+              cartContext.calWeight(0);
             }
           }
         }
@@ -58,8 +62,10 @@ export default function ProductCart(props) {
     if (document.getElementById(card.itemID).checked) {
       if (isIncrease) {
         cartContext.calTempPay(card.price);
+        cartContext.calWeight(card.weight);
       } else {
         cartContext.calTempPay(card.price * -1);
+        cartContext.calWeight(card.weight * -1);
       }
     }
   };
@@ -89,6 +95,7 @@ export default function ProductCart(props) {
   const handleRemove = () => {
     cartContext.removeItem(card.itemID);
     cartContext.calTempPay(card.pay * -1);
+    cartContext.calWeight(card.weight * -1);
   };
 
   const toggleRemove = () => {
@@ -101,8 +108,10 @@ export default function ProductCart(props) {
     if (!isNaN(card.pay)) {
       if (document.getElementById(card.itemID).checked === true) {
         cartContext.calTempPay(card.pay);
+        cartContext.calWeight(card.weight);
       } else {
         cartContext.calTempPay(card.pay * -1);
+        cartContext.calWeight(card.weight * -1);
       }
     }
   }

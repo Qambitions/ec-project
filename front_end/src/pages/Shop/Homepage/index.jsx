@@ -1,7 +1,7 @@
 import React from "react";
-import { MainAds } from "../../components/Advertise";
-import HomepageSection from "../../components/HomepageSection";
-import HotDeals from "../../components/HomepageSection/HotDeals";
+import { MainAds } from "../../../components/Advertise";
+import HomepageSection from "../../../components/HomepageSection";
+import HotDeals from "../../../components/HomepageSection/HotDeals";
 
 export default function Homepage() {
   return (

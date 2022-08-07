@@ -1,14 +1,16 @@
 import "./style.css";
 import { useState } from "react";
-import ProductCart from "../../components/ProductCart";
+import ProductCart from "../../../components/ProductCart";
 import { IoTrashBin } from "react-icons/io5";
-import VoucherPopUp from "../../components/ProductCart/VoucherPopUp";
-import { VoucherPicker } from "../../components/ProductCart/VoucherPicker";
+import VoucherPopUp from "../../../components/ProductCart/VoucherPopUp";
+import { VoucherPicker } from "../../../components/ProductCart/VoucherPicker";
 import { useEffect } from "react";
 import { useContext } from "react";
-import CartContext from "../../context/CartProvider";
+import { useNavigate } from "react-router-dom";
+import CartContext from "../../../context/CartProvider";
 
 export default function Cart() {
+  const navigate = useNavigate();
   const cartContext = useContext(CartContext);
   const [selectAll, setSelectAll] = useState();
   const [items, setItems] = useState([]);
@@ -20,6 +22,12 @@ export default function Cart() {
       console.log("cart is empty");
     } else {
       console.log("get go");
+      navigate("/user/checkout", {
+        state: {
+          totalWeight: cartContext.cartInfo.totalWeight,
+          tempPay: cartContext.cartInfo.tempPay,
+        },
+      });
     }
   };
 
@@ -95,7 +103,7 @@ export default function Cart() {
               </div>
             </div>
             {items.length === 0 ? (
-              <labe>Mua hàng đi</labe>
+              <label>Mua hàng đi</label>
             ) : (
               <>
                 {" "}

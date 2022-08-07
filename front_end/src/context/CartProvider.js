@@ -1,8 +1,6 @@
 import { createContext, useState } from "react";
 const CartContext = createContext({});
 
-
-
 export const CartProvider = ({ children }) =>{
     const [cartInfo,setCartInfo]=useState({
         totalPay:0,
@@ -10,7 +8,10 @@ export const CartProvider = ({ children }) =>{
         totalPay:0,
         tempPay:0,
         totalQuantity:0,
+        totalWeight:0
     })
+
+
     const addItem = (id,quantity,isCheck) =>{
         //add items cart into local storage
         var cart = localStorage.getItem("cart");
@@ -72,13 +73,6 @@ export const CartProvider = ({ children }) =>{
         
     }
 
-    const calTempPay = (amount) =>{
-        console.log("upd:",amount)
-        setCartInfo((prevState) => {
-            return { ...prevState, tempPay: prevState.tempPay + parseInt(amount) };
-          });
-    }
-
     const getTempPay = ()=>{
         return cartInfo.tempPay;
     }
@@ -112,9 +106,22 @@ export const CartProvider = ({ children }) =>{
         localStorage.setItem("cart", JSON.stringify(cart));
     }
 
+    const calWeight = (weight) =>{
+        console.log("ttWeight",cartInfo.totalWeight);
+        setCartInfo((prevState)=>{return{...prevState,totalWeight:prevState.totalWeight+parseInt(weight)}});
+    }
+
+
+    const calTempPay = (amount) =>{
+        console.log("ttPay",cartInfo.totalPay);
+        setCartInfo((prevState) => {
+            return { ...prevState, tempPay: prevState.tempPay + parseInt(amount) };
+          });
+    }
+
     const value = {addItem,removeItem, removeAllItems,upDateQuantity, 
         calTempPay,setTempPay,getTempPay,getTotalPay,
-        getDiscount,getTotalQuantity,updateItemCheck,cartInfo,setCartInfo}
+        getDiscount,getTotalQuantity,updateItemCheck,cartInfo,setCartInfo,calWeight}
 
     return (
         <CartContext.Provider value={value}>

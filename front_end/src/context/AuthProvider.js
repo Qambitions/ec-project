@@ -4,10 +4,9 @@ import axios from "../../src/api/axios";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) =>{
-    const [auth, setAuth] = useState();
+    const [auth, setAuth] = useState({roles:[1],user:'ntnd1'});
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
-    const [voucherList, setVoucherList] = useState();
     useEffect(()=>{
         getInfo();
         getDelivery();
@@ -26,7 +25,6 @@ export const AuthProvider = ({ children }) =>{
 
     const getInfo = () =>{
         var info = JSON.parse(localStorage.getItem("account_info"));
-        console.log(info);
         setInfo(info);
     }
 
@@ -42,7 +40,7 @@ export const AuthProvider = ({ children }) =>{
         setAuth(prevState=>{return{...prevState, valid:true}});
     }   
 
-    const value ={ auth, toggleLogout, toggleLoggin ,setDeliveryAddress,handleLogin,setAuth,info,deliveryAddress}
+    const value ={auth,toggleLogout, toggleLoggin ,setDeliveryAddress,handleLogin,setAuth,info,deliveryAddress}
 
     return (
         <AuthContext.Provider value={value}>
