@@ -10,7 +10,7 @@ async function checkClient(props){
     if (typeof(props.token) == "undefined") props.token = '' 
     
     const rawSQL = ` 
-                    select tenkh, email_kh, sdt_kh, ngsinh_kh
+                    select tenkh, email_kh, sdt_kh, ngsinh_kh, makh
                     from khach_hang kh 
                     where kh_token = '${crypto.createHmac("sha256", secret).update(props.token).digest("base64")}' 
                     and kh.kh_token is not null
