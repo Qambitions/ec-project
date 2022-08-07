@@ -113,7 +113,7 @@ CREATE TABLE SAN_PHAM (
 	TONG_DA_BAN INT DEFAULT 0,
 	SAO NUMERIC(3,2) DEFAULT 0,
 	KHOI_LUONG INT,
-	PHAN_LOAI INT,
+--	PHAN_LOAI INT,
 	GIA_BAN NUMERIC,
 
 	CONSTRAINT PK_SAN_PHAM PRIMARY KEY(MASP),
@@ -230,7 +230,7 @@ CREATE TABLE DANH_GIA (
 	MAKH INT,
 	MASP INT,
 	NOI_DUNG TEXT,
-	NGAY_DANG timestamp,
+	NGAY_DANG timestamp default current_timestamp,
 	SAO INT,
 
 	CONSTRAINT FK_DG_KH FOREIGN KEY(MAKH) REFERENCES KHACH_HANG(MAKH),
@@ -269,6 +269,22 @@ create TRIGGER tao_san_pham_moi
      EXECUTE PROCEDURE insert_new_item_to_inventory();
    
 --=======================================================
+CREATE FUNCTION func_update_tong_san_pham() RETURNS TRIGGER AS
+$BODY$
+begin
+    
+	 update san_pham sp
+	 set tong_da_ban = tong_da_ban + new.so_luong_da_ban - old.so_luong_da_ban
+	 where sp.masp = new.masp;
+           RETURN new;
+END;
+$BODY$
+language plpgsql;
+
+create TRIGGER trig_update_tong_san_pham
+     AFTER UPDATE ON kho
+     FOR EACH ROW
+     EXECUTE PROCEDURE func_update_tong_san_pham();
 
 
 
@@ -1429,6 +1445,23 @@ UPDATE SAN_PHAM
 SET MA_VOUCHER = 100014
 WHERE MASP IN (200080, 200079, 200050, 200052, 200057, 200053, 200059); 
 
+CREATE FUNCTION function_add_comment() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE san_pham sp
+    set luot_danh_gia = luot_danh_gia + 1,
+    	sao = (select avg(sao) from danh_gia dg where dg.masp = new.masp group by dg.masp) 
+    where sp.masp  = new.masp;
+    RETURN null;
+END;
+$BODY$
+language plpgsql;
+
+create TRIGGER trig_add_comment
+     AFTER INSERT ON danh_gia
+     FOR EACH ROW
+     EXECUTE PROCEDURE function_add_comment();
+
 --
 INSERT INTO DANH_GIA (MAKH, MASP, NOI_DUNG, NGAY_DANG, SAO) 
 VALUES 
@@ -1617,7 +1650,7 @@ CREATE FUNCTION update_diem_tich_luy() RETURNS TRIGGER AS
 $BODY$
 begin
 	case
-		when new.trang_thai = 'ĐÃ GIAO THÀNH CÔNG' then
+		when (new.trang_thai = 'ĐÃ GIAO THÀNH CÔNG' or new.trang_thai = 'ĐÃ GIAO')  then
 				with chi_tiet as(
 			   		select * 
 			   		from chi_tiet_don_hang ctdh 
@@ -1631,9 +1664,10 @@ begin
 				   	returning *
 				)
 			 	-- step 3
-			   UPDATE san_pham as sp
-			    set tong_da_ban = tong_da_ban + (select so_luong_mua from chi_tiet ct where sp.masp = ct.masp)
-			    where sp.masp in (select masp from chi_tiet);
+			   UPDATE kho 
+			    set so_luong_da_ban = so_luong_da_ban + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+			    where kho.macn = new.macn
+			    and kho.masp in (select masp from chi_tiet);
 		when new.trang_thai = 'THANH TOÁN THẤT BẠI' then 
 				UPDATE khach_hang as kh
 			    set tong_so_don_da_huy = tong_so_don_da_huy + 1
@@ -1645,8 +1679,7 @@ begin
 			   		where new.madh = ctdh.madh 
 			    ),step1 as(
 					UPDATE kho 
-				    set so_luong_ton = so_luong_ton - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
-				    	so_luong_da_ban = so_luong_da_ban + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+				    set so_luong_ton = so_luong_ton - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
 				    where kho.macn = new.macn
 				    and kho.masp in (select masp from chi_tiet)
 				    returning *
@@ -1655,7 +1688,7 @@ begin
 			    set so_luong_voucher = so_luong_voucher - 1
 			    where v.ma_voucher = new.ma_voucher;
 		
-		when (new.trang_thai = 'HỦY ĐƠN HÀNG' 
+		when ((new.trang_thai = 'HỦY ĐƠN HÀNG' or new.trang_thai = 'ĐÃ HỦY')
 		and (old.trang_thai = 'ĐÃ XÁC NHẬN' or old.trang_thai = 'ĐANG GIAO')) then 
 				with chi_tiet as(
 				   		select * 
@@ -1663,11 +1696,15 @@ begin
 				   		where new.madh = ctdh.madh 
 				 ), step2 as (
 					UPDATE kho 
-				    set so_luong_ton = so_luong_ton + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
-				    	so_luong_da_ban = so_luong_da_ban - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+				    set so_luong_ton = so_luong_ton + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
 				    where kho.macn = new.macn
 				    and kho.masp in (select masp from chi_tiet)
 				    returning *
+				), step3 as(
+					UPDATE khach_hang as kh
+				    set tong_so_don_da_huy = tong_so_don_da_huy + 1
+				    where kh.makh = new.makh
+				   	returning *
 				)
 				update voucher v
 			    set so_luong_voucher = so_luong_voucher + 1
@@ -1701,6 +1738,7 @@ create TRIGGER trig_update_kho_nhap_hang
      AFTER INSERT ON chi_tiet_nhap_hang
      FOR EACH ROW
      EXECUTE PROCEDURE function_update_kho_nhap_hang();
+    
         
 --==============================================
 --CREATE USER ngoc_dieu WITH PASSWORD '20010714';

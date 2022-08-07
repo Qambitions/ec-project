@@ -32,7 +32,7 @@ async function changeOrderStatus(props){
   await knexQuery('don_hang')
   .where('madh','=',props.madh)
   .update({
-    trang_thai:props.trang_thai_moi
+    trang_thai:props.trang_thai_moi.toUpperCase().normalize()
   }).catch(error => {
     console.log(error)
   });
@@ -90,7 +90,8 @@ async function checkStatus(props){
   const result = await knexQuery.raw(rawSQL)
   // console.log(result)
   // console.log(props.trang_thai_hien_tai.normalize() ,result.rows[0].trang_thai.normalize()   , result.rows[0].trang_thai.normalize()  == props.trang_thai_hien_tai.normalize() )
-  return result.rows[0].trang_thai.normalize()  == props.trang_thai_hien_tai.normalize()
+  if (result.rowCount == 0) return false
+  return result.rows[0].trang_thai.toUpperCase().normalize()  == props.trang_thai_hien_tai.toUpperCase().normalize()
 }
 
 router.get('/', async (req, res, next) =>{
