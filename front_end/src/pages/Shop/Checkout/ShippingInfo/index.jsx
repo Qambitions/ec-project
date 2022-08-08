@@ -23,9 +23,9 @@ export function ShippingInfo(props) {
       },
       data: {
         dia_chi: {
-          districtid: checkoutContext.deliveryInfo.districtid,
-          quan_tp: checkoutContext.deliveryInfo.quan_tp,
-          tp_tinh: checkoutContext.deliveryInfo.tp_tinh,
+          districtid: checkoutContext.deliveryInfo?.districtid,
+          quan_tp: checkoutContext.deliveryInfo?.quan_tp,
+          tp_tinh: checkoutContext.deliveryInfo?.tp_tinh,
         },
         sum_weight: weight,
         method: method,
