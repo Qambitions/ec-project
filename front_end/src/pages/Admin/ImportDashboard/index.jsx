@@ -6,6 +6,9 @@ import AdminNavbar from "../../../components/NavBar/Navbar";
 import {
   Card,
   Table,
+  Button,
+  Form,
+  Modal
 } from "react-bootstrap";
 
 import moment from "moment";
@@ -20,6 +23,12 @@ export default function ImportDashboard() {
 
 
   const [po, setPO] = useState([]);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 
   useEffect(() => {
     fetchPurchaseOrders("200");
@@ -72,8 +81,8 @@ export default function ImportDashboard() {
      <AdminNavbar 
      title="Quản lý phiếu nhập"
      text ="Tổng đơn nhập"
-     count = "200"
-     button = "1"/>
+     count = "200"/>
+     <div style={{display: "flex"}}>
      <div className="input-group p-4">
         <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
         <select value={value} onChange={e => handleChange(e)} className="px-5">
@@ -84,6 +93,51 @@ export default function ImportDashboard() {
       })}
         </select>
         </div>
+
+        <div>
+        <Button onClick={handleShow} style={{padding: "1rem", width: "200px"}}>
+            Tạo mới phiếu nhập
+          </Button>
+
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Tạo mới phiếu nhập</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Form.Label>Chi nhánh&nbsp;&nbsp;</Form.Label>
+                  <select value={value} onChange={e => handleChange(e)} className="px-5">
+                    {branches.map((item, index) => {
+                    return (
+                      <option value={item.macn}>{item.macn}</option>
+                    )
+                })}
+                  </select>
+                </Form.Group>
+                <Form.Group>
+                <Form.Label>Nhà phân phối&nbsp;&nbsp;</Form.Label>
+                  <select value={value} onChange={e => handleChange(e)} className="px-5">
+                    {branches.map((item, index) => {
+                    return (
+                      <option value={item.macn}>{item.macn}</option>
+                    )
+                })}
+                  </select>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Thêm
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+     </div>
      <Card className="card-plain table-plain-bg">
           <Card.Body className="table-full-width table-responsive px-0">
             <Table className="table-hover">

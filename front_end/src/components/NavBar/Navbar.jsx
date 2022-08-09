@@ -1,19 +1,12 @@
 import "./navbar.css";
 import {
-  Badge,
-  Button,
   Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
 } from "react-bootstrap";
 import { BsSearch } from 'react-icons/bs'
 import { AiOutlineBell} from "react-icons/ai";
 
 export default function AdminNavbar (props) { 
+
   return (
     <>
     <Card className="card-plain table-plain-bg">
@@ -39,10 +32,7 @@ export default function AdminNavbar (props) {
                   <div className="total-text">
                   <h5> {props.text}: &nbsp;&nbsp;&nbsp;&nbsp;</h5>
                   <h1 className="text-custom"> {props.count}</h1>
-                    </div>
-                    {props.button ? <>
-     <button className="btn fw-bold">Tạo mới phiếu nhập</button>
-                  </> : null}
+                    </div>  
                     <div className='search-bar'>
             <input className="search-bar-search-field"placeholder='Tìm kiếm'></input>
             <div className='search-icon'><BsSearch/></div>

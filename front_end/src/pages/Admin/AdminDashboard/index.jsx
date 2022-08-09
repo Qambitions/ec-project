@@ -2,7 +2,7 @@ import React,{ useEffect, useState } from "react";
 import "./style.css";
 import {
   Row,
-  Col,
+  Col
 } from "react-bootstrap";
 
 import {FiUsers} from "react-icons/fi";
@@ -11,6 +11,7 @@ import AdminNavbar from "../../../components/NavBar/Navbar";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import moment from "moment";
 import axios from "../../../api/axios";
+
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_WEEKLY_REPORT_URL = "/management/main/weekly_report";
 const GET_TOP_SELLING_URL = "/management/main/top_selling";
@@ -27,7 +28,6 @@ export default function Dashboard() {
   const [users, setUsers] = useState(0);
   const [orders, setOrders] = useState(0);
   const [products, setProducts] = useState(0);
-
 
   useEffect(() => {
     fetchReport();
@@ -214,7 +214,10 @@ export default function Dashboard() {
       </div>
     </div>
           </Col>
+
         </Row>
+
+
 
   );
 }
