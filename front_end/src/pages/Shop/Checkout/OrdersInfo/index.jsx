@@ -23,9 +23,9 @@ export function OrderInfo(props) {
         <a>Thay đổi</a>
       </div>
       <div className="payment__info_body">
-        {items.map((item) => (
+        {/* {items.map((item) => (
           <OrderCard quantity={item.quantity} itemID={item.itemID} />
-        ))}
+        ))} */}
       </div>
     </div>
   );

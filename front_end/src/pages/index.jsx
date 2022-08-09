@@ -47,7 +47,7 @@ export default function Pages() {
       >
         <Route element={<RequireAuth allowedRoles={[1, 2]} />}>
           <Route path="user">
-            <Route path="/user/myorder" element={<Orders />}></Route>
+            {/* <Route path="/user/myorder" element={<Orders />}></Route> */}
             <Route path="/user/account" element={<CustomerDashboard />}></Route>
           </Route>
           <Route path="/user/cart" element={<Cart />} />
