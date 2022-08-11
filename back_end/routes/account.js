@@ -13,13 +13,14 @@ var signup = require('./account/signup');
 var autologin = require('./account/autologin');
 var logout = require('./account/logout');
 var user_info = require('./account/user_info');
+var change_password = require('./account/change_password');
 
 app.use('/login', login);
 app.use('/signup', signup);
 app.use('/autologin', autologin);
 app.use('/logout', logout);
 app.use('/user_info', user_info);
-
+app.use('/change_password', change_password);
 
 app.use(function(req, res, next) {
     next(createError(404));
