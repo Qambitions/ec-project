@@ -24,19 +24,19 @@ async function changePassword(props, client){
     // console.log(props)
     var ma_khach_hang = null
     await knexQuery('khach_hang')
-    .where('makh', '=', client.makh)
-    .andwhere('mat_khau','=',crypto.createHmac("sha256", secret).update(props.mat_khau_cu).digest("base64"))
+    .where('makh', '=', client.makh.toString())
+    .andWhere('mat_khau','=',crypto.createHmac("sha256", secret).update(props.mat_khau_cu).digest("base64").toString())
     .update({
         mat_khau : crypto.createHmac("sha256", secret).update(props.mat_khau_moi).digest("base64")
     }).returning('makh').then(function (makh){
         console.log(makh)
-        ma_khach_hang = makh
+        if (typeof(makh[0]) != "undefined") ma_khach_hang = makh[0].makh
     })
     .catch(error => {
         console.log(error)
         throw new Error(error);
     });
-    if (makh != client.makh) return false
+    if (ma_khach_hang != client.makh) return false
     return true
 }
 
@@ -52,7 +52,7 @@ router.post('/', async (req, res, next) =>{
             response.message = "Token không tồn tại/user không tồn tại"
             return res.send(response)
         }
-        const addComment = await pushComment(req.body,Client);
+        const addComment = await changePassword(req.body,Client);
         if (addComment == false){
             response.exitcode   = 163
             response.message    = "Mật khẩu cũ không đúng!"
