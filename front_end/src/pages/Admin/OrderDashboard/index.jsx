@@ -9,16 +9,24 @@ import {
   Table,
 } from "react-bootstrap";
 import axios from "../../../api/axios";
+import SweetPagination from "sweetpagination";
+
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GETORDER_URL = "/management/order_overview";
-
-
-
 
 
 export default function OrderDashboard(props) {
   const [orders, setOrders] = useState([]);
   const [total, setTotal] = useState(0);
+
+  const [currentPageData, setCurrentPageData] = useState([
+    {
+      madh: '001',
+      thoi_gian: '20:20:20 11/08/2022',
+      tong_phi: 100000,
+      trang_thai: 'CHỜ XÁC NHẬN'
+    }
+  ]);
 
   useEffect(() => {
     fetchOrders();
@@ -34,7 +42,6 @@ export default function OrderDashboard(props) {
       },
       params: {offset: props.offset },
     }).then((res) => {
-      console.log(res.data.list_order);
       setTotal(res.data.total);
       setOrders(res.data.list_order);
     });
@@ -64,7 +71,7 @@ export default function OrderDashboard(props) {
                 </tr>
               </thead>
               <tbody>
-      {orders.map((item, index) => {
+      {currentPageData.map((item, index) => {
           return (
             <tr onClick={()=> handleRowCLick(item.madh)}>
               <td>
@@ -90,7 +97,12 @@ export default function OrderDashboard(props) {
             </tr>
           )
       })}
-
+      <SweetPagination
+        currentPageData={setCurrentPageData}
+        dataPerPage={2}
+        getData={orders}
+        navigation={true}
+      />
       
     </tbody>
             </Table>

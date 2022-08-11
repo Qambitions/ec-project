@@ -1,16 +1,7 @@
-
-
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
-// react-bootstrap components
 import {
-  Badge,
-  Button,
   Card,
-  Navbar,
-  Nav,
   Table,
-  Container,
   Row,
   Col,
 } from "react-bootstrap";
@@ -18,8 +9,10 @@ import {
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import { useNavigate } from "react-router-dom";
-
 import axios from "../../../api/axios";
+import SweetPagination from "sweetpagination";
+
+
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_USER_URL = "/management/user_overview";
 
@@ -29,6 +22,15 @@ const GET_USER_URL = "/management/user_overview";
 export default function UserDashboard(props) {
   const [users, setUsers] = useState([]);
   const [total, setTotal] = useState(0);
+  const [currentData, setCurrentData] = useState([
+    {
+      makh: '001',
+      email_kh: 'email@gmail.com',
+      ma_cap_bac: 1, 
+      activate: true
+    }
+  ]);
+
 
   useEffect(() => {
     fetchUsers();
@@ -54,7 +56,7 @@ const handleRowCLick = (id) => {
  }  
   return (
     <> 
-        <Row>
+          <Row>
           <Col lg="2">
           <Sidebar/>
           </Col>
@@ -75,7 +77,7 @@ const handleRowCLick = (id) => {
                   </tr>
                 </thead>
                 <tbody>
-                {users.map((item, index) => {
+                {currentData.map((item, index) => {
                   return (
                     <tr onClick={()=> handleRowCLick(item.makh)}>
                       <td>
@@ -96,14 +98,18 @@ const handleRowCLick = (id) => {
                     </tr>
                   )
               })}
+              <SweetPagination
+                currentPageData={setCurrentData}
+                dataPerPage={2}
+                getData={users}
+                navigation={true}
+              />
                 </tbody>
               </Table>
             </Card.Body>
           </Card>
           </Col>
-        </Row>
-            
-       
+        </Row>      
     </>
   );
 }

@@ -9,6 +9,8 @@ import {
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import axios from "../../../api/axios";
+import SweetPagination from "sweetpagination";
+
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PRODUCTS_URL = "/management/inventory_overview_product";
 const GET_BRANCH_URL = "/management/list_branch";
@@ -19,6 +21,15 @@ export default function AllProducts(){
   const [total, setTotal] = useState(0);
   const [pdt, setPdt] = useState([]);
   const [branches, setBranches] = useState([]);
+
+  const [currentPageData, setCurrentPageData] = useState([
+    {
+      masp: '001',
+      ten_sp: 'Test',
+      so_luong_ton: 10
+    }
+  ]);
+
   useEffect(() => {
     fetchProducts("200");
     fetchBranchID();
@@ -93,7 +104,7 @@ export default function AllProducts(){
                   </tr>
                 </thead>
                 <tbody>
-                {pdt.map((item, index) => {
+                {currentPageData.map((item, index) => {
                   return (
                     <tr>
                       <td>
@@ -110,6 +121,13 @@ export default function AllProducts(){
                     </tr>
                   )
               })}
+              <SweetPagination
+              currentPageData={setCurrentPageData}
+              dataPerPage={5}
+              getData={pdt}
+              navigation={true}
+            />
+            
                 </tbody>
               </Table>
             </Card.Body>

@@ -9,6 +9,7 @@ import {
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import axios from "../../../api/axios";
+import SweetPagination from "sweetpagination";
 import {useParams} from "react-router-dom";
 
 const {REACT_APP_MAGIC_PASS} = process.env;
@@ -22,6 +23,15 @@ export default function CategoryDetail(){
   const [total, setTotal] = useState(0);
   const [pdt, setPdt] = useState([]);
   const [branches, setBranches] = useState([]);
+
+  const [currentData, setCurrentData] = useState([
+    {
+      masp: '001',
+      ten_sp: 'Test',
+      so_luong_ton: 10
+    }
+  ]);
+
   useEffect(() => {
     fetchProducts("200");
     fetchBranchID();
@@ -98,7 +108,7 @@ export default function CategoryDetail(){
                   </tr>
                 </thead>
                 <tbody>
-                {pdt.map((item, index) => {
+                {currentData.map((item, index) => {
                   return (
                     <tr>
                       <td>
@@ -115,6 +125,13 @@ export default function CategoryDetail(){
                     </tr>
                   )
               })}
+              <SweetPagination
+                currentPageData={setCurrentData}
+                dataPerPage={2}
+                getData={pdt}
+                navigation={true}
+              />
+
                 </tbody>
               </Table>
             </Card.Body>
