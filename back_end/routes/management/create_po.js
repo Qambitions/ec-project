@@ -16,6 +16,7 @@ async function pushPO(props){
         ma_phieu_nhap = mapn
     }).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
 
     const data = props.po_items.map(x => {
