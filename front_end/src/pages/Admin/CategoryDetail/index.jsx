@@ -10,7 +10,7 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import axios from "../../../api/axios";
 import SweetPagination from "sweetpagination";
-import {useParams} from "react-router-dom";
+import {useParams, Link, useNavigate} from "react-router-dom";
 
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PRODUCTS_URL = "/management/inventory_overview_product";
@@ -18,6 +18,7 @@ const GET_BRANCH_URL = "/management/list_branch";
 
 
 export default function CategoryDetail(){
+  const navigate = useNavigate();
   const {category_id} = useParams();
   const [value, setValue] = useState("200");
   const [total, setTotal] = useState(0);
@@ -83,7 +84,6 @@ export default function CategoryDetail(){
           title="Quản lý kho"
           text ="Tổng số mặt hàng"
           count = {total}/>
-
         <div className="input-group p-4">
           <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
           <select value={value}  onChange={e => handleChange(e)} className="px-5">
@@ -135,6 +135,8 @@ export default function CategoryDetail(){
               </Table>
             </Card.Body>
           </Card>
+          <Link to="" onClick={()=>navigate(-1)}><h5 className="p-2">{'<<'} Trở về </h5></Link>
+
           </Col>
         </Row>
       </Container>
