@@ -6,11 +6,50 @@ import { useContext } from "react";
 import CheckoutContext from "../../../../context/CheckoutProvider";
 export function ShippingInfo(props) {
   const checkoutContext = useContext(CheckoutContext);
-  const [GHN, setGHN] = useState();
-  const [GHTK_fast, setGHTK_fast] = useState();
-  const [GHTK_norm, setGHTK] = useState();
+  const [GHN, setGHN] = useState({});
+  const [GHTK_fast, setGHTK_fast] = useState({});
+  const [GHTK_norm, setGHTK] = useState({});
   const handleShippingMethod = (e) => {
+    updateCheckoutShippingMethod(e.target.id);
     checkoutContext.setShippingPrice(e.target.value);
+    switch (e.target.id) {
+      case "GHN":
+        updateCheckoutMacn(GHN.macn);
+        break;
+      case "GHTK_norm":
+        updateCheckoutMacn(GHTK_norm.macn);
+        break;
+      case "GHTK_fast":
+        console.log("GHTK_fast", GHTK_fast.macn);
+        updateCheckoutMacn(GHTK_fast.macn);
+        break;
+    }
+    // console.log("PM", e.target);
+  };
+
+  const handlePaymentMethod = (e) => {
+    updateCheckoutPaymentMethod(e.target.id);
+  };
+
+  const updateCheckoutShippingMethod = (method) => {
+    var info = localStorage.getItem("checkoutInfo");
+    info = info ? JSON.parse(info) : {};
+    info.hinh_thuc_thanh_toan = method;
+    localStorage.setItem("checkoutInfo", JSON.stringify(info));
+  };
+
+  const updateCheckoutPaymentMethod = (method) => {
+    var info = localStorage.getItem("checkoutInfo");
+    info = info ? JSON.parse(info) : {};
+    info.hinh_thuc_giao_hang = method;
+    localStorage.setItem("checkoutInfo", JSON.stringify(info));
+  };
+
+  const updateCheckoutMacn = (id) => {
+    var info = localStorage.getItem("checkoutInfo");
+    info = info ? JSON.parse(info) : {};
+    info.macn = id;
+    localStorage.setItem("checkoutInfo", JSON.stringify(info));
   };
 
   const calShippingPrice = async (method, weight) => {
@@ -34,14 +73,24 @@ export function ShippingInfo(props) {
     if (res.data.exitcode === 0) {
       switch (method) {
         case "GHN":
-          setGHN(res.data.price);
+          updateCheckoutMacn(res.data.macn);
+          setGHN({
+            price: res.data.price,
+            macn: res.data.macn,
+          });
           checkoutContext.setShippingPrice(res.data.price);
           break;
         case "GHTK_norm":
-          setGHTK(res.data.price);
+          setGHTK({
+            price: res.data.price,
+            macn: res.data.macn,
+          });
           break;
         case "GHTK_fast":
-          setGHTK_fast(res.data.price);
+          setGHTK_fast({
+            price: res.data.price,
+            macn: res.data.macn,
+          });
           break;
       }
     }
@@ -55,7 +104,9 @@ export function ShippingInfo(props) {
   }, [checkoutContext.deliveryInfo]);
 
   useEffect(() => {
-    checkoutContext.setShippingPrice(GHN);
+    checkoutContext.setShippingPrice(GHN.price);
+    updateCheckoutShippingMethod("GHN");
+    updateCheckoutPaymentMethod("MOMO");
   }, []);
 
   return (
@@ -71,7 +122,7 @@ export function ShippingInfo(props) {
             type="radio"
             name="radio_shipping"
             id="GHN"
-            value={GHN}
+            value={GHN.price}
             defaultChecked
             onChange={handleShippingMethod}
           ></input>
@@ -85,7 +136,7 @@ export function ShippingInfo(props) {
                 "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/286088489_5050087261779690_4284998344429746518_n_ioqia7.png"
               }
             ></img>
-            <label>Giao hàng nhanh&emsp;&emsp;{GHN}</label>
+            <label>Giao hàng nhanh&emsp;&emsp;{GHN.price}</label>
           </small>
           <br></br>
         </div>
@@ -95,7 +146,7 @@ export function ShippingInfo(props) {
             type="radio"
             name="radio_shipping"
             id="GHTK_norm"
-            value={GHTK_norm}
+            value={GHTK_norm.price}
             onChange={handleShippingMethod}
           ></input>
           <small class="form-check-small" for="GHTK">
@@ -108,7 +159,7 @@ export function ShippingInfo(props) {
                 "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/287535036_424202986024765_8691090997415472965_n_vqls2y.png"
               }
             ></img>
-            <label>Giao hàng tiết kiệm&emsp;&emsp;{GHTK_norm}</label>
+            <label>Giao hàng tiết kiệm&emsp;&emsp;{GHTK_norm.price}</label>
           </small>
           <br></br>
         </div>
@@ -117,21 +168,23 @@ export function ShippingInfo(props) {
             class="form-check-input"
             type="radio"
             name="radio_shipping"
-            id="ViettelPost"
-            value={GHTK_fast}
+            id="GHTK_fast"
+            value={GHTK_fast.price}
             onChange={handleShippingMethod}
           ></input>
-          <small class="form-check-small" for="ViettelPost">
+          <small class="form-check-small" for="GHTK_fast">
             <img
               className="payment__icon"
               src={
-                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656573798/icon/Logo-Viettel-Post-Transparent_zw5rmz.webp"
+                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/287535036_424202986024765_8691090997415472965_n_vqls2y.png"
               }
               alt={
-                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656573798/icon/Logo-Viettel-Post-Transparent_zw5rmz.webp"
+                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/287535036_424202986024765_8691090997415472965_n_vqls2y.png"
               }
             ></img>
-            <label>Giao hàng tiết kiệm siu tốc độ&emsp;&emsp;{GHTK_fast}</label>
+            <label>
+              Giao hàng tiết kiệm siu tốc độ&emsp;&emsp;{GHTK_fast.price}
+            </label>
           </small>
           <br></br>
         </div>
@@ -144,7 +197,7 @@ export function ShippingInfo(props) {
             name="radio_payment"
             id="MoMo"
             value="MoMo"
-            onChange={""}
+            onChange={handlePaymentMethod}
             defaultChecked
           ></input>
           <small class="form-check-small" for="MoMo">
@@ -168,7 +221,7 @@ export function ShippingInfo(props) {
             name="radio_payment"
             id="ZaloPay"
             value="ZaloPay"
-            onChange={""}
+            onChange={handlePaymentMethod}
           ></input>
           <small class="form-check-small" for="ZaloPay">
             <img
@@ -191,7 +244,7 @@ export function ShippingInfo(props) {
             name="radio_payment"
             id="VNPay"
             value="VNPay"
-            onChange={"handleChange"}
+            onChange={handlePaymentMethod}
           ></input>
           <small class="form-check-small" for="VNPay">
             <img
@@ -214,7 +267,7 @@ export function ShippingInfo(props) {
             name="radio_payment"
             id="PayPal"
             value="PayPal"
-            onChange={"handleChange"}
+            onChange={handlePaymentMethod}
           ></input>
           <small class="form-check-small" for="PayPal">
             <img
@@ -237,7 +290,7 @@ export function ShippingInfo(props) {
             name="radio_payment"
             id="COD"
             value="COD"
-            onChange={"handleChange"}
+            onChange={handlePaymentMethod}
           ></input>
           <small class="form-check-small" for="COD">
             <img

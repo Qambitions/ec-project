@@ -7,8 +7,7 @@ export const CheckoutProvider = ({ children }) =>{
     const [shippingMethod, setShippingMethod]= useState();
     const [shippingPrice, setShippingPrice]=useState();
     const [deliveryInfo, setDeliveryInfo]=useState();
-
-    const value ={ shippingMethod,shippingPrice,deliveryInfo,setShippingMethod,setShippingPrice, setDeliveryInfo}
+    const value ={deliveryInfo, setDeliveryInfo,shippingPrice, setShippingPrice,shippingMethod, setShippingMethod}
 
     return (
         <CheckoutContext.Provider value={value}>
