@@ -46,7 +46,6 @@ export default function Dashboard() {
         "magic_pass": REACT_APP_MAGIC_PASS
       }
     }).then((res) => {
-      
       setDaily(res.data.daily_sale);
     });
   };
@@ -86,6 +85,7 @@ export default function Dashboard() {
     }).then((res) => {
       setOrders(res.data.total);
     });
+
   };
 
   const fetchProducts = async () => {
@@ -172,7 +172,8 @@ export default function Dashboard() {
                         <div className="checkout-main-col-2 fw-bold">Tổng sản phẩm</div>
                         <div className="checkout-main-col-3 fw-bold">Tổng tiền</div>
                     </div>
-                    {daily.map((product, index) => {
+                    {daily.length !=0 ? <>
+                      {daily.map((product, index) => {
                   return (
                     <div  className="checkout-main-row">
                       <div className="checkout-main-col-2">
@@ -190,7 +191,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                   )
-              })}
+              })}</>: <h5>No data</h5>}
               </div>
               </div>
           </div>
@@ -198,17 +199,18 @@ export default function Dashboard() {
         <div class="top-sales box">
           <div class="title">Top Selling Product</div>
           <ul class="top-sales-details">
-          {topSelling.map((prop, key) => {
+            {topSelling.length !=0 ? <>
+              {topSelling.map((prop, key) => {
                 return (
                   <li>
                     <a href="#">
                       <span class="product">{prop.ten_sp}</span>
                     </a>
                     <span class="quantity">{prop.gmv}</span>
-                  </li>
-                  
+                  </li>   
                 );
-                })}
+                })}</> : <h5>No data</h5>}
+          
             
           </ul>
         </div>
