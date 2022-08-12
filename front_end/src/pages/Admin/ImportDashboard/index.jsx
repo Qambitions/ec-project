@@ -2,6 +2,7 @@ import React,  {useEffect, useState} from "react";
 import {useNavigate  } from 'react-router-dom';
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
+import SweetPagination from "sweetpagination";
 
 import {
   Card,
@@ -16,10 +17,14 @@ import axios from "../../../api/axios";
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PO_URL = "/management/purchase_overview";
 const GET_BRANCH_URL = "/management/list_branch";
+const GET_SUPPLIER_URL = "/management/list_supplier";
 
 export default function ImportDashboard() {
-  const [value, setValue] = useState("200");
+  const [branchValue, setBranchValue] = useState("200");
+  const [supplierValue, setSupplierValue] = useState();
+
   const [branches, setBranches] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
 
 
   const [po, setPO] = useState([]);
@@ -30,9 +35,20 @@ export default function ImportDashboard() {
   const handleShow = () => setShow(true);
 
 
+  const [currentData, setCurrentData] = useState([
+    {
+      ten_npp: 'Huimitu',
+      mapn: '001',
+      tong_so_mat_hang: 10,
+      tong_tien_nhap: 100000,
+      ngay_lap: '20:20:20 12/08/2022'
+    }
+  ]);
+
   useEffect(() => {
     fetchPurchaseOrders("200");
     fetchBranchID();
+    fetchSupplier();
   }, []);
 
 
@@ -62,8 +78,20 @@ export default function ImportDashboard() {
     });
   };
 
+  const fetchSupplier = async () => {
+    await axios(GET_SUPPLIER_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      }
+    }).then((res) => {
+      setSuppliers(res.data.nha_phan_phoi);
+    });
+  };
+
   const handleChange = (e) => {
-    setValue(e.target.value);
+    setBranchValue(e.target.value);
     fetchPurchaseOrders(e.target.value);
   }
 
@@ -85,7 +113,7 @@ export default function ImportDashboard() {
      <div style={{display: "flex"}}>
      <div className="input-group p-4">
         <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
-        <select value={value} onChange={e => handleChange(e)} className="px-5">
+        <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
           {branches.map((item, index) => {
           return (
             <option value={item.macn}>{item.macn}</option>
@@ -107,7 +135,7 @@ export default function ImportDashboard() {
               <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                   <Form.Label>Chi nhánh&nbsp;&nbsp;</Form.Label>
-                  <select value={value} onChange={e => handleChange(e)} className="px-5">
+                  <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
                     {branches.map((item, index) => {
                     return (
                       <option value={item.macn}>{item.macn}</option>
@@ -117,10 +145,10 @@ export default function ImportDashboard() {
                 </Form.Group>
                 <Form.Group>
                 <Form.Label>Nhà phân phối&nbsp;&nbsp;</Form.Label>
-                  <select value={value} onChange={e => handleChange(e)} className="px-5">
-                    {branches.map((item, index) => {
+                  <select value={supplierValue} onChange={e => setSupplierValue(e.target.value)} className="px-5">
+                    {suppliers.map((item, index) => {
                     return (
-                      <option value={item.macn}>{item.macn}</option>
+                      <option value={item.ten_npp}>{item.ten_npp}</option>
                     )
                 })}
                   </select>
@@ -151,7 +179,7 @@ export default function ImportDashboard() {
                 </tr>
               </thead>
               <tbody>
-      {po.map((item, index) => {
+      {currentData.map((item, index) => {
           return (
             <tr onClick={()=> handleRowCLick(item.mapn)}>
               <td>
@@ -169,7 +197,12 @@ export default function ImportDashboard() {
           )
       })}
 
-      
+      <SweetPagination
+        currentPageData={setCurrentData}
+        dataPerPage={10}
+        getData={po}
+        navigation={true}
+      />
     </tbody>
             </Table>
           </Card.Body>

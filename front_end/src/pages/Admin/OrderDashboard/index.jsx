@@ -99,7 +99,7 @@ export default function OrderDashboard(props) {
       })}
       <SweetPagination
         currentPageData={setCurrentPageData}
-        dataPerPage={2}
+        dataPerPage={10}
         getData={orders}
         navigation={true}
       />

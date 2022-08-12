@@ -123,7 +123,7 @@ export default function AllProducts(){
               })}
               <SweetPagination
               currentPageData={setCurrentPageData}
-              dataPerPage={5}
+              dataPerPage={10}
               getData={pdt}
               navigation={true}
             />

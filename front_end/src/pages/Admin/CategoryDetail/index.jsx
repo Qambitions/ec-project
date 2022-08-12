@@ -47,7 +47,6 @@ export default function CategoryDetail(){
       },
       params: {macn: iVal, malh: category_id },
     }).then((res) => {
-      console.log(res.data.list_order);
       setPdt(res.data.list_order);
       setTotal(res.data.total);
     });
@@ -127,7 +126,7 @@ export default function CategoryDetail(){
               })}
               <SweetPagination
                 currentPageData={setCurrentData}
-                dataPerPage={2}
+                dataPerPage={10}
                 getData={pdt}
                 navigation={true}
               />

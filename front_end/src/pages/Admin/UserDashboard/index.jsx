@@ -100,7 +100,7 @@ const handleRowCLick = (id) => {
               })}
               <SweetPagination
                 currentPageData={setCurrentData}
-                dataPerPage={2}
+                dataPerPage={10}
                 getData={users}
                 navigation={true}
               />

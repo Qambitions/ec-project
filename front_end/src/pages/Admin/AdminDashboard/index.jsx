@@ -46,6 +46,7 @@ export default function Dashboard() {
         "magic_pass": REACT_APP_MAGIC_PASS
       }
     }).then((res) => {
+      
       setDaily(res.data.daily_sale);
     });
   };
