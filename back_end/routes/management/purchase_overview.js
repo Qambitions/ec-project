@@ -24,11 +24,11 @@ async function queryTotalPurchase(props){
   if (typeof props.macn != 'undefined'){
     rawSQL += ` where macn = '${props.macn}' `
   }
-  console.log(rawSQL)
+  // console.log(rawSQL)
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
   });
-  console.log(result)
+  // console.log(result)
   return result.rows[0].count
 }
 
