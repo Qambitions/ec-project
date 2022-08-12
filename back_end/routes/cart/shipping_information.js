@@ -30,11 +30,12 @@ router.get('/', async (req, res, next) =>{
         const retAddress = await queryAddress(req.headers);
         response.message      = "Lấy thông tin address thành công"
         response.exitcode     = 0
-        response.list_voucher = retAddress
+        response.list_address = retAddress
     }
     catch (e){
         response.exitcode= 1
         response.message = e
+        response['warning'] = "có lỗi bất ngờ xảy ra..."
     }
     return res.send(response)
 });

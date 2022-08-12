@@ -10,22 +10,19 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import axios from "../../../api/axios";
 import SweetPagination from "sweetpagination";
-import {useParams, Link, useNavigate} from "react-router-dom";
 
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PRODUCTS_URL = "/management/inventory_overview_product";
 const GET_BRANCH_URL = "/management/list_branch";
 
 
-export default function CategoryDetail(){
-  const navigate = useNavigate();
-  const {category_id} = useParams();
+export default function AllProducts(){
   const [value, setValue] = useState("200");
   const [total, setTotal] = useState(0);
   const [pdt, setPdt] = useState([]);
   const [branches, setBranches] = useState([]);
 
-  const [currentData, setCurrentData] = useState([
+  const [currentPageData, setCurrentPageData] = useState([
     {
       masp: '001',
       ten_sp: 'Test',
@@ -46,8 +43,9 @@ export default function CategoryDetail(){
         "Content-Type": "application/json",
         "magic_pass": REACT_APP_MAGIC_PASS
       },
-      params: {macn: iVal, malh: category_id },
+      params: {macn: iVal },
     }).then((res) => {
+      console.log(res.data.list_order);
       setPdt(res.data.list_order);
       setTotal(res.data.total);
     });
@@ -71,8 +69,6 @@ export default function CategoryDetail(){
   }
 
 
-
-
     return (<>
         <Container fluid>    
         <Row>
@@ -84,6 +80,7 @@ export default function CategoryDetail(){
           title="Quản lý kho"
           text ="Tổng số mặt hàng"
           count = {total}/>
+
         <div className="input-group p-4">
           <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
           <select value={value}  onChange={e => handleChange(e)} className="px-5">
@@ -107,7 +104,7 @@ export default function CategoryDetail(){
                   </tr>
                 </thead>
                 <tbody>
-                {currentData.map((item, index) => {
+                {currentPageData.map((item, index) => {
                   return (
                     <tr>
                       <td>
@@ -125,18 +122,16 @@ export default function CategoryDetail(){
                   )
               })}
               <SweetPagination
-                currentPageData={setCurrentData}
-                dataPerPage={10}
-                getData={pdt}
-                navigation={true}
-              />
-
+              currentPageData={setCurrentPageData}
+              dataPerPage={10}
+              getData={pdt}
+              navigation={true}
+            />
+            
                 </tbody>
               </Table>
             </Card.Body>
           </Card>
-          <Link to="" onClick={()=>navigate(-1)}><h5 className="p-2">{'<<'} Trở về </h5></Link>
-
           </Col>
         </Row>
       </Container>

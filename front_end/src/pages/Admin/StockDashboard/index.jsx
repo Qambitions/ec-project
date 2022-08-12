@@ -20,12 +20,14 @@ export default function StockDashboard(){
                 <Sidebar/>
             </Col>
           <Col style={{backgroundColor: "#F5F5F5"}}>
-            <btn className="btn">
-                <Link to="/admin/stock/category"><h3>Quản lý sản phẩm</h3></Link>
-            </btn>
-            <btn className="btn">
-                <Link to="/admin/stock/import"><h3>Quản lý xuất/nhập kho</h3></Link>
-            </btn>
+            <div className="d-flex align-items-center justify-content-center">
+            <button className="btn">
+                <Link to="/admin/stock/category" className="text-dark"><h3>Quản lý sản phẩm</h3></Link>
+            </button>
+            <button className="btn">
+                <Link to="/admin/stock/import" className="text-dark"><h3>Quản lý xuất/nhập kho</h3></Link>
+            </button>
+            </div>
           </Col>
             </Row>
 

@@ -32,7 +32,7 @@ async function changeOrderStatus(props){
   await knexQuery('don_hang')
   .where('madh','=',props.madh)
   .update({
-    trang_thai:props.trang_thai_moi
+    trang_thai:props.trang_thai_moi.toUpperCase().normalize()
   }).catch(error => {
     console.log(error)
   });
@@ -61,12 +61,22 @@ async function checkFlow(props){
       }
   }
 
+  if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'CHỜ XÁC NHẬN'.normalize() &&
+      (props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()
+      || props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ HỦY'.normalize()))
+        return true
+
   if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'ĐÃ XÁC NHẬN'.normalize() &&
-      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐANG GIAO'.normalize() || props.trang_thai_moi.toUpperCase() == 'HỦY ĐƠN HÀNG'.normalize()))
+      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐANG GIAO'.normalize() 
+      || props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()
+      || props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ HỦY'.normalize()))
         return true
 
   if (props.trang_thai_hien_tai.toUpperCase().normalize() == 'ĐANG GIAO'.normalize() &&
-      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ GIAO THÀNH CÔNG'.normalize() || props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()))
+      (props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ GIAO THÀNH CÔNG'.normalize() 
+        || props.trang_thai_moi.toUpperCase().normalize() == 'HỦY ĐƠN HÀNG'.normalize()
+        || props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ GIAO'.normalize()
+        || props.trang_thai_moi.toUpperCase().normalize() == 'ĐÃ HỦY'.normalize()))
         return true
 
   return false
@@ -80,7 +90,8 @@ async function checkStatus(props){
   const result = await knexQuery.raw(rawSQL)
   // console.log(result)
   // console.log(props.trang_thai_hien_tai.normalize() ,result.rows[0].trang_thai.normalize()   , result.rows[0].trang_thai.normalize()  == props.trang_thai_hien_tai.normalize() )
-  return result.rows[0].trang_thai.normalize()  == props.trang_thai_hien_tai.normalize()
+  if (result.rowCount == 0) return false
+  return result.rows[0].trang_thai.toUpperCase().normalize()  == props.trang_thai_hien_tai.toUpperCase().normalize()
 }
 
 router.get('/', async (req, res, next) =>{
@@ -176,6 +187,7 @@ router.post('/change_status', async (req, res, next) =>{
     }
     catch (e){
       response.message = e
+      response['warning'] = "có lỗi bất ngờ xảy ra..."
     }
     return res.send(response)
 });

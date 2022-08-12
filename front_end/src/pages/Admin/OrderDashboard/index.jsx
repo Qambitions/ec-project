@@ -9,16 +9,24 @@ import {
   Table,
 } from "react-bootstrap";
 import axios from "../../../api/axios";
+import SweetPagination from "sweetpagination";
+
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GETORDER_URL = "/management/order_overview";
-
-
-
 
 
 export default function OrderDashboard(props) {
   const [orders, setOrders] = useState([]);
   const [total, setTotal] = useState(0);
+
+  const [currentPageData, setCurrentPageData] = useState([
+    {
+      madh: '001',
+      thoi_gian: '20:20:20 11/08/2022',
+      tong_phi: 100000,
+      trang_thai: 'CHỜ XÁC NHẬN'
+    }
+  ]);
 
   useEffect(() => {
     fetchOrders();
@@ -32,14 +40,12 @@ export default function OrderDashboard(props) {
         "Content-Type": "application/json",
         "magic_pass": REACT_APP_MAGIC_PASS
       },
-      params: { limit: props.limit, offset: props.offset },
+      params: {offset: props.offset },
     }).then((res) => {
-      console.log(res.data.list_order);
       setTotal(res.data.total);
       setOrders(res.data.list_order);
     });
   };
-  // const handleRowCLick = (id) => {
   const navigate = useNavigate();
   const handleRowCLick = (id) => {
     navigate(`/admin/order/${id}`);
@@ -65,7 +71,7 @@ export default function OrderDashboard(props) {
                 </tr>
               </thead>
               <tbody>
-      {orders.map((item, index) => {
+      {currentPageData.map((item, index) => {
           return (
             <tr onClick={()=> handleRowCLick(item.madh)}>
               <td>
@@ -84,21 +90,25 @@ export default function OrderDashboard(props) {
               {item.trang_thai.normalize() === "CHỜ XÁC NHẬN".normalize() ? <span className="badge badge-wait">{item.trang_thai}</span> : 
               item.trang_thai.normalize() === "ĐÃ XÁC NHẬN".normalize() ? <span className="badge badge-confirmed">{item.trang_thai}</span> :
               item.trang_thai.normalize() === "ĐANG GIAO".normalize() ? <span className="badge badge-delivering">{item.trang_thai}</span> :
-              item.trang_thai.normalize() === "ĐÃ GIAO".normalize() ? <span className="badge badge-delivered">{item.trang_thai}</span> :
+              ["ĐÃ GIAO THÀNH CÔNG".normalize() ,"ĐÃ GIAO".normalize()].includes(item.trang_thai.normalize()) ? <span className="badge badge-delivered">{item.trang_thai}</span> :
               <span className ="badge badge-cancel">{item.trang_thai}</span>}   
               </td>
               
             </tr>
           )
       })}
-
+      <SweetPagination
+        currentPageData={setCurrentPageData}
+        dataPerPage={10}
+        getData={orders}
+        navigation={true}
+      />
       
     </tbody>
             </Table>
           </Card.Body>
         </Card>
       </div>
-
       </div>
       
     </>

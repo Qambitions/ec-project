@@ -37,24 +37,30 @@ async function checkOrder(Client){
 }
 
 async function addOrder(props, Client){
+    var res = null;
     await knexQuery('don_hang')
     .insert({
         makh: Client.makh,
         macn: props.macn,
         ma_voucher: props.ma_voucher,
-        phi_san_pham:props.tong_phi,
+        phi_san_pham:props.phi_san_pham,
         phi_van_chuyen: props.phi_van_chuyen,
         phi_giam: props.phi_giam,
         hinh_thuc_thanh_toan: props.hinh_thuc_thanh_toan,
         hinh_thuc_giao_hang: props.hinh_thuc_giao_hang,
         id_dia_chi_giao: props.id_dia_chi_giao
-    })
-    const res = await knexQuery.select('madh').from('don_hang')
-    .where('makh','=',Client.makh)
-    .andWhere('trang_thai','=','WAIT FOR PAYMENT').catch(error => {
+    }).returning("madh").then(function (madh){
+        // console.log(madh)
+        res = madh
+    }).catch(error => {
         console.log(error)
     });
-    console.log(res)
+    // const res = await knexQuery.select('madh').from('don_hang')
+    // .where('makh','=',Client.makh)
+    // .andWhere('trang_thai','=','WAIT FOR PAYMENT').catch(error => {
+    //     console.log(error)
+    // });
+    // console.log(res)
     return res[0]
 
 }
@@ -198,6 +204,7 @@ router.post('/', async (req, res, next) =>{
         console.log(e)
         response.exitcode=1
         response.message = e
+        response['warning'] = "có lỗi bất ngờ xảy ra..."
         updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
     }
         

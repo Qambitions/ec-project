@@ -6,7 +6,7 @@ async function queryItem(props){
     var rawSQL = ` 
                     select masp, malh, ten_sp, hinh_anh, luot_danh_gia, sao, gia_ban, pp.ten_npp,
                     tong_da_ban,phan_tram_giam_gia, 
-                    giam_toi_da, gia_ban - GREATEST(gia_ban*COALESCE(phan_tram_giam_gia,0),COALESCE(giam_toi_da,0)) as gia_ban_giam
+                    giam_toi_da, gia_ban - ROUND(LEAST(gia_ban*COALESCE(phan_tram_giam_gia::numeric/100,0),COALESCE(giam_toi_da,0))) as gia_ban_giam
                     from san_pham sp 
                     left join voucher v on sp.ma_voucher = v.ma_voucher 
                     left join nha_phan_phoi pp on pp.manpp = sp.manpp
@@ -60,6 +60,7 @@ router.get('/', async (req, res, next) =>{
     catch (e){
         response.exitcode =1
         response.message = e
+        response['warning'] = "có lỗi bất ngờ xảy ra..."
     }
         
     return res.send(response)

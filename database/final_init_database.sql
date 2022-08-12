@@ -113,7 +113,7 @@ CREATE TABLE SAN_PHAM (
 	TONG_DA_BAN INT DEFAULT 0,
 	SAO NUMERIC(3,2) DEFAULT 0,
 	KHOI_LUONG INT,
-	PHAN_LOAI INT,
+--	PHAN_LOAI INT,
 	GIA_BAN NUMERIC,
 
 	CONSTRAINT PK_SAN_PHAM PRIMARY KEY(MASP),
@@ -230,7 +230,7 @@ CREATE TABLE DANH_GIA (
 	MAKH INT,
 	MASP INT,
 	NOI_DUNG TEXT,
-	NGAY_DANG timestamp,
+	NGAY_DANG timestamp default current_timestamp,
 	SAO INT,
 
 	CONSTRAINT FK_DG_KH FOREIGN KEY(MAKH) REFERENCES KHACH_HANG(MAKH),
@@ -269,6 +269,22 @@ create TRIGGER tao_san_pham_moi
      EXECUTE PROCEDURE insert_new_item_to_inventory();
    
 --=======================================================
+CREATE FUNCTION func_update_tong_san_pham() RETURNS TRIGGER AS
+$BODY$
+begin
+    
+	 update san_pham sp
+	 set tong_da_ban = tong_da_ban + new.so_luong_da_ban - old.so_luong_da_ban
+	 where sp.masp = new.masp;
+           RETURN new;
+END;
+$BODY$
+language plpgsql;
+
+create TRIGGER trig_update_tong_san_pham
+     AFTER UPDATE ON kho
+     FOR EACH ROW
+     EXECUTE PROCEDURE func_update_tong_san_pham();
 
 
 
@@ -567,20 +583,20 @@ VALUES
 (1000012, 1, N'147 Nguyễn Tri Phương', N'4', N'5', N'HCM','1446', TRUE);
 
 -- 500000, 1
-INSERT INTO DON_HANG (MAKH, MACN, PHI_SAN_PHAM, PHI_VAN_CHUYEN, HINH_THUC_THANH_TOAN, HINH_THUC_GIAO_HANG, ID_DIA_CHI_GIAO,TRANG_THAI) 
+INSERT INTO DON_HANG (MAKH, MACN, PHI_SAN_PHAM, PHI_VAN_CHUYEN, HINH_THUC_THANH_TOAN, HINH_THUC_GIAO_HANG, ID_DIA_CHI_GIAO,TRANG_THAI,thoi_gian) 
 VALUES 
-(1000000, 200, 279000, 35000, N'COD' ,'GHN', 1, 'ĐÃ XÁC NHẬN'),
-(1000003, 208, 327000, 20000, N'MOMO','GHN', 1, 'ĐÃ GIAO'),
-(1000008, 203, 175000, 35000, N'MOMO','GHN', 1, 'ĐANG GIAO'),
-(1000001, 201, 612500, 45000, N'COD' ,'GHTK_NORM', 1, 'ĐÃ HỦY'),
-(1000005, 200, 535000, 30000, N'COD' ,'GHTK_NORM', 1, 'CHỜ XÁC NHẬN'),
-(1000012, 205, 564500, 45000, N'MOMO','GHN', 1, 'ĐÃ GIAO'),
-(1000002, 205, 310000, 20000, N'MOMO','GHN', 1, 'CHỜ XÁC NHẬN'),
-(1000002, 208, 410000, 20000, N'MOMO','GHN', 1, 'CHỜ XÁC NHẬN'),
-(1000002, 203, 460000, 20000, N'MOMO','GHTK_FAST', 1, 'ĐANG GIAO'),
-(1000001, 202, 420000, 45000, N'COD' ,'GHN', 1, 'CHỜ XÁC NHẬN'),
-(1000001, 205, 480000, 45000, N'COD' ,'GHN',1, 'CHỜ XÁC NHẬN');
 
+(1000000, 200, 279000, 35000, N'COD' ,'GHN', 1, 'ĐÃ XÁC NHẬN','2022-08-03 01:16:46.867'),
+(1000003, 208, 327000, 20000, N'MOMO','GHN', 1, 'ĐÃ GIAO THÀNH CÔNG','2022-08-02 01:16:46.867'),
+(1000008, 203, 175000, 35000, N'MOMO','GHN', 1, 'ĐANG GIAO','2022-08-01 01:16:46.867'),
+(1000001, 201, 612500, 45000, N'COD' ,'GHTK_NORM', 1, 'ĐÃ HỦY','2022-08-03 01:16:46.867'),
+(1000005, 200, 535000, 30000, N'COD' ,'GHTK_NORM', 1, 'CHỜ XÁC NHẬN','2022-08-02 01:16:46.867'),
+(1000012, 205, 564500, 45000, N'MOMO','GHN', 1, 'ĐÃ GIAO THÀNH CÔNG','2022-08-03 01:16:46.867'),
+(1000002, 205, 310000, 20000, N'MOMO','GHN', 1, 'CHỜ XÁC NHẬN','2022-08-01 01:16:46.867'),
+(1000002, 208, 410000, 20000, N'MOMO','GHN', 1, 'CHỜ XÁC NHẬN','2022-08-01 01:16:46.867'),
+(1000002, 203, 460000, 20000, N'MOMO','GHTK_FAST', 1, 'ĐANG GIAO','2022-08-02 01:16:46.867'),
+(1000001, 202, 420000, 45000, N'COD' ,'GHN', 1, 'CHỜ XÁC NHẬN','2022-08-01 01:16:46.867'),
+(1000001, 205, 480000, 45000, N'COD' ,'GHN',1, 'CHỜ XÁC NHẬN','2022-08-02 01:16:46.867');
 --
 INSERT INTO CHI_TIET_DON_HANG (MADH, MASP, MA_VOUCHER, SO_LUONG_MUA, GIA_PHAI_TRA) 
 VALUES 
@@ -1180,6 +1196,15 @@ VALUES
 (200028, 206, 174, 136),
 (200029, 206, 112, 558),
 (200030, 206, 122, 378),
+(200031, 206, 144, 126),
+(200032, 206, 9, 121),
+(200033, 206, 1, 149),
+(200034, 206, 141, 19),
+(200035, 206, 15, 165),
+(200036, 206, 167, 273),
+(200037, 206, 137, 153),
+(200038, 206, 151, 569),
+(200039, 206, 52, 168),
 (200040, 206, 24, 426),
 (200041, 206, 254, 316),
 (200042, 206, 154, 16),
@@ -1420,7 +1445,24 @@ UPDATE SAN_PHAM
 SET MA_VOUCHER = 100014
 WHERE MASP IN (200080, 200079, 200050, 200052, 200057, 200053, 200059); 
 
---
+
+CREATE FUNCTION function_add_comment() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE san_pham sp
+    set luot_danh_gia = luot_danh_gia + 1,
+    	sao = (select avg(sao) from danh_gia dg where dg.masp = new.masp group by dg.masp) 
+    where sp.masp  = new.masp;
+    RETURN null;
+END;
+$BODY$
+language plpgsql;
+
+create TRIGGER trig_add_comment
+     AFTER INSERT ON danh_gia
+     FOR EACH ROW
+     EXECUTE PROCEDURE function_add_comment();
+
 INSERT INTO DANH_GIA (MAKH, MASP, NOI_DUNG, NGAY_DANG, SAO) 
 VALUES 
 (1000000, 200000, N'Tạm ổn', '2022-06-30 11:05:24', 4),
@@ -1608,7 +1650,7 @@ CREATE FUNCTION update_diem_tich_luy() RETURNS TRIGGER AS
 $BODY$
 begin
 	case
-		when new.trang_thai = 'ĐÃ GIAO THÀNH CÔNG' then
+		when (new.trang_thai = 'ĐÃ GIAO THÀNH CÔNG' or new.trang_thai = 'ĐÃ GIAO')  then
 				with chi_tiet as(
 			   		select * 
 			   		from chi_tiet_don_hang ctdh 
@@ -1622,9 +1664,10 @@ begin
 				   	returning *
 				)
 			 	-- step 3
-			   UPDATE san_pham as sp
-			    set tong_da_ban = tong_da_ban + (select so_luong_mua from chi_tiet ct where sp.masp = ct.masp)
-			    where sp.masp in (select masp from chi_tiet);
+			   UPDATE kho 
+			    set so_luong_da_ban = so_luong_da_ban + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+			    where kho.macn = new.macn
+			    and kho.masp in (select masp from chi_tiet);
 		when new.trang_thai = 'THANH TOÁN THẤT BẠI' then 
 				UPDATE khach_hang as kh
 			    set tong_so_don_da_huy = tong_so_don_da_huy + 1
@@ -1636,8 +1679,7 @@ begin
 			   		where new.madh = ctdh.madh 
 			    ),step1 as(
 					UPDATE kho 
-				    set so_luong_ton = so_luong_ton - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
-				    	so_luong_da_ban = so_luong_da_ban + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+				    set so_luong_ton = so_luong_ton - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
 				    where kho.macn = new.macn
 				    and kho.masp in (select masp from chi_tiet)
 				    returning *
@@ -1646,7 +1688,7 @@ begin
 			    set so_luong_voucher = so_luong_voucher - 1
 			    where v.ma_voucher = new.ma_voucher;
 		
-		when (new.trang_thai = 'HỦY ĐƠN HÀNG' 
+		when ((new.trang_thai = 'HỦY ĐƠN HÀNG' or new.trang_thai = 'ĐÃ HỦY')
 		and (old.trang_thai = 'ĐÃ XÁC NHẬN' or old.trang_thai = 'ĐANG GIAO')) then 
 				with chi_tiet as(
 				   		select * 
@@ -1654,11 +1696,15 @@ begin
 				   		where new.madh = ctdh.madh 
 				 ), step2 as (
 					UPDATE kho 
-				    set so_luong_ton = so_luong_ton + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp),
-				    	so_luong_da_ban = so_luong_da_ban - (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
+				    set so_luong_ton = so_luong_ton + (select so_luong_mua from chi_tiet ct where kho.masp = ct.masp)
 				    where kho.macn = new.macn
 				    and kho.masp in (select masp from chi_tiet)
 				    returning *
+				), step3 as(
+					UPDATE khach_hang as kh
+				    set tong_so_don_da_huy = tong_so_don_da_huy + 1
+				    where kh.makh = new.makh
+				   	returning *
 				)
 				update voucher v
 			    set so_luong_voucher = so_luong_voucher + 1
@@ -1676,6 +1722,23 @@ create TRIGGER trig_update_diem_tich_luy_don_hang
      AFTER INSERT OR UPDATE ON DON_HANG
      FOR EACH ROW
      EXECUTE PROCEDURE update_diem_tich_luy();
+CREATE FUNCTION function_update_kho_nhap_hang() RETURNS TRIGGER AS
+$BODY$
+BEGIN
+    UPDATE kho 
+    set so_luong_ton = so_luong_ton + new.so_luong_nhap
+    where kho.masp  = new.masp 
+    and kho.macn =  (select pn.macn from phieu_nhap_hang pn where pn.mapn = new.mapn);
+    RETURN null;
+END;
+$BODY$
+language plpgsql;
+
+create TRIGGER trig_update_kho_nhap_hang
+     AFTER INSERT ON chi_tiet_nhap_hang
+     FOR EACH ROW
+     EXECUTE PROCEDURE function_update_kho_nhap_hang();
+    
         
 --==============================================
 --CREATE USER ngoc_dieu WITH PASSWORD '20010714';
