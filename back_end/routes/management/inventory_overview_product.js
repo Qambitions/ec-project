@@ -6,7 +6,7 @@ async function queryInventoryOverview(props){
   var rawSQL = `SELECT sp.masp, ten_sp, kho.so_luong_ton
                     FROM san_pham sp
                     left join kho on sp.masp = kho.masp
-                    where kho.macn = '${props.macn}'
+                    --where kho.macn = '${props.macn}'
                   `
   if (typeof props.malh != 'undefined'){
     rawSQL += ` and malh = '${props.malh}' ` 

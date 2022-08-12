@@ -10,7 +10,7 @@ async function queryPurchaseOverview(props){
     if (typeof props.macn != 'undefined'){
       rawSQL += ` where pn.macn = '${props.macn}' `
     }
-    rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
+    // rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
   });
