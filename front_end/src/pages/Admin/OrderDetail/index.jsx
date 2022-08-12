@@ -62,7 +62,7 @@ export default function OrderDetail(){
     };
 
   await axios.post(POST_DELIVERY_STATUS, postData, axiosConfig).then((res) => {
-    console.log(res.data.message);
+    setValue(detail.trang_thai);
     toast(res.data.message, {
       position: "top-center",
       autoClose: 4000,
