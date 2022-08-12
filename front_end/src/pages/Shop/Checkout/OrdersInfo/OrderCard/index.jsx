@@ -4,22 +4,6 @@ import { fetchProductDetail } from "../../../../../api/axios";
 import "./style.css";
 import axios from "../../../../../api/axios";
 export function OrderCard({ info }) {
-  // const [info, setInfo] = useState();
-
-  // const fetch = async () => {
-  //   let res = await axios({
-  //     method: "get",
-  //     url: process.env.REACT_APP_GET_PRODUCT_DETAIL,
-  //     params: { masp: itemID },
-  //   });
-  //   // console.log(res.data.item);
-  //   // console.log(itemID + " " + quantity);
-  //   setInfo(res.data.item);
-  // };
-  // useEffect(() => {
-  //   fetch();
-  // }, []);
-
   return (
     <div className="container__flex order__card">
       <img className="order__card_img" src={info?.hinh_anh}></img>

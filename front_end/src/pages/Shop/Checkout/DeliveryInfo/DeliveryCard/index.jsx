@@ -7,15 +7,24 @@ import "./style.css";
 export function DeliveryCard(props) {
   const authContext = useContext(AuthContext);
   const checkoutContext = useContext(CheckoutContext);
+  const updateCheckoutInfo = (iddc) => {
+    var info = localStorage.getItem("checkoutInfo");
+    info = info ? JSON.parse(info) : {};
+    info.id_dia_chi_giao = iddc;
+    localStorage.setItem("checkoutInfo", JSON.stringify(info));
+  };
+
   useEffect(() => {
     if (props.info.mac_dinh) {
       checkoutContext.setDeliveryInfo(props.info);
+      updateCheckoutInfo(props.info.stt);
     }
   }, []);
 
   const handleCheck = (e) => {
     if (e.target.checked) {
       checkoutContext.setDeliveryInfo(props.info);
+      updateCheckoutInfo(props.info.stt);
     }
   };
   return (

@@ -4,7 +4,7 @@ import axios from "../../src/api/axios";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) =>{
-    const [auth, setAuth] = useState({roles:[1],user:'ntnd1'});
+    const [auth, setAuth] = useState({roles:[1,2],user:'ntnd1'});
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
     useEffect(()=>{
