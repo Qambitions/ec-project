@@ -1,0 +1,44 @@
+.dashboard__ordercard{
+    border: 1px solid grey;
+    padding: 0 1rem;
+    padding-top: 0.5rem;
+    
+    width: 85%;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+
+.container__spacebetween{
+    display: flex;
+    justify-content: space-between;
+}
+
+.confirmed_label{
+    background: #C1FEB2;
+border-radius: 30px;
+padding: 0 1rem;
+}
+
+.waitconfirm_label{
+    background: #FEFBB2;
+border-radius: 30px;
+padding: 0 1rem;
+}
+
+.ondelivery_label{
+    background: #B2FEFE;
+    border-radius: 30px;
+    padding: 0 1rem;
+}
+
+.delivered_label{
+    background: #FFA1A1;
+    border-radius: 30px;
+    padding: 0 1rem;
+}
+
+.canceled_label{
+    background: #D3D3D3;
+    border-radius: 30px;
+    padding: 0 1rem;
+}

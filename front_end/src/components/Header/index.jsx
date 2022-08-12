@@ -15,13 +15,6 @@ export default function Header() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const [loggedState, setLoggedState] = useState();
-  const toggleCart = () => {
-    if (Cookies.get("token")) {
-      navigate("/gio-hang", { replace: true });
-    } else {
-      navigate("/user/dang-nhap", { replace: true });
-    }
-  };
 
   const toggleLogout = () => {
     setLoggedState();
@@ -52,7 +45,7 @@ export default function Header() {
         <Link to="/">
           <BsBell />{" "}
         </Link>
-        <a onClick={toggleCart}>
+        <a href="/user/cart">
           <BsCart2 />
         </a>
         {loggedState ? (

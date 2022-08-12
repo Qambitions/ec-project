@@ -1,5 +1,5 @@
 import "./style.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { SignInErrorMessageBox } from "./SignInErrorMessageBox";
 import { useRef, useState, useEffect, useContext } from "react";
@@ -12,26 +12,21 @@ const LOGIN_URL = "/account/login";
 export default function SignInForm() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const userRef = useRef();
-  const errRef = useRef();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
   const [exitCode, setExitCode] = useState(2);
 
   useEffect(() => {
     userRef.current.focus();
   }, []);
 
-  useEffect(() => {
-    setFormErrors({});
-    setExitCode(0);
-  }, [username, password]);
-
   const [formErrors, setFormErrors] = useState({});
   const validate = (values) => {
     const errors = {};
+
     if (!values.username) {
       errors.username = "Không được để trống";
     }
@@ -39,6 +34,20 @@ export default function SignInForm() {
       errors.password = "Không được để trống";
     }
     return errors;
+  };
+
+  const handleUsernameInput = (e) => {
+    setUsername(e.target.value);
+    setFormErrors((prevState) => {
+      return { ...prevState, username: null };
+    });
+  };
+
+  const handlePassInput = (e) => {
+    setPassword(e.target.value);
+    setFormErrors((prevState) => {
+      return { ...prevState, password: null };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -50,30 +59,26 @@ export default function SignInForm() {
           username: username,
           password: password,
         });
-        // console.log(JSON.stringify(res?.data));
-        Cookies.set("token", res.data.token, {
-          expires: 1,
-          path: "/",
-          sameSite: "strict",
-          secure: true,
-        });
-        if (res?.data.exitcode === 0) {
-          setExitCode(res?.data.exitcode);
+        console.log(res.data.exitcode);
+
+        if (res.data.exitcode === 0) {
+          Cookies.set("token", res.data.token, {
+            expires: 1,
+            path: "/",
+            sameSite: "strict",
+            secure: true,
+          });
+          localStorage.setItem(
+            "account_info",
+            JSON.stringify(res.data.account_info)
+          );
           setUsername("");
           setPassword("");
-          authContext.setAuth({
-            uid: res?.data.uid,
-            uname: res?.data.tenkh,
-            uemail: res?.data.email_kh,
-            uphone: res?.data.sdt_kh,
-            valid: true,
-          });
-          setSuccess(true);
-          navigate("/", { replace: true });
+          navigate(from, { replace: true });
+          authContext.setAuth({ user: username, role: [1, 2] });
         } else {
-          setExitCode(res?.data.exitcode);
-          errRef.current.focus();
         }
+        setExitCode(res.data.exitcode);
       } catch (error) {}
     }
   };
@@ -85,18 +90,20 @@ export default function SignInForm() {
         {exitCode === 1 && <SignInErrorMessageBox />}
         <form className="signin-form" onSubmit={handleSubmit}>
           <input
+            id="loginUsernameInput"
             placeholder="Email/ Số điện thoại"
             ref={userRef}
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleUsernameInput}
           ></input>
           <div className="error_message_container">
             <small>{formErrors.username}</small>
           </div>
           <input
+            id="loginPassInput"
             placeholder="Mật khẩu"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePassInput}
             type="password"
           ></input>
           <div className="error_message_container">
