@@ -47,22 +47,16 @@ export default function Pages() {
       >
         <Route element={<RequireAuth allowedRoles={[1, 2]} />}>
           <Route path="user">
-            {/* <Route path="/user/myorder" element={<Orders />}></Route> */}
+            <Route path="/user/myorder" element={<Orders />}></Route>
             <Route path="/user/account" element={<CustomerDashboard />}></Route>
           </Route>
           <Route path="/user/cart" element={<Cart />} />
           <Route path="/user/checkout" element={<Checkout />} />
         </Route>
         <Route path="/" element={<Homepage />} />
-        <Route path="/gio-hang" element={<Cart />} />
-        <Route path="/payment" element={<Payment />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/view/:categories" element={<CategoryPage />} />
         <Route path="/search/:str" element={<Catalog />} />
-        <Route path="user">
-          <Route path="/user/myorder" element={<Orders />}></Route>
-          <Route path="/user/account" element={<CustomerDashboard />}></Route>
-        </Route>
       </Route>
       <Route path="/user/dang-nhap" element={<SignInWindow />} />
       <Route path="/user/dang-ky" element={<SignUpWindow />} />
