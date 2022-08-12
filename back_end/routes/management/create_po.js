@@ -12,7 +12,7 @@ async function pushPO(props){
         tong_tien_nhap  : props.tong_tien_nhap,
         tong_so_mat_hang: props.po_items.length
     }).returning('mapn').then(function (mapn){
-        console.log(mapn)
+        // console.log(mapn)
         ma_phieu_nhap = mapn
     }).catch(error => {
         console.log(error)
