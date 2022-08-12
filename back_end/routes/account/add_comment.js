@@ -27,7 +27,7 @@ async function pushComment(props, client){
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
     });
-    console.log(result)
+    // console.log(result)
 
     await knexQuery('danh_gia')
     .insert({
@@ -41,6 +41,7 @@ async function pushComment(props, client){
 }
 
 router.post('/', async (req, res, next) =>{
+    // mình thêm comment và xóa vài cái console.log
     var response = {
         "exitcode": 1,
         "message": "",
