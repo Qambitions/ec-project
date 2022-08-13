@@ -15,6 +15,7 @@ async function queryItem(props){
     // return knexQuery.select().from("store_admin");
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows[0]
 }
@@ -30,6 +31,7 @@ async function queryItemStar(props){
     // return knexQuery.select().from("store_admin");
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows
 }
@@ -43,6 +45,7 @@ async function queryComment(props){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows
 }
@@ -57,6 +60,7 @@ async function queryStock(props){
     // return knexQuery.select().from("store_admin");
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     if (result.rowCount == 0){
         return 0

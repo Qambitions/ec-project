@@ -14,7 +14,10 @@ async function queryOrderDetail(props){
                     where dh.madh = '${props.madh}'
                   `
 
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   return result.rows[0]
 }
 
@@ -24,7 +27,10 @@ async function queryOrderItems(props){
                   left join san_pham sp on sp.masp = ctdh.masp 
                   where madh = '${props.madh}'
                 `
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   return result.rows
 }
 
@@ -35,6 +41,7 @@ async function changeOrderStatus(props){
     trang_thai:props.trang_thai_moi.toUpperCase().normalize()
   }).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
 }
 
@@ -87,7 +94,10 @@ async function checkStatus(props){
                   FROM don_hang dh
                   WHERE dh.madh = '${props.madh}' 
                 `
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   // console.log(result)
   // console.log(props.trang_thai_hien_tai.normalize() ,result.rows[0].trang_thai.normalize()   , result.rows[0].trang_thai.normalize()  == props.trang_thai_hien_tai.normalize() )
   if (result.rowCount == 0) return false
