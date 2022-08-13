@@ -14,6 +14,7 @@ async function updateToken(props,token){
       kh_token: null
     }).catch(error => {
       console.log(error)
+      throw new Error(error);
     });
   }
 

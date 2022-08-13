@@ -8,7 +8,10 @@ async function queryPurchaseDetail(props){
                     left join nha_phan_phoi npp on npp.manpp = pn.manpp 
                     where mapn = '${props.mapn}'
                   `
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   return result.rows[0]
 }
 
@@ -19,7 +22,10 @@ async function queryPurchaseItem(props){
                     left join san_pham sp on ct.masp = sp.masp 
                     where mapn = '${props.mapn}'
                   `
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   return result.rows
 }
 

@@ -17,6 +17,7 @@ async function checkClient(props){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows[0]
 }
@@ -31,6 +32,7 @@ async function clientAddress(props){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows[0]
 }
@@ -46,6 +48,7 @@ async function clientOrder(props,page){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     // console.log(result)
     return result.rows
@@ -64,6 +67,7 @@ async function queryOrderInfo(props){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     // console.log(result)
     return result.rows[0]
@@ -77,6 +81,7 @@ async function queryOrderState(props){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     // console.log(result)
     return result.rows
@@ -92,6 +97,7 @@ async function queryOrderItems(props){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     // console.log(result)
     return result.rows

@@ -14,6 +14,7 @@ async function queryAdmin(props){
   // return knexQuery.select().from("store_admin");
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
   return result.rows[0]
 }
@@ -26,6 +27,7 @@ async function queryUser(props){
   // return knexQuery.select().from("store_admin");
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
   return result.rows[0]
 }
@@ -38,6 +40,7 @@ async function updateToken(props,token){
     kh_token: crypto.createHmac("sha256", secret).update(token).digest("base64"),
   }).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
 }
 
