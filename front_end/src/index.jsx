@@ -6,14 +6,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./context/AuthProvider";
 import { CartProvider } from "./context/CartProvider";
-import throng from "throng"
-
-const WORKERS = 2
-
-throng({
-  workers: WORKERS,
-  lifetime: Infinity
-}, start)
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
