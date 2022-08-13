@@ -1,24 +1,24 @@
 import "./style.css";
 import {
   AiFillStar,
-  // AiOutlineStar,
+  AiOutlineStar,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { IoLocationSharp } from "react-icons/io5";
-import { OverlayTrigger, Table, Popover } from "react-bootstrap";
+import { OverlayTrigger, Table, Popover, Toast } from "react-bootstrap";
 import { CommentCard } from "../CommentCard";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 import { useEffect, useState } from "react";
-import {useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../api/axios";
 import { useContext } from "react";
-// import AuthContext from "../../context/AuthProvider";
+import AuthContext from "../../context/AuthProvider";
 import CartContext from "../../context/CartProvider";
 const GETDETAIL_URL = "/product/details";
 
 export function ProductDetail() {
-  // const navigate = useNavigate();
-  // const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
   const cartContext = useContext(CartContext);
   let { id } = useParams();
   const [quantity, setQuantity] = useState(1);

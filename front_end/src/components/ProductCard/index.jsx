@@ -1,7 +1,7 @@
 import "./style.css";
-// import pd from "../../assets/logo.png";
+import pd from "../../assets/logo.png";
 import { AiFillStar, AiOutlineShoppingCart } from "react-icons/ai";
-// import { ProductDetail } from "../ProductDetail";
+import { ProductDetail } from "../ProductDetail";
 import { Link } from "react-router-dom";
 
 export default function ProductCard(props) {

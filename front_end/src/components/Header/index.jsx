@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 
 export default function Header() {
   const authContext = useContext(AuthContext);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [loggedState, setLoggedState] = useState();
 
   const toggleLogout = () => {
