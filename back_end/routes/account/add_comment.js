@@ -26,6 +26,7 @@ async function pushComment(props, client){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     // console.log(result)
 
@@ -37,6 +38,7 @@ async function pushComment(props, client){
        sao: props.sao
     }).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
 }
 

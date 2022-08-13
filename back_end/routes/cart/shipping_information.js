@@ -15,6 +15,7 @@ async function queryAddress(props){
     // return knexQuery.select().from("store_admin");
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows
 }

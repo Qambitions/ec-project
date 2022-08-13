@@ -13,6 +13,7 @@ async function queryPurchaseOverview(props){
     // rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
   return result.rows  
 }
@@ -27,6 +28,7 @@ async function queryTotalPurchase(props){
   // console.log(rawSQL)
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
   // console.log(result)
   return result.rows[0].count

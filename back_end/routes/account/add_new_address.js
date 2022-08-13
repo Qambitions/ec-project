@@ -16,6 +16,7 @@ async function checkClient(props){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows[0]
 }
@@ -30,6 +31,7 @@ async function pushAddress(props, client){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     
     await knexQuery('dia_chi_kh')
@@ -44,6 +46,7 @@ async function pushAddress(props, client){
         mac_dinh: false
     }).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
 }
 

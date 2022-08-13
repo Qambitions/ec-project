@@ -11,7 +11,10 @@ async function queryUserDetail(props){
                     WHERE kh.makh = '${props.makh}' 
                   `
 
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   return result.rows[0]
 }
 

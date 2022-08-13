@@ -12,6 +12,7 @@ async function checkAvailable(props){
                   `
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
   return result.rows[0]
 }
@@ -32,6 +33,7 @@ async function addAccount(props){
                   `
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
   // console.log(result.rows[0])
 
@@ -47,6 +49,7 @@ async function addAccount(props){
     mac_dinh: true
   }).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
 }
 

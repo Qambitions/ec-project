@@ -14,7 +14,10 @@ async function queryWeeklyReport(){
                     WHERE dh.thoi_gian::date > '${dateStr}'
                     GROUP BY dh.thoi_gian::date
                   `
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   return result.rows  
 }
 
@@ -31,7 +34,10 @@ async function queryTopSelling(){
                   ORDER BY GMV desc
                   LIMIT 10
                 `
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   return result.rows  
 }
 

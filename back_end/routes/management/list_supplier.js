@@ -8,6 +8,7 @@ async function querySupplier(props){
                   `
   const result = await knexQuery.raw(rawSQL).catch(error => {
     console.log(error)
+    throw new Error(error);
   });
   return result.rows  
 }

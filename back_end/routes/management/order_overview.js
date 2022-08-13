@@ -9,7 +9,10 @@ async function queryOrderOverview(props){
                    -- limit '${props.limit}' offset '${props.offset}'
                   `
 
-  const result = await knexQuery.raw(rawSQL)
+  const result = await knexQuery.raw(rawSQL).catch(error => {
+    console.log(error)
+    throw new Error(error);
+  });
   return result.rows  
 }
 
@@ -18,7 +21,10 @@ async function queryTotalOrder(props){
                   FROM don_hang dh 
                 `
 
-const result = await knexQuery.raw(rawSQL)
+const result = await knexQuery.raw(rawSQL).catch(error => {
+  console.log(error)
+  throw new Error(error);
+});
 return result.rows[0].count
 }
 

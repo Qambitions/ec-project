@@ -19,6 +19,7 @@ async function checkClient(props){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows[0]
 }
@@ -32,6 +33,7 @@ async function checkOrder(Client){
                     `
     const result = await knexQuery.raw(rawSQL).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     return result.rows[0]
 }
@@ -54,6 +56,7 @@ async function addOrder(props, Client){
         res = madh
     }).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
     // const res = await knexQuery.select('madh').from('don_hang')
     // .where('makh','=',Client.makh)
@@ -80,6 +83,7 @@ async function addItems(items, order){
     await knexQuery('chi_tiet_don_hang')
     .insert(data).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
 }
 
@@ -93,6 +97,7 @@ async function updateOrderStatus(Client, status, token=false){
             trang_thai: status
         }).catch(error => {
             console.log(error)
+            throw new Error(error);
         });
     }
     else {
@@ -102,6 +107,7 @@ async function updateOrderStatus(Client, status, token=false){
             trang_thai: status
         }).catch(error => {
             console.log(error)
+            throw new Error(error);
         });
     }
 }
@@ -115,6 +121,7 @@ async function updatePaymentToken(Client, token){
         payment_token: token
     }).catch(error => {
         console.log(error)
+        throw new Error(error);
     });
 }
 
