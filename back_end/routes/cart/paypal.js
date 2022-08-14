@@ -2,6 +2,9 @@ const paypal = require('paypal-rest-sdk');
 var url_lib = require('url');
 var querystring = require("querystring");
 require("dotenv").config();
+const config = require('../../config')
+if (config.DEV) var HOST_LINK = process.env.DEV_HOST
+    else var HOST_LINK = process.env.HOST
 
 async function paypalCall(props, Client){
     return new Promise( resolve =>{
@@ -16,8 +19,8 @@ async function paypalCall(props, Client){
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": process.env.HOST+"/cart/order_create/paypal_camon_success",
-                "cancel_url": process.env.HOST+"/cart/order_create/paypal_camon_fail"
+                "return_url": HOST_LINK + "/cart/order_create/paypal_camon_success",
+                "cancel_url": HOST_LINK + "/cart/order_create/paypal_camon_fail"
             },
             "transactions": [{
                 // "item_list": {
@@ -31,7 +34,7 @@ async function paypalCall(props, Client){
                 // },
                 "amount": {
                     "currency": "USD",
-                    "total": 10
+                    "total": (props.phi_san_pham + props.phi_van_chuyen - props.phi_giam)/23000
                 },
                 "description": "Thành viên " + Client.tenkh + " thực hiện thanh toán",
             }]

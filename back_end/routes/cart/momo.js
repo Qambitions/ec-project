@@ -1,6 +1,9 @@
 var crypto = require('crypto')
 var https = require('https')
 require("dotenv").config();
+const config = require('../../config')
+if (config.DEV) var HOST_LINK = process.env.DEV_HOST
+    else var HOST_LINK = process.env.HOST
 
 async function momoCall(props, Client){
     return new Promise( resolve =>{
@@ -10,9 +13,10 @@ async function momoCall(props, Client){
         var requestId = partnerCode + new Date().getTime();
         var orderId = Client.makh + '_' + requestId;
         var orderInfo = "Thành viên " + Client.tenkh + " thực hiện thanh toán";
-        var redirectUrl = process.env.HOST+"/cart/order_create/momo_camon";
-        var ipnUrl      = process.env.HOST+"/cart/order_create/momo_camon";
-        var amount = props.tong_phi;
+        
+        var redirectUrl = HOST_LINK + "/cart/order_create/momo_camon";
+        var ipnUrl      = HOST_LINK + "/cart/order_create/momo_camon";
+        var amount = props.phi_san_pham + props.phi_van_chuyen - props.phi_giam;
         var requestType = "captureWallet";
         var extraData = ""; 
         
