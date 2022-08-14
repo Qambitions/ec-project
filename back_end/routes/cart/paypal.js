@@ -1,13 +1,17 @@
 const paypal = require('paypal-rest-sdk');
 var url_lib = require('url');
 var querystring = require("querystring");
+require("dotenv").config();
+const config = require('../../config')
+if (config.DEV) var HOST_LINK = process.env.DEV_HOST
+    else var HOST_LINK = process.env.HOST
 
 async function paypalCall(props, Client){
     return new Promise( resolve =>{
         paypal.configure({
             'mode': 'sandbox', //sandbox or live
-            'client_id': 'AfBInaW25hdqP-jYBh_7QWb967DrjrVdDXtv7wx4cV_DPRZsvVSo_n5sreI2aWN0Xpt6F3fHvElj616-',
-            'client_secret': 'EJF87c0J_ArQ9xSJ194UBy9-dYjF4SXg_j-rHvzS4FT44ZK8n-OlhOtXgS7SRc7OAVBlJ2k_YO7u7TrD',
+            'client_id': process.env.PAYPAL_CLIENT_ID,
+            'client_secret': process.env.PAYPAL_CLIENT_SECRET,
         });
         var create_payment_json = {
             "intent": "sale",
@@ -15,8 +19,8 @@ async function paypalCall(props, Client){
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": process.env.HOST+"/cart/order_create/paypal_camon_success",
-                "cancel_url": process.env.HOST+"/cart/order_create/paypal_camon_fail"
+                "return_url": HOST_LINK + "/cart/order_create/paypal_camon_success",
+                "cancel_url": HOST_LINK + "/cart/order_create/paypal_camon_fail"
             },
             "transactions": [{
                 // "item_list": {
@@ -30,7 +34,7 @@ async function paypalCall(props, Client){
                 // },
                 "amount": {
                     "currency": "USD",
-                    "total": 10
+                    "total": (props.phi_san_pham + props.phi_van_chuyen - props.phi_giam)/23000
                 },
                 "description": "Thành viên " + Client.tenkh + " thực hiện thanh toán",
             }]

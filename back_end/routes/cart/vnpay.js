@@ -4,6 +4,10 @@ var https = require('https');
 var path = require('path');
 var resolve = path.resolve();
 var querystring = require('qs');
+require("dotenv").config();
+const config = require('../../config')
+if (config.DEV) var HOST_LINK = process.env.DEV_HOST
+    else var HOST_LINK = process.env.HOST
 
 function pad2(n) {  // always returns a string
     return (n < 10 ? '0' : '') + n;
@@ -28,16 +32,16 @@ function vnpayCall(props, Client) {
     var ipAddr = 'http://localhost:5000';
     // var ipAddr = '127.0.0.1';
 
-    var tmnCode = '7ZLIGXV3';
-    var secretKey = 'DNBEDJWRYVOKGGLLWKDLQUBFSYDVDGPH';
+    var tmnCode = process.env.VNPAY_TMN_KEY;
+    var secretKey = process.env.VNPAY_SECRETKEY;;
     var vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-    var returnUrl = process.env.HOST + "/cart/order_create/vnpay_camon";
+    var returnUrl = HOST_LINK + "/cart/order_create/vnpay_camon";
 
     var date = new Date();
 
     var createDate = getDateFormat(date);
     var orderId = Client.makh + '_' + new Date().getTime();
-    var amount = props.tong_phi;
+    var amount = props.phi_san_pham + props.phi_van_chuyen - props.phi_giam;
     var bankCode = '';
 
     var orderInfo = "Thành viên " + Client.tenkh + " thực hiện thanh toán";

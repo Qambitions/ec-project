@@ -9,6 +9,16 @@ const paypal = require('paypal-rest-sdk');
 require("dotenv").config();
 const crypto = require("crypto");
 const secret = process.env.SECRET_KEY;
+const config = require('../../config')
+
+if (config.DEV){
+    var SUCCESS_LINK = process.env.DEV_REACT_APP_PAYMENT_SUCCESS
+    var FAIL_LINK = process.env.DEV_REACT_APP_PAYMENT_FAIL
+}
+else {
+    var SUCCESS_LINK = process.env.REACT_APP_PAYMENT_SUCCESS
+    var FAIL_LINK = process.env.REACT_APP_PAYMENT_FAIL
+}
 
 async function checkClient(props){
     const rawSQL = ` 
@@ -228,13 +238,13 @@ router.get('/momo_camon', async function(req, res, next) {
     console.log(Client)
     if (resultCode == 0){
         updateOrderStatus(Client,'CHỜ XÁC NHẬN')
-        return res.redirect(process.env.REACT_APP_PAYMENT_SUCCESS)
+        return res.redirect(SUCCESS_LINK)
         // return res.send('thanh cong')
     }
     else
         updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
         // return res.send('that bai')
-        return res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
+        return res.redirect(FAIL_LINK)
         
 });
 
@@ -249,12 +259,12 @@ router.get('/paypal_camon_success', async function(req, res, next) {
     paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
         if (error) {
             updateOrderStatus('','THANH TOÁN THẤT BẠI',req.query.token)
-            res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
+            res.redirect(FAIL_LINK)
             // return res.send("that bai")
         } else {
             console.log(JSON.stringify(payment));
             updateOrderStatus('','CHỜ XÁC NHẬN',req.query.token)
-            res.redirect(process.env.REACT_APP_PAYMENT_SUCCESS)
+            res.redirect(SUCCESS_LINK)
             // return res.send("thanh cong")
         }
     });
@@ -264,7 +274,7 @@ router.get('/paypal_camon_fail', async function(req, res, next) {
     // console.log(req)
     updateOrderStatus('','THANH TOÁN THẤT BẠI',req.query.token)
     // return res.send('that bai')
-    res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
+    res.redirect(FAIL_LINK)
 });
 
 router.get('/vnpay_camon', function (req, res, next) {
@@ -279,7 +289,7 @@ router.get('/vnpay_camon', function (req, res, next) {
     delete vnp_Params['vnp_SecureHashType'];
 
     vnp_Params = vnpay_sortObject(vnp_Params);
-    var secretKey = 'DNBEDJWRYVOKGGLLWKDLQUBFSYDVDGPH';
+    var secretKey =  process.env.VNPAY_SECRETKEY;
     var querystring = require('qs');
     var signData = querystring.stringify(vnp_Params, { encode: false });
     var crypto = require("crypto");     
@@ -294,17 +304,17 @@ router.get('/vnpay_camon', function (req, res, next) {
         
         if (rspCode=='00'){
             updateOrderStatus(Client,'CHỜ XÁC NHẬN')
-            return res.redirect(process.env.REACT_APP_PAYMENT_SUCCESS)
+            return res.redirect(SUCCESS_LINK)
             // return res.send('sucess')
         }
         else {
             updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
-            return res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
+            return res.redirect(FAIL_LINK)
             // return res.send('fail')
         }
     }
     else {
-        return res.redirect(process.env.REACT_APP_PAYMENT_FAIL)
+        return res.redirect(FAIL_LINK)
         // return res.send("1231245")
     }
 });
