@@ -1,11 +1,12 @@
 var crypto = require('crypto')
 var https = require('https')
+require("dotenv").config();
 
 async function momoCall(props, Client){
     return new Promise( resolve =>{
-        var partnerCode = "MOMOXQEO20220611";
-        var accessKey = "AOjvfOzkjYrsczCz";
-        var secretkey = "8Zz2FMDm7Be2tOVf2DFhwR9LlVvv3Doj";
+        var partnerCode = process.env.MOMO_CODE;
+        var accessKey = process.env.MOMO_ACCESS_KEY;
+        var secretkey = process.env.MOMO_SECRET_KEY;
         var requestId = partnerCode + new Date().getTime();
         var orderId = Client.makh + '_' + requestId;
         var orderInfo = "Thành viên " + Client.tenkh + " thực hiện thanh toán";

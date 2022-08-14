@@ -4,6 +4,8 @@ var https = require('https');
 var path = require('path');
 var resolve = path.resolve();
 var querystring = require('qs');
+require("dotenv").config();
+
 
 function pad2(n) {  // always returns a string
     return (n < 10 ? '0' : '') + n;
@@ -28,8 +30,8 @@ function vnpayCall(props, Client) {
     var ipAddr = 'http://localhost:5000';
     // var ipAddr = '127.0.0.1';
 
-    var tmnCode = '7ZLIGXV3';
-    var secretKey = 'DNBEDJWRYVOKGGLLWKDLQUBFSYDVDGPH';
+    var tmnCode = process.env.VNPAY_TMN_KEY;
+    var secretKey = process.env.VNPAY_SECRETKEY;;
     var vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
     var returnUrl = process.env.HOST + "/cart/order_create/vnpay_camon";
 

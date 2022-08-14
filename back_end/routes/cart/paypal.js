@@ -1,13 +1,14 @@
 const paypal = require('paypal-rest-sdk');
 var url_lib = require('url');
 var querystring = require("querystring");
+require("dotenv").config();
 
 async function paypalCall(props, Client){
     return new Promise( resolve =>{
         paypal.configure({
             'mode': 'sandbox', //sandbox or live
-            'client_id': 'AfBInaW25hdqP-jYBh_7QWb967DrjrVdDXtv7wx4cV_DPRZsvVSo_n5sreI2aWN0Xpt6F3fHvElj616-',
-            'client_secret': 'EJF87c0J_ArQ9xSJ194UBy9-dYjF4SXg_j-rHvzS4FT44ZK8n-OlhOtXgS7SRc7OAVBlJ2k_YO7u7TrD',
+            'client_id': process.env.PAYPAL_CLIENT_ID,
+            'client_secret': process.env.PAYPAL_CLIENT_SECRET,
         });
         var create_payment_json = {
             "intent": "sale",

@@ -5,6 +5,7 @@ var knexQuery = require('../../db_connect');
 require("dotenv").config();
 const crypto = require("crypto");
 const secret = process.env.SECRET_KEY;
+require("dotenv").config();
 
 async function checkClient(props){
     const rawSQL = ` 
@@ -46,7 +47,7 @@ async function getMinPriceGHN(listBranch, dia_chi, sum_weight){
             var price = await axios_connect('/',{
                 method: 'POST',
                 headers: {
-                    token: '3f4f34d9-0136-11ed-b824-262f869eb1a7'
+                    token: process.env.GHN_TOKEN
                 },
                 data:{
                     "service_id":method,
@@ -85,7 +86,7 @@ async function getMinPriceGHTK(listBranch, dia_chi, sum_weight, mode){
         var price = await axios_connect('/',{
             method: 'POST',
             headers: {
-                token: 'a2f65c9Ff7651cf6ED922F1b867Dcce8CeEe7586'
+                token: process.env.GHTK_TOKEN
             },
             data:{
                 "pick_province": listBranch[i].tp_tinh,
@@ -145,7 +146,7 @@ router.post('/', async (req, res, next) =>{
             minPrice = await getMinPriceGHTK(listBranch, req.body.dia_chi, req.body.sum_weight,'xteam');
 
 
-        console.log(minPrice);
+        // console.log(minPrice);
         if (minPrice != 1000000){
             response.exitcode = 0
             response.message = "Lấy thông tin thành công"
