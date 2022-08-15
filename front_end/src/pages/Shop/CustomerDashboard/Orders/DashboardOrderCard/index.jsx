@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "../../../../../api/axios";
 import { OrderCard } from "../../../Checkout/OrdersInfo/OrderCard";
 import "./style.css";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import OrdersContext from "../../../../../context/OrdersProvider";
 
 export default function DashboardOrderCard({ orderInfo }) {
   const [items, setItems] = useState([]);
@@ -23,6 +24,11 @@ export default function DashboardOrderCard({ orderInfo }) {
   useEffect(() => {
     fetchOrderDetail();
   }, []);
+  const ordersContext = useContext(OrdersContext)
+  const handleViewDetail=()=>{
+    ordersContext.setOrderID(orderInfo.madh);
+    ordersContext.setViewDetail(true);
+  }
 
   return (
     <div className="dashboard__ordercard">
@@ -42,7 +48,7 @@ export default function DashboardOrderCard({ orderInfo }) {
           <label>|</label>
           <label>Tổng tiền: {orderInfo.tong_phi}đ</label>
         </div>
-        <a>Xem chi tiết</a>
+        <label onClick={handleViewDetail}>Xem chi tiết</label>
       </div>
       <div>
         {items.map((item) => (

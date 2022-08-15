@@ -6,8 +6,9 @@ import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import Orders from "./Orders";
 import OrderDetail from "./Orders/OrderDetail";
-
-export default function CustomerDashboard() {
+import { Routes, Route, Outlet } from "react-router-dom";
+import { OrdersProvider } from "../../../context/OrdersProvider";
+export default function CustomerDashboard({page}) {
   return (
     <div className="body">
       <div className="customer__dashboard">
@@ -15,25 +16,27 @@ export default function CustomerDashboard() {
           <label>avt</label>
           <label>Tên KH</label>
         </div>
-        <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+        <Tab.Container id="left-tabs-example" defaultActiveKey={page}>
           <Row>
             <Col sm={3}>
               <Nav variant="pills" className="flex-column">
                 <Nav.Item>
-                  <Nav.Link eventKey="first">Thông tin tài khoản</Nav.Link>
+                  <Nav.Link eventKey="account">Thông tin tài khoản</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="second">Đơn hàng của tôi</Nav.Link>
+                  <Nav.Link eventKey="orders">Đơn hàng của tôi</Nav.Link>
                 </Nav.Item>
               </Nav>
             </Col>
             <Col sm={9}>
               <Tab.Content>
-                <Tab.Pane eventKey="first">
-                  <OrderDetail />
+                <Tab.Pane eventKey="account">
+                  
                 </Tab.Pane>
-                <Tab.Pane eventKey="second">
-                  <Orders />
+                <Tab.Pane eventKey="orders">
+                  <OrdersProvider>
+                    <Orders />
+                  </OrdersProvider>
                 </Tab.Pane>
               </Tab.Content>
             </Col>
