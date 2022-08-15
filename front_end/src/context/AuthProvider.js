@@ -1,15 +1,18 @@
 import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "../../src/api/axios";
+import React from "react";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) =>{
-    const [auth, setAuth] = useState({roles:[1,2],user:'ntnd1'});
+    const [auth, setAuth] = useState({ user: 'dong', roles: [1] });
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
     useEffect(()=>{
+
         getInfo();
         getDelivery();
+
     },[])
 
     const getDelivery = async() =>{
@@ -36,9 +39,39 @@ export const AuthProvider = ({ children }) =>{
         Cookies.remove("token");
     }
 
-    const toggleLoggin = () =>{
-        setAuth(prevState=>{return{...prevState, valid:true}});
-    }   
+    const toggleLoggin =async(username, password) =>{
+        if (username && password) {
+            try {
+              const res = await axios.post(process.env.REACT_APP_LOGIN_URL, {
+                username: username,
+                password: password,
+              });
+    
+              if (res.data.exitcode === 0) {
+                Cookies.set("token", res.data.token, {
+                  expires: 1,
+                  path: "/",
+                  sameSite: "strict",
+                  secure: true,
+                });
+                localStorage.setItem(
+                  "account_info",
+                  JSON.stringify(res.data.account_info)
+                );
+                let info = { user: 'username', roles: [1] }
+                // console.log(info)
+                // setAuth(info)
+                // setAuth({ user: username, roles: [1] });
+                return res.data.exitcode;
+
+
+              } else if (res.data.exitcode === 104) {
+                console.log("sai roi");
+                return res.data.exitcode
+              }
+            } catch (error) {}
+          }
+    } 
 
     const value ={auth,toggleLogout, toggleLoggin ,setDeliveryAddress,handleLogin,setAuth,info,deliveryAddress}
 

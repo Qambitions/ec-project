@@ -7,8 +7,6 @@ import AuthContext from "../../context/AuthProvider";
 import axios from "../../api/axios";
 import Cookies from "js-cookie";
 
-const LOGIN_URL = "/account/login";
-
 export default function SignInForm() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
@@ -52,34 +50,14 @@ export default function SignInForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormErrors(validate({ username, password }));
-    if (username && password) {
-      try {
-        const res = await axios.post(LOGIN_URL, {
-          username: username,
-          password: password,
-        });
-        console.log(res.data.exitcode);
 
-        if (res.data.exitcode === 0) {
-          Cookies.set("token", res.data.token, {
-            expires: 1,
-            path: "/",
-            sameSite: "strict",
-            secure: true,
-          });
-          localStorage.setItem(
-            "account_info",
-            JSON.stringify(res.data.account_info)
-          );
-          setUsername("");
-          setPassword("");
-          navigate(from, { replace: true });
-          authContext.setAuth({ user: username, role: [1, 2] });
-        } else {
-        }
-        setExitCode(res.data.exitcode);
-      } catch (error) {}
+    setFormErrors(validate({ username, password }));
+    let res = await authContext.toggleLoggin(username, password);
+    console.log(res);
+    setExitCode(res);
+    if (res === 0) {
+      console.log("dung roi");
+      navigate(from, { replace: true });
     }
   };
 
@@ -87,7 +65,7 @@ export default function SignInForm() {
     <div className="container signin-body">
       <div className="signin-container">
         <h2>Đăng nhập</h2>
-        {exitCode === 1 && <SignInErrorMessageBox />}
+        {exitCode === 104 && <SignInErrorMessageBox />}
         <form className="signin-form" onSubmit={handleSubmit}>
           <input
             id="loginUsernameInput"

@@ -1,3 +1,3 @@
-const DEV = false
+const DEV = true
 
 module.exports =  {DEV};

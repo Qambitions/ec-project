@@ -12,10 +12,11 @@ export default function DashboardOrderCard({ orderInfo }) {
     let res = await axios({
       method: "get",
       headers: { token: Cookies.get("token") },
-      url: "/account/user_info/user_order_detail/items",
+      url: "/account/user_info/user_order_detail/list_items",
       params: { madh: orderInfo.madh },
     });
     if (res.data.exitcode === 0) {
+      console.log("ÁD", res.data);
       setItems(res.data.items);
     }
   };
@@ -47,6 +48,7 @@ export default function DashboardOrderCard({ orderInfo }) {
       <div>
         {items.map((item) => (
           <OrderCard info={item} />
+          // <OrderCard so_luong_mua={item.}/>
         ))}
       </div>
     </div>

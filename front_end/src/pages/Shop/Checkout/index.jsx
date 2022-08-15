@@ -8,47 +8,83 @@ import TotalCard from "./TotalCard";
 import { CheckoutProvider } from "../../../context/CheckoutProvider";
 import CheckoutContext from "../../../context/CheckoutProvider";
 import axios from "../../../api/axios";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Checkout(props) {
   const location = useLocation();
   const checkoutContext = useContext(CheckoutContext);
-  const handleOrder = () => {
-    var cartInfo = localStorage.getItem("cart");
-    cartInfo = cartInfo ? JSON.parse(cartInfo) : {};
+  const [items, setItems] = useState([]);
+
+  const fetchDetail = async () => {
+    var cart = localStorage.getItem("cart");
+    cart = cart ? JSON.parse(cart) : [];
+    let itemsLoad = [];
+    for (var i in cart) {
+      if (cart[i].isChecked) {
+        let item = {};
+        await axios({
+          method: "get",
+          url: process.env.REACT_APP_GET_PRODUCT_DETAIL,
+          params: { masp: cart[i].itemID },
+        }).then((res) => (item = res.data.item));
+        item.so_luong_mua = cart[i].quantity;
+        itemsLoad.push(item);
+      }
+    }
+    setItems(itemsLoad);
+  };
+  useEffect(() => {
+    fetchDetail();
+  }, []);
+
+  const handleOrder = async () => {
     var checkoutInfo = localStorage.getItem("checkoutInfo");
     checkoutInfo = checkoutInfo ? JSON.parse(checkoutInfo) : {};
-    console.log("CART", cartInfo);
+    let items = [];
+    let tempPay = 0;
+    items.forEach((element) => {
+      let item = {};
+      tempPay +=
+        parseInt(element.so_luong_mua) * parseInt(element.gia_ban_giam);
+      item.so_luong_mua = element.so_luong_mua;
+      item.masp = element.masp;
+      item.gia_phai_tra = element.gia_ban_giam;
+      items.push(item);
+    });
+    console.log("CART", items);
     console.log("CHECKOUTINFO", checkoutInfo);
-    // try {
-    //   axios({
-    //     method: "post",
-    //     url: process.env.REACT_APP_CREATE_ORDER,
-    //     headers: { token: Cookies.get("token") },
-    //     data: {
-    //       id_dia_chi_giao: 1,
-    //       hinh_thuc_thanh_toan: "COD",
-    //       macn: 200,
-    //       hinh_thuc_giao_hang: checkoutContext.shippingMethod,
-    //       phi_van_chuyen: checkoutContext.shippingPrice,
-    //       phi_giam: 0,
-    //       phi_san_pham: 475000,
-    //       items: [
-    //         {
-    //           masp: 200000,
-    //           so_luong_mua: 2,
-    //           gia_phai_tra: 10000,
-    //         },
-    //         {
-    //           masp: 200001,
-    //           so_luong_mua: 2,
-    //           gia_phai_tra: 10000,
-    //         },
-    //       ],
-    //     },
-    //   });
-    // } catch (error) {}
+    console.log(
+      "shipprice",
+      document.getElementById("checkoutShippingCost").textContent
+    );
+    console.log("psp", document.getElementById("checkoutTotal").textContent);
+    try {
+      await axios({
+        method: "post",
+        url: process.env.REACT_APP_CREATE_ORDER,
+        headers: { token: Cookies.get("token") },
+        data: {
+          checkoutInfo,
+          phi_van_chuyen: document.getElementById("checkoutShippingCost")
+            .textContent,
+          phi_giam: 0,
+          phi_san_pham: tempPay,
+          items,
+        },
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.exitcode === 106) {
+          console.log("token k ton tai");
+        } else if (res.data.exitcode === 101) {
+          console.log("tao don hang that bai");
+        } else {
+          console.log("tao thanh cong", res.data.paymentURL);
+          // window.location.assign(res.data.paymentURL);
+        }
+      });
+    } catch (error) {}
+    await setTimeout(1000);
   };
 
   return (
@@ -62,7 +98,7 @@ export default function Checkout(props) {
               <ShippingInfo weight={location.state.totalWeight} />
             </div>
             <div className="container__flex_col payment__body_right">
-              <OrderInfo />
+              <OrderInfo itemsList={items} />
               <VoucherInfo />
               <TotalCard info={location.state.tempPay} />
               <button className="button_pink" onClick={handleOrder}>

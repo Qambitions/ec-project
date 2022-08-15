@@ -27,31 +27,31 @@ import ImportDetail from "./Admin/ImportDetail";
 import RequireAuth from "../components/RequireAuth";
 
 const ROLES = {
-    User: 1,
-    Admin: 2,
-  };
+  User: 1,
+  Admin: 2,
+};
 
 export default function Pages() {
   return (
     <Routes>
       <Route
         element={
-            <>
-                <HeadAds/>
-                <Header/>
-                <NavBar/>
-                <Outlet/>
-                <Footer/>
-            </>
+          <>
+            <HeadAds />
+            <Header />
+            <NavBar />
+            <Outlet />
+            <Footer />
+          </>
         }
       >
-        <Route element={<RequireAuth allowedRoles={[1, 2]} />}>
+        <Route element={<RequireAuth allowedRoles={[1]} />}>
           <Route path="user">
             <Route path="/user/myorder" element={<Orders />}></Route>
             <Route path="/user/account" element={<CustomerDashboard />}></Route>
+            <Route path="/user/cart" element={<Cart />} />
+            <Route path="/user/checkout" element={<Checkout />} />
           </Route>
-          <Route path="/user/cart" element={<Cart />} />
-          <Route path="/user/checkout" element={<Checkout />} />
         </Route>
         <Route path="/" element={<Homepage />} />
         <Route path="/product/:id" element={<ProductDetail />} />
@@ -74,5 +74,5 @@ export default function Pages() {
         <Route path="/admin/import/detail" element={<ImportDetail />} />
       </Route>
     </Routes>
-    );
+  );
 }

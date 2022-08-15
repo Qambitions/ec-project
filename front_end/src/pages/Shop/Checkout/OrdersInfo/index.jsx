@@ -1,45 +1,22 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Card } from "react-bootstrap";
 import axios from "../../../../api/axios";
 import { OrderCard } from "./OrderCard";
 
-export function OrderInfo(props) {
+export function OrderInfo({ itemsList }) {
   const [items, setItems] = useState([]);
 
-  // const fetchDetail = async (id) => {
-  //   let res = await axios({
-  //     method: "get",
-  //     url: process.env.REACT_APP_GET_PRODUCT_DETAIL,
-  //     params: { masp: id },
-  //   });
-  //   if (res.data.exitcode === 0) {
-  //     return res.data.item;
-  //   }
-  //   return null;
-  // };
+  const fetchDetail = () => {
+    if (itemsList.length > 0) {
+      setItems(itemsList);
+    }
+  };
 
   useEffect(() => {
-    var cart = localStorage.getItem("cart");
-    cart = cart ? JSON.parse(cart) : [];
-    let items = [];
-    for (var i in cart) {
-      if (cart[i].isChecked) {
-        async function fetchDetail() {
-          let res = await axios({
-            method: "get",
-            url: process.env.REACT_APP_GET_PRODUCT_DETAIL,
-            params: { masp: cart[i].itemID },
-          });
-          if (res.data.exitcode === 0) {
-            return res.data.item;
-          }
-          return null;
-        }
-        console.log(fetchDetail());
-      }
-    }
-    setItems(items);
-  }, []);
+    fetchDetail();
+    console.log("IL", itemsList.length);
+  }, [itemsList]);
 
   return (
     <div className="payment__info_container">
@@ -49,7 +26,13 @@ export function OrderInfo(props) {
       </div>
       <div className="payment__info_body">
         {items.map((item) => (
-          <OrderCard info={item} />
+          <OrderCard
+            hinh_anh={item.hinh_anh}
+            ten_npp={item.ten_npp}
+            gia_phai_tra={item.gia_ban_giam}
+            tensp={item.tensp}
+            so_luong_mua={item.so_luong_mua}
+          />
         ))}
       </div>
     </div>
