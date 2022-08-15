@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) =>{
     var response = {
         "exitcode": 1,
         "message": "Lấy thông tin thất bại",
-        "chi_nhanh":"",
+        "loai_hang":"",
     }
     if (req.headers.magic_pass != 'LamZauKhumKho'){
         response.message = "sai Pass ròi!!"
@@ -29,7 +29,7 @@ router.get('/', async (req, res, next) =>{
       const category = await queryCategory(req.query);
       response.exitcode = 0
       response.message = "lấy thông tin thành công"
-      response.chi_nhanh = category
+      response.loai_hang = category
     }
     catch (e){
       response.exitcode= 1
