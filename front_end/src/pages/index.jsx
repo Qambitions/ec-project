@@ -13,7 +13,6 @@ import Checkout from "../pages/Shop/Checkout";
 import CategoryPage from "../pages/Shop/CategoryPage";
 import Catalog from "../components/Catalog";
 import CustomerDashboard from "../pages/Shop/CustomerDashboard";
-import Orders from "../pages/Shop/CustomerDashboard/Orders";
 import Dashboard from "./Admin/AdminDashboard";
 import OrderDashboard from "./Admin/OrderDashboard";
 import UserDashboard from "./Admin/UserDashboard";
@@ -47,8 +46,8 @@ export default function Pages() {
       >
         <Route element={<RequireAuth allowedRoles={[1, 2]} />}>
           <Route path="user">
-            <Route path="/user/myorder" element={<Orders />}></Route>
-            <Route path="/user/account" element={<CustomerDashboard />}></Route>
+            <Route path="/user/myorder" element={<CustomerDashboard page={"orders"}/>}></Route>
+            <Route path="/user/account" element={<CustomerDashboard page={"account"}/>}></Route>
           </Route>
           <Route path="/user/cart" element={<Cart />} />
           <Route path="/user/checkout" element={<Checkout />} />
