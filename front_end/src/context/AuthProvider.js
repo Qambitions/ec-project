@@ -26,10 +26,6 @@ export const AuthProvider = ({ children }) =>{
             let info = {roles:[1],user:'test'}
             setAuth(info)
         }
-        
-        console.log("decrypted",decrypted)
-        console.log("time",Cookies.get("login_time"))
-        console.log("token",Cookies.get("token_u"))
     },[])
 
     const getDelivery = async() =>{

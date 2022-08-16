@@ -97,10 +97,7 @@ export default function SignInForm() {
 
 
   const debounceSubmit = useCallback(debounce((username,password)=>callLoginInAPI(username,password),1000),[])
-  // useEffect(() => {
-  //   console.log("iscall")
-  //   userRef.current.focus();
-  // }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate({ username, password }));

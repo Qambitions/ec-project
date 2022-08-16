@@ -22,7 +22,7 @@ export default function Header() {
   };
 
   const toggleMyorder = ()=>{
-    console.log("ALO",authContext.auth)
+
   }
 
   useEffect(() => {

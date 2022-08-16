@@ -21,9 +21,7 @@ export default function Cart() {
     var cart = localStorage.getItem("cart");
     cart = cart ? JSON.parse(cart) : [];
     if (!cart.some((item) => item?.isChecked === true)) {
-      console.log("cart is empty");
     } else {
-      console.log("get go");
       navigate("/user/checkout", {
         state: {
           totalWeight: cartContext.cartInfo.totalWeight,
@@ -62,11 +60,9 @@ export default function Cart() {
       (item) => item?.isChecked !== true
     );
     setSelectAll(isChecked);
-    console.log(id);
   };
 
   useEffect(() => {
-    // console.log(authContext.auth);
     setItems(JSON.parse(localStorage.getItem("cart")));
   }, [cartContext.cartInfo.totalQuantity]);
 
