@@ -8,10 +8,12 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CartContext from "../../../context/CartProvider";
+import AuthContext from "../../../context/AuthProvider";
 
 export default function Cart() {
   const navigate = useNavigate();
   const cartContext = useContext(CartContext);
+  // const authContext = useContext(AuthContext);
   const [selectAll, setSelectAll] = useState();
   const [items, setItems] = useState([]);
   var paymentType = "";
@@ -64,6 +66,7 @@ export default function Cart() {
   };
 
   useEffect(() => {
+    // console.log(authContext.auth);
     setItems(JSON.parse(localStorage.getItem("cart")));
   }, [cartContext.cartInfo.totalQuantity]);
 
