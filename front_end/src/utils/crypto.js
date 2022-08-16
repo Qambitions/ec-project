@@ -11,6 +11,8 @@ function encrypt10(text, spec){
 }
 
  function decrypt10(text,spec){
+    if (typeof(text) === 'undefined' || typeof(spec) === 'undefined') 
+        return '' 
     let plaintext =  text.toString();
     let secSpec =  process.env.REACT_APP_SEC_KEY;    
     let ivSpec =  spec.toString();
