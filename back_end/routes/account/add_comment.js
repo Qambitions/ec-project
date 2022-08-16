@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
+require("dotenv").config();
+const crypto = require("crypto");
+const secret = process.env.SECRET_KEY;
+
 
 async function checkClient(props){
     if (typeof(props.token) == "undefined") props.token = '' 

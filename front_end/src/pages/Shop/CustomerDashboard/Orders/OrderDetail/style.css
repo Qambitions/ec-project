@@ -35,12 +35,12 @@
     text-align: right;
 }
 
-.order__detail_item_card .container__flex_col div:nth-child(1){
+/* .order__detail_item_card .container__flex_col div:nth-child(1){
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     align-self: baseline;
-}
+} */
 
 .order__detail_item_card .container__flex .container__flex_col{
     text-align: left;

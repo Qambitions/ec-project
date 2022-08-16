@@ -9,7 +9,7 @@ import axios from "../../../../../api/axios";
 import Cookies from "js-cookie";
 import OrderDetailItemCard from "./OrderDetailItemCard";
 
-export default function OrderDetail(props) {
+export default function OrderDetail({orderID}) {
   const [progress, setProgress] = useState();
   const [info, setInfo] = useState({});
   const [items, setItems] = useState([]);
@@ -18,7 +18,7 @@ export default function OrderDetail(props) {
       method: "get",
       headers: { token: Cookies.get("token") },
       url: "/account/user_info/user_order_detail/items",
-      params: { madh: 500000 },
+      params: { madh: orderID},
     });
     if (res.data.exitcode === 0) {
       setItems(res.data.items);

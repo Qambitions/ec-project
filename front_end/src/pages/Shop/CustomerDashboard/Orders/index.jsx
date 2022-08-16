@@ -5,8 +5,13 @@ import DashboardOrderCard from "./DashboardOrderCard";
 import { useEffect, useState } from "react";
 import axios from "../../../../api/axios";
 import Cookies from "js-cookie";
+import OrderDetail from "./OrderDetail";
+import { useContext } from "react";
+import OrdersContext, { OrdersProvider } from "../../../../context/OrdersProvider";
+
 
 export default function Orders() {
+  const ordersContext = useContext(OrdersContext);
   const [orders, setOrders] = useState([]);
   const getOrders = async () => {
     let res = await axios({
@@ -27,7 +32,7 @@ export default function Orders() {
   }, []);
 
   return (
-    <div>
+    <>{ordersContext.viewDetail===true? (<OrderDetail orderID={ordersContext?.orderID}/>):(<div>
       <label>Đơn hàng của tôi</label>
       <Tabs
         defaultActiveKey="profile"
@@ -86,6 +91,8 @@ export default function Orders() {
             ))}
         </Tab>
       </Tabs>
-    </div>
+    </div>)}    
+
+    </>
   );
 }
