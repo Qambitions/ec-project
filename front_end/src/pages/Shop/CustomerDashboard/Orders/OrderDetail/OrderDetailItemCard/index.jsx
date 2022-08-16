@@ -1,7 +1,17 @@
+import { useState } from "react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import CommentPopUp from "./CommentPopUp";
 
 export default function OrderDetailItemCard({ info }) {
+  const handleCommentPopUp = () => {};
+  const [commentPopUpIsRemove,setCommentPopUpIsRemove]=useState(false);
+
+  const toggleReview = () => {
+  console.log("alo 123")
+    setCommentPopUpIsRemove(!commentPopUpIsRemove);
+  };
+
   return (
     <Container className="container__100 order__detail_item_card">
       <Col xs={6}>
@@ -17,8 +27,10 @@ export default function OrderDetailItemCard({ info }) {
               <label>{info.ten_sp}</label>
             </div>
             <div>
-              <button>Đánh giá</button>
+              <button onClick={toggleReview}>Đánh giá</button>
               <button>Mua lại</button>
+              {commentPopUpIsRemove && (  <CommentPopUp info={info} handleClose={toggleReview} />)}
+
             </div>
           </div>
         </div>

@@ -2,11 +2,13 @@ import "./style.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { SignInErrorMessageBox } from "./SignInErrorMessageBox";
-import { useRef, useState, useEffect, useContext } from "react";
+import { useRef, useState, useEffect, useContext, useCallback } from "react";
 import AuthContext from "../../context/AuthProvider";
 import axios from "../../api/axios";
 import Cookies from "js-cookie";
-
+import { UserConfig } from "../../context/config";
+import { encrypt10 } from "../../utils/crypto";
+import debounce from 'lodash.debounce' 
 const LOGIN_URL = "/account/login";
 
 export default function SignInForm() {
@@ -19,9 +21,7 @@ export default function SignInForm() {
   const [password, setPassword] = useState();
   const [exitCode, setExitCode] = useState(2);
 
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
+
 
   const [formErrors, setFormErrors] = useState({});
   const validate = (values) => {
@@ -50,17 +50,15 @@ export default function SignInForm() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormErrors(validate({ username, password }));
+
+
+  async function callLoginInAPI (username,password){
     if (username && password) {
       try {
         const res = await axios.post(LOGIN_URL, {
           username: username,
           password: password,
-        });
-        console.log(res.data.exitcode);
-
+        }).then((res)=>{return res})
         if (res.data.exitcode === 0) {
           Cookies.set("token", res.data.token, {
             expires: 1,
@@ -72,15 +70,38 @@ export default function SignInForm() {
             "account_info",
             JSON.stringify(res.data.account_info)
           );
+
+          const loginDate = Date.now();
+          Cookies.set("login_time",loginDate,{
+            expires: 1,
+            path: "/",
+            sameSite: "strict",
+            secure: true,
+          });
+          var encryptedString = encrypt10(res.data.account_type,Cookies.get("login_time"))
+          Cookies.set("token_u",encryptedString,{
+            expires: 1,
+            path: "/",
+            sameSite: "strict",
+            secure: true,
+          })
+          navigate(from, { replace: true });
           setUsername("");
           setPassword("");
-          navigate(from, { replace: true });
-          authContext.setAuth({ user: username, role: [1, 2] });
         } else {
         }
         setExitCode(res.data.exitcode);
       } catch (error) {}
     }
+  }
+
+
+  const debounceSubmit = useCallback(debounce((username,password)=>callLoginInAPI(username,password),1000),[])
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate({ username, password }));
+    debounceSubmit( username, password );
   };
 
   return (
@@ -92,7 +113,7 @@ export default function SignInForm() {
           <input
             id="loginUsernameInput"
             placeholder="Email/ Số điện thoại"
-            ref={userRef}
+            // ref={userRef}
             value={username}
             onChange={handleUsernameInput}
           ></input>

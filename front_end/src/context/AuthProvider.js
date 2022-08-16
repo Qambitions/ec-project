@@ -1,15 +1,31 @@
 import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "../../src/api/axios";
+import { decrypt10 } from "../utils/crypto";
+
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) =>{
-    const [auth, setAuth] = useState({roles:[1,2],user:'ntnd1'});
+    const [auth, setAuth] = useState({});
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
+
+    
+
     useEffect(()=>{
+
         getInfo();
         getDelivery();
+        let time = Cookies.get("login_time")
+        let token = Cookies.get("token_u")
+        let decrypted = decrypt10(token,time);
+        if (decrypted==="30") {
+            let info = {roles:[2],user:'test'}
+            setAuth(info)
+        } else if (decrypted==="31"){
+            let info = {roles:[1],user:'test'}
+            setAuth(info)
+        }
     },[])
 
     const getDelivery = async() =>{
@@ -40,7 +56,7 @@ export const AuthProvider = ({ children }) =>{
         setAuth(prevState=>{return{...prevState, valid:true}});
     }   
 
-    const value ={auth,toggleLogout, toggleLoggin ,setDeliveryAddress,handleLogin,setAuth,info,deliveryAddress}
+    const value ={auth,toggleLogout,setDeliveryAddress,handleLogin,info,deliveryAddress}
 
     return (
         <AuthContext.Provider value={value}>

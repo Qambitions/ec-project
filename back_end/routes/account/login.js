@@ -59,7 +59,7 @@ router.post('/', async (req, res, next) =>{
       response.account_type = 0
       response.message      = "Chào mừng mấy đứa đua đòi làm zàu!!"
       response.exitcode     = 0
-      res.send(response)
+      return res.send(response)
     }
     else {
       const retUser = await queryUser(req.body);

@@ -1,0 +1,31 @@
+.popup__header svg{
+    font-size: 1.5rem;
+}
+
+.popup__header svg:hover{
+    cursor: pointer;
+}
+
+.comment__popup{
+    height: 60%;
+}
+
+.comment__popup textarea{
+    margin: 1.5rem 0;
+    min-height: 6em;
+    border-color: grey;
+    border-radius: 3px;
+}
+
+.popup__header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.popup__product_ratting li:hover{
+    background-color: white;
+}
+
+.popup__product_ratting svg{
+    font-size: 1.5rem;
+}
