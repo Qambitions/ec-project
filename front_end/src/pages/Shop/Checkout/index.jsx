@@ -8,8 +8,9 @@ import TotalCard from "./TotalCard";
 import { CheckoutProvider } from "../../../context/CheckoutProvider";
 import CheckoutContext from "../../../context/CheckoutProvider";
 import axios from "../../../api/axios";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import debounce from 'lodash.debounce' 
 
 export default function Checkout(props) {
   const location = useLocation();
@@ -38,37 +39,16 @@ export default function Checkout(props) {
     fetchDetail();
   }, []);
 
-  const handleOrder = async () => {
-    var checkoutInfo = localStorage.getItem("checkoutInfo");
-    checkoutInfo = checkoutInfo ? JSON.parse(checkoutInfo) : {};
-    let items = [];
-    let tempPay = 0;
-    items.forEach((element) => {
-      let item = {};
-      tempPay +=
-        parseInt(element.so_luong_mua) * parseInt(element.gia_ban_giam);
-      item.so_luong_mua = element.so_luong_mua;
-      item.masp = element.masp;
-      item.gia_phai_tra = element.gia_ban_giam;
-      items.push(item);
-    });
-    console.log("CART", items);
-    console.log("CHECKOUTINFO", checkoutInfo);
-    console.log(
-      "shipprice",
-      document.getElementById("checkoutShippingCost").textContent
-    );
-    console.log("psp", document.getElementById("checkoutTotal").textContent);
-    try {
+  async function callCreateOrderAPI(items,ckInfo,discount,shipprice,tempPay){
+        try {
       await axios({
         method: "post",
         url: process.env.REACT_APP_CREATE_ORDER,
         headers: { token: Cookies.get("token") },
         data: {
-          checkoutInfo,
-          phi_van_chuyen: document.getElementById("checkoutShippingCost")
-            .textContent,
-          phi_giam: 0,
+          ckInfo,
+          phi_van_chuyen:  shipprice,
+          phi_giam: discount,
           phi_san_pham: tempPay,
           items,
         },
@@ -80,11 +60,36 @@ export default function Checkout(props) {
           console.log("tao don hang that bai");
         } else {
           console.log("tao thanh cong", res.data.paymentURL);
-          // window.location.assign(res.data.paymentURL);
+          window.location.assign(res.data.paymentURL);
         }
       });
     } catch (error) {}
-    await setTimeout(1000);
+  }
+
+  const debounceCreateOrderAPI = useCallback(debounce((items,ckInfo,discount,shipprice,tempPay)=>callCreateOrderAPI(items,ckInfo,discount,shipprice,tempPay),1000),[])
+
+  const handleOrder = async () => {
+    var checkoutInfo = localStorage.getItem("checkoutInfo");
+    checkoutInfo = checkoutInfo ? JSON.parse(checkoutInfo) : {};
+    let itemsBuy = [];
+    let tempPay = 0;
+    items.forEach((element) => {
+      let item = {};
+      tempPay +=
+        parseInt(element.so_luong_mua) * parseInt(element.gia_ban_giam);
+      item.so_luong_mua = element.so_luong_mua;
+      item.masp = element.masp;
+      item.gia_phai_tra = element.gia_ban_giam;
+      itemsBuy.push(item);
+    });
+    console.log("CART", itemsBuy);
+    console.log("CHECKOUTINFO", checkoutInfo);
+    console.log(
+      "shipprice",
+      document.getElementById("checkoutShippingCost").textContent
+    );
+    console.log("psp", document.getElementById("checkoutTotal").textContent);
+      debounceCreateOrderAPI(itemsBuy,checkoutInfo,0,document.getElementById("checkoutShippingCost").textContent,document.getElementById("checkoutTotal").textContent)
   };
 
   return (
