@@ -24,7 +24,7 @@ import CategoryDetail from "./Admin/CategoryDetail";
 import ImportDashboard from "./Admin/ImportDashboard";
 import ImportDetail from "./Admin/ImportDetail";
 import RequireAuth from "../components/RequireAuth";
-
+import AllProducts from "./Admin/AllProducts";
 const ROLES = {
   User: 1,
   Admin: 2,
@@ -61,17 +61,20 @@ export default function Pages() {
       <Route path="/user/dang-nhap" element={<SignInWindow />} />
       <Route path="/user/dang-ky" element={<SignUpWindow />} />
       <Route path="*" element={<ErrorPage />} />
-      <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+      <Route >
+      {/* element={<RequireAuth allowedRoles={[ROLES.Admin]} />} */}
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/order" element={<OrderDashboard />} />
         <Route path="/admin/user" element={<UserDashboard />} />
         <Route path="/admin/stock" element={<StockDashboard />} />
-        <Route path="/admin/user/detail" element={<UserDetail />} />
+        <Route path="/admin/user/:user_id" element={<UserDetail />} />
         <Route path="/admin/order/:order_id" element={<OrderDetail />} />
         <Route path="/admin/stock/category" element={<CategoryDashboard />} />
-        <Route path="/admin/category/detail" element={<CategoryDetail />} />
+        <Route path="/admin/category/:category_id" element={<CategoryDetail />} />
         <Route path="/admin/stock/import" element={<ImportDashboard />} />
-        <Route path="/admin/import/detail" element={<ImportDetail />} />
+        <Route path="/admin/import/:po_id" element={<ImportDetail />} />
+        <Route path="/admin/all-products" element={<AllProducts/>} />
+
       </Route>
     </Routes>
   );
