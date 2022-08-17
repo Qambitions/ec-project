@@ -26,8 +26,8 @@ import ImportDetail from "./Admin/ImportDetail";
 import RequireAuth from "../components/RequireAuth";
 
 const ROLES = {
-  User: 1,
-  Admin: 2,
+  User: process.env.REACT_APP_ROLE_USER,
+  Admin: process.env.REACT_APP_ROLE_ADMIN,
 };
 
 export default function Pages() {
@@ -44,9 +44,8 @@ export default function Pages() {
           </>
         }
       >
-        <Route element={<RequireAuth allowedRoles={[1]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}>
           <Route path="user">
-
             <Route path="/user/myorder" element={<CustomerDashboard page={"orders"}/>}></Route>
             <Route path="/user/account" element={<CustomerDashboard page={"account"}/>}></Route>
             <Route path="/user/cart" element={<Cart />} />
