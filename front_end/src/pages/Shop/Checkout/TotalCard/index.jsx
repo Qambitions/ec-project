@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useContext, useState } from "react";
 import CheckoutContext from "../../../../context/CheckoutProvider";
 import "./style.css";

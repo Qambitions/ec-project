@@ -1,5 +1,5 @@
 import "./style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import {
   ProvinceSelector,
@@ -11,10 +11,12 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import axios from "../../api/axios";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthProvider";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const PHONE_REGEX = /^[0-9]{10}$/;
-const MAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 const REGISTER_URL = "/account/signup";
 
 export default function SignUpForm() {
@@ -25,29 +27,12 @@ export default function SignUpForm() {
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
 
-  const [formErrors, setFormErrors] = useState({
-    fullname: "Không được để trống",
-    phone: "Không được để trống",
-    email: "Không được để trống",
-    city: "Không được để trống",
-    district: "Không được để trống",
-    ward: "Không được để trống",
-    address: "Không được để trống",
-    pass: "Không được để trống",
-    confirm: "Không được để trống",
-  });
-  const [errorState, setErrorState] = useState({
-    fullname: "hidden",
-    phone: "hidden",
-    email: "hidden",
-    city: "hidden",
-    district: "hidden",
-    ward: "hidden",
-    address: "hidden",
-    pass: "hidden",
-    confirm: "hidden",
-  });
+  const [formErrors, setFormErrors] = useState({});
+  const authContext = useContext(AuthContext);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const fetchProvince = async () => {
     await axios({
       url: process.env.REACT_APP_GET_PROVINCES_URL,
@@ -61,7 +46,6 @@ export default function SignUpForm() {
   };
 
   const fetchDistrict = async (id) => {
-    console.log(`'province_id=${id}'`);
     await axios({
       url: process.env.REACT_APP_GET_DISTRICTS_URL,
       method: "GET",
@@ -70,7 +54,6 @@ export default function SignUpForm() {
       },
       params: { province_id: id },
     }).then((res) => {
-      console.log(res.data.data);
       setDistricts(res.data.data);
     });
   };
@@ -99,13 +82,15 @@ export default function SignUpForm() {
     }
   };
 
-  const handleSelectProvince = () => {
-    var select = document.getElementById("province");
+  const handleSelectProvince = (e) => {
+    handleChange(e);
+    var select = document.getElementById("city");
     var option = select.options[select.selectedIndex].value;
     fetchDistrict(option);
   };
 
-  const handleSelectDistrict = () => {
+  const handleSelectDistrict = (e) => {
+    handleChange(e);
     var select = document.getElementById("district");
     var option = select.options[select.selectedIndex].value;
     fetchWard(option);
@@ -115,18 +100,23 @@ export default function SignUpForm() {
     fetchProvince();
   }, []);
 
-  useEffect(() => {}, [formValues]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(e.target);
     setFormValues({ ...formValues, [name]: value });
+    setFormErrors({ ...formErrors, [name]: null });
   };
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let res = validate(formValues);
+    setFormErrors(res);
+
+    console.log("error", formErrors);
     var selectedDistrict = document.getElementById("district");
     var district_id =
       selectedDistrict.options[selectedDistrict.selectedIndex].value;
-    e.preventDefault();
-    if (formErrors.validate) {
+    if (res.validate) {
       try {
         const res = await axios.post(REGISTER_URL, {
           tenkh: formValues.fullname,
@@ -139,61 +129,81 @@ export default function SignUpForm() {
           tp_tinh: formValues.city,
           districtid: district_id,
         });
-        console.log("CALL SIGNUP");
-        console.log(JSON.stringify(res?.data));
-      } catch (error) {}
+        if (res.data.exitcode === 104) {
+          console.log("existed");
+        } else if (res.data.exitcode === 101) {
+          console.log("signup failed");
+        } else {
+          let res = await authContext.toggleLoggin(
+            formValues.email,
+            formValues.confirm
+          );
+          console.log(res);
+          // setExitCode(res);
+          if (res === 0) {
+            console.log("dung roi");
+            navigate(from, { replace: true });
+          }
+        }
+      } catch (error) {
+        console.log("sv failed");
+      }
     }
   };
 
   const validate = (values) => {
     const errors = {};
-    const states = {};
     errors.validate = true;
-    if (values.fullname) {
-      states.fullname = "hidden";
+    if (!values.fullname) {
+      errors.fullname = "Không được để trống";
+      errors.validate = false;
     }
-    if (values.phone) {
-      if (!PHONE_REGEX.test(values.phone)) {
-        errors.phone = "Số điện thoại không hợp lệ!";
-      } else {
-        states.phone = "hidden";
-      }
+    if (!values.phone) {
+      errors.phone = "Không được để trống";
+      errors.validate = false;
+    } else if (!PHONE_REGEX.test(values.phone)) {
+      errors.phone = "Số điện thoại không hợp lệ";
+      errors.validate = false;
     }
-    if (values.email) {
-      if (!MAIL_REGEX.test(values.email)) {
-        errors.email = "Email không hợp lệ!";
-      } else {
-        states.email = "hidden";
-      }
+    if (!values.email) {
+      errors.email = "Không được để trống";
+      errors.validate = false;
+    } else if (!EMAIL_REGEX.test(values.email)) {
+      errors.email = "Email không hợp lệ!";
+      errors.validate = false;
     }
-    if (values.city) {
-      states.city = "hidden";
+    if (!values.city) {
+      errors.city = "Không được để trống";
+      errors.validate = false;
     }
-    if (values.district) {
-      states.district = "hidden";
+    if (!values.district) {
+      errors.district = "Không được để trống";
+      errors.validate = false;
     }
-    if (values.ward) {
-      states.ward = "hidden";
+    if (!values.ward) {
+      errors.ward = "Không được để trống";
+      errors.validate = false;
     }
-    if (values.address) {
-      states.address = "hidden";
+    if (!values.address) {
+      errors.address = "Không được để trống";
+      errors.validate = false;
     }
-    if (values.pass) {
-      if (!PWD_REGEX.test(values.pass)) {
-        errors.pass =
-          "Yêu cầu 8-24 ký tự bao gồm chữ, số, ký tự đặc biệt, chữ cái in hoa!! ";
-      } else {
-        states.pass = "hidden";
-      }
+    if (!values.pass) {
+      errors.pass = "Không được để trống";
+      errors.validate = false;
+    } else if (!PWD_REGEX.test(values.pass)) {
+      errors.pass =
+        "Yêu cầu mật khẩu: 8-24 ký tự bao gồm chữ, số, ký tự đặc biệt, chữ cái in hoa!";
+      errors.validate = false;
     }
-    if (values.confirm) {
-      if (values.confirm !== values.pass) {
-        errors.confirm = "Không khớp mật khẩu!!";
-      } else {
-        states.confirm = "hidden";
-      }
+    if (!values.confirm) {
+      errors.confirm = "Không được để trống";
+      errors.validate = false;
+    } else if (!(values.pass === values.confirm)) {
+      errors.confirm = "Không khớp mật khẩu!";
+      errors.validate = false;
     }
-    return { states, errors };
+    return errors;
   };
 
   return (
@@ -203,44 +213,38 @@ export default function SignUpForm() {
         <div className="signup__section_1">
           <div className="signup-input-container">
             <input
+              id="fullname"
               placeholder="Họ và tên"
               name="fullname"
               value={formValues.fullname}
               onChange={handleChange}
             ></input>
           </div>
-          <div
-            className="error_message_container"
-            style={{ visibility: errorState.fullname }}
-          >
+          <div className="error_message_container">
             <small>{formErrors.fullname}</small>
           </div>
           <div className="signup-input-container">
             <input
+              id="phone"
               placeholder="Số điện thoại"
               name="phone"
               value={formValues.phone}
               onChange={handleChange}
             ></input>
           </div>
-          <div
-            className="error_message_container"
-            style={{ visibility: errorState.phone }}
-          >
+          <div className="error_message_container">
             <small>{formErrors.phone}</small>
           </div>
           <div className="signup-input-container">
             <input
+              id="email"
               placeholder="Email"
               name="email"
               value={formValues.email}
               onChange={handleChange}
             ></input>
           </div>
-          <div
-            className="error_message_container"
-            style={{ visibility: errorState.email }}
-          >
+          <div className="error_message_container">
             <small>{formErrors.email}</small>
           </div>
         </div>
@@ -248,24 +252,23 @@ export default function SignUpForm() {
           <div className="signup__section_2_col">
             <div className="signup-input-container">
               <select
+                id="city"
                 className="signup-form-input-2"
                 name="city"
                 value={formValues.city}
                 onChange={handleSelectProvince}
-                id="province"
               >
                 <option value="" disabled selected hidden>
                   Tỉnh/ Thành phố
                 </option>
                 {provinces.map((item) => (
-                  <ProvinceSelector key={item.ProvinceID} obj={item} />
+                  <option key={item.ProvinceID} value={item.ProvinceID}>
+                    {item.ProvinceName}{" "}
+                  </option>
                 ))}
               </select>
             </div>
-            <div
-              className="error_message_container"
-              style={{ visibility: errorState.city }}
-            >
+            <div className="error_message_container">
               <small>{formErrors.city}</small>
             </div>
             <div className="signup-input-container">
@@ -274,19 +277,19 @@ export default function SignUpForm() {
                 name="ward"
                 value={formValues.ward}
                 onChange={handleChange}
+                id="ward"
               >
                 <option value="" disabled selected hidden>
                   Phường/ Xã
                 </option>
-                {wards.map((item, index) => (
-                  <WardSelector key={index} obj={item} />
+                {wards.map((item) => (
+                  <option key={item.WardCode} value={item.WardCode}>
+                    {item.WardName}{" "}
+                  </option>
                 ))}
               </select>
             </div>
-            <div
-              className="error_message_container"
-              style={{ visibility: errorState.ward }}
-            >
+            <div className="error_message_container">
               <small>{formErrors.ward}</small>
             </div>
             <div className="signup-input-container">
@@ -298,10 +301,7 @@ export default function SignUpForm() {
                 onChange={handleChange}
               ></input>
             </div>
-            <div
-              className="error_message_container"
-              style={{ visibility: errorState.pass }}
-            >
+            <div className="error_message_container">
               <small>{formErrors.pass}</small>
             </div>
           </div>
@@ -317,29 +317,26 @@ export default function SignUpForm() {
                 <option value="" disabled selected hidden>
                   Quận/ Huyện
                 </option>
-                {districts.map((item, index) => (
-                  <DistrictSelector key={index} obj={item} />
+                {districts.map((item) => (
+                  <option key={item.DistrictID} value={item.DistrictID}>
+                    {item.DistrictName}{" "}
+                  </option>
                 ))}
               </select>
             </div>
-            <div
-              className="error_message_container"
-              style={{ visibility: errorState.district }}
-            >
+            <div className="error_message_container">
               <small>{formErrors.district}</small>
             </div>
             <div className="signup-input-container">
               <input
                 placeholder="Địa chỉ cụ thể"
                 name="address"
+                id="address"
                 value={formValues.address}
                 onChange={handleChange}
               ></input>
             </div>
-            <div
-              className="error_message_container"
-              style={{ visibility: errorState.address }}
-            >
+            <div className="error_message_container">
               <small>{formErrors.address}</small>
             </div>
             <div className="signup-input-container">
@@ -356,10 +353,7 @@ export default function SignUpForm() {
                 onClick={handleToggle}
               />
             </div>
-            <div
-              className="error_message_container"
-              style={{ visibility: errorState.confirm }}
-            >
+            <div className="error_message_container">
               <small>{formErrors.confirm}</small>
             </div>
           </div>

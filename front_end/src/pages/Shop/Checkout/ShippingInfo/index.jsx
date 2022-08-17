@@ -53,6 +53,12 @@ export function ShippingInfo(props) {
   };
 
   const calShippingPrice = async (method, weight) => {
+    if (!checkoutContext?.deliveryInfo) {
+      checkoutContext.setShippingPrice(0);
+      return;
+    }
+    console.log("INFO", checkoutContext.deliveryInfo);
+
     let token = Cookies.get("token");
     let res = await axios({
       url: process.env.REACT_APP_GET_SHIPPING_PRICE,
@@ -95,19 +101,17 @@ export function ShippingInfo(props) {
       }
     }
   };
-
+  useEffect(() => {
+    checkoutContext.setShippingPrice(0);
+    updateCheckoutShippingMethod("GHN");
+    updateCheckoutPaymentMethod("MOMO");
+  }, []);
   useEffect(() => {
     let weight = props.weight;
     calShippingPrice("GHN", weight);
     calShippingPrice("GHTK_fast", weight);
     calShippingPrice("GHTK_norm", weight);
   }, [checkoutContext.deliveryInfo]);
-
-  useEffect(() => {
-    checkoutContext.setShippingPrice(GHN.price);
-    updateCheckoutShippingMethod("GHN");
-    updateCheckoutPaymentMethod("MOMO");
-  }, []);
 
   return (
     <div className="payment__info_container">

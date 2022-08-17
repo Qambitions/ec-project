@@ -50,6 +50,7 @@ export default function SignInForm() {
     });
   };
 
+// <<<<<<< HEAD
 
 
   async function callLoginInAPI (username,password){
@@ -92,6 +93,18 @@ export default function SignInForm() {
         }
         setExitCode(res.data.exitcode);
       } catch (error) {}
+// =======
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     setFormErrors(validate({ username, password }));
+//     let res = await authContext.toggleLoggin(username, password);
+//     console.log(res);
+//     setExitCode(res);
+//     if (res === 0) {
+//       console.log("dung roi");
+//       navigate(from, { replace: true });
+// >>>>>>> Shop_checkout
     }
   }
 
@@ -108,7 +121,7 @@ export default function SignInForm() {
     <div className="container signin-body">
       <div className="signin-container">
         <h2>Đăng nhập</h2>
-        {exitCode === 1 && <SignInErrorMessageBox />}
+        {exitCode === 104 && <SignInErrorMessageBox />}
         <form className="signin-form" onSubmit={handleSubmit}>
           <input
             id="loginUsernameInput"
