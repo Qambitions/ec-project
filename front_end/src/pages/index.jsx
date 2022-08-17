@@ -24,7 +24,6 @@ import CategoryDetail from "./Admin/CategoryDetail";
 import ImportDashboard from "./Admin/ImportDashboard";
 import ImportDetail from "./Admin/ImportDetail";
 import RequireAuth from "../components/RequireAuth";
-import AllProducts from "./Admin/AllProducts";
 const ROLES = {
   User: 1,
   Admin: 2,
@@ -73,7 +72,7 @@ export default function Pages() {
         <Route path="/admin/category/:category_id" element={<CategoryDetail />} />
         <Route path="/admin/stock/import" element={<ImportDashboard />} />
         <Route path="/admin/import/:po_id" element={<ImportDetail />} />
-        <Route path="/admin/all-products" element={<AllProducts/>} />
+        <Route path="/admin/all-products" element={<CategoryDetail/>} />
 
       </Route>
     </Routes>

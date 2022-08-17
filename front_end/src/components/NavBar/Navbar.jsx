@@ -11,7 +11,7 @@ export default function AdminNavbar (props) {
     <>
     <Card className="card-plain table-plain-bg">
               <Card.Body className="navbar">
-                <h3 className="text-danger">{props.title}</h3>
+                <h3 className="text-danger">{props.title} > {props.subtitle}</h3>
                 <div className="items">
                   <div className="item">
                     <AiOutlineBell className="icon"/>

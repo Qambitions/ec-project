@@ -28,8 +28,7 @@ export default function CategoryDetail(){
   const navigate = useNavigate();
   const {category_id} = useParams();
   const [branchValue, setBranchValue] = useState("200");
-  const [supplierValue, setSupplierValue] = useState();
-  const [categoryValue, setCategoryValue] = useState();
+  const [image, setImage] = useState();
 
 
   const [total, setTotal] = useState(0);
@@ -37,7 +36,6 @@ export default function CategoryDetail(){
   const [branches, setBranches] = useState([]);
   const [category, setCategory] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
-  const [message, setMessage] = useState("");
 
   const [show, setShow] = useState(false);
 
@@ -115,19 +113,19 @@ export default function CategoryDetail(){
     fetchProducts(e.target.value);
   }
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setTest({ten_sp: e.target[0].value,
-  //     malh: e.target[1].value,
-  //     manpp: e.target[2].value,
-  //     gia_ban: e.target[3].value,
-  //     khoi_luong: e.target[4].value,
-  //     mo_ta: e.target[5].value,
-  //     hinh_anh: e.target[6].value});
-  //   console.log(test);
-  // }
 
-  const postItem = async (e) => {
+  const handleSubmit = async(e) => {
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("upload_preset", "j3eosdqd");
+    await axios.post("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", formData).then((res) => {
+      postItem(e, res.data.url);
+
+    });
+
+  }
+  
+  const postItem = async (e, uploadImg) => {
     var postData = {
         ten_sp: e.target[0].value,
         malh: e.target[1].value,
@@ -135,10 +133,10 @@ export default function CategoryDetail(){
         gia_ban: e.target[3].value,
         khoi_luong: e.target[4].value,
         mo_ta: e.target[5].value,
-        hinh_anh: e.target[6].value
+        hinh_anh: uploadImg
 
     };
-    
+    console.log(postData);
     let axiosConfig = {
       headers: {
         "Content-Type": "application/json",
@@ -148,7 +146,6 @@ export default function CategoryDetail(){
 
   await axios.post(POST_ITEM, postData, axiosConfig).then((res) => {
     setShow(false);
-    console.log(res.data.message);
     toast(res.data.message, {
       position: "top-center",
       autoClose: 4000,
@@ -157,12 +154,12 @@ export default function CategoryDetail(){
       pauseOnHover: false,
       draggable: true,
       });
-
   });
-  
-  
   };
 
+  const handleRowCLick = (id) => {
+    navigate(`/product/${id}`);
+   }  
 
     return (<>
 
@@ -176,6 +173,7 @@ export default function CategoryDetail(){
           <Col>
           <AdminNavbar 
           title="Quản lý kho"
+          subtitle= {category_id}
           text ="Tổng số mặt hàng"
           count = {total}/>
         <div style={{display: "flex"}}>
@@ -201,7 +199,7 @@ export default function CategoryDetail(){
               <Modal.Title>Thêm sản phẩm</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form onSubmit={postItem}> 
+              <Form onSubmit={handleSubmit}> 
               <Form.Group className="mb-3">
               <Form.Label>Tên sản phẩm</Form.Label>
               <Form.Control type="text"/>
@@ -243,7 +241,7 @@ export default function CategoryDetail(){
                 </Form.Group>
                 <Form.Group controlId="formFile" className="mb-3">
                   <Form.Label>Hình ảnh</Form.Label>
-                  <Form.Control type="file" />
+                  <Form.Control type="file" onChange={(e) => {setImage(e.target.files[0])}}/>
                 </Form.Group>
                 <Button variant="secondary" onClick={handleCancel}>
                 Cancel
@@ -273,7 +271,7 @@ export default function CategoryDetail(){
                 <tbody>
                 {currentData.map((item, index) => {
                   return (
-                    <tr>
+                    <tr onClick={()=> handleRowCLick(item.masp)}>
                       <td>
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
