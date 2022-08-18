@@ -7,12 +7,12 @@ export function OrderCard({
   gia_phai_tra,
 }) {
   return (
-    <div className="container__flex order__card">
+    <div className="order__card">
       <img className="order__card_img" src={hinh_anh}></img>
-      <div className="container__flex_col">
-        <div className="container__flex">
+      <div className="card_info">
+        <div className="card_info_head">
           <small>{ten_npp}</small>
-          <small>{gia_phai_tra}đ</small>
+          <small>{gia_phai_tra} <span className="currency">đ</span></small>
         </div>
         <small>{tensp}</small>
         <p>SL: {so_luong_mua}</p>
