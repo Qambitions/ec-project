@@ -180,11 +180,13 @@ export default function CategoryDetail(){
      <div className="input-group p-4">
         <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
         <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
-          {branches.map((item, index) => {
+          {branches.length !=0 ? <>
+            {branches.map((item, index) => {
           return (
             <option value={item.macn}>{item.macn}</option>
           )
       })}
+          </>: "No data"}
         </select>
         </div>
 
@@ -207,21 +209,25 @@ export default function CategoryDetail(){
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                   <Form.Label>Loại hàng&nbsp;&nbsp;</Form.Label>
                   <select className="p-2 w-100">
-                    {category.map((item, index) => {
+                    {category.length !=0 ? <>
+                      {category.map((item, index) => {
                     return (
                       <option value={item.malh}>{item.ten_lh}</option>
                     )
                 })}
+                    </> : "No data"
+                    }
                   </select>
                 </Form.Group>
                 <Form.Group>
                 <Form.Label>Nhà phân phối&nbsp;&nbsp;</Form.Label>
                   <select className="p-2 w-100">
-                    {suppliers.map((item, index) => {
+                    {suppliers.length !=0 ? <>
+                      {suppliers.map((item, index) => {
                     return (
                       <option value={item.manpp}>{item.ten_npp}</option>
                     )
-                })}
+                })}</> : "No data"}
                   </select>
                 </Form.Group>
                 <Row className="my-2">
@@ -269,7 +275,8 @@ export default function CategoryDetail(){
                   </tr>
                 </thead>
                 <tbody>
-                {currentData.map((item, index) => {
+                {currentData.length != 0 ? <>
+                  {currentData.map((item, index) => {
                   return (
                     <tr onClick={()=> handleRowCLick(item.masp)}>
                       <td>
@@ -286,6 +293,7 @@ export default function CategoryDetail(){
                     </tr>
                   )
               })}
+              </> : "No data"}
               <SweetPagination
                 currentPageData={setCurrentData}
                 dataPerPage={10}

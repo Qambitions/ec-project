@@ -73,7 +73,7 @@ export default function ImportDetail(){
                 </div>
               </td>
               <td>{info.ten_npp}</td>
-              <td>{info.ngay_lap}</td>
+              <td>{moment(info.ngay_lap).format("HH:mm:ss DD/MM/YYYY")}</td>
               <td>{info.tong_so_mat_hang}</td>
               <td>{info.tong_tien_nhap}</td>
 
@@ -98,7 +98,8 @@ export default function ImportDetail(){
                         <div className="checkout-main-col-3">Số lượng</div>
                         <div className="checkout-main-col-3">Thành tiền</div>
                     </div>
-                    {detail.map((product, index) => {
+                    {detail.length !=0 ? <>
+                      {detail.map((product, index) => {
                   return (
                     <div  className="checkout-main-row">
                       <div className="checkout-main-col-1">
@@ -121,7 +122,7 @@ export default function ImportDetail(){
                     <div className="checkout-main-col-3">{product.thanh_tien_nhap}</div>
                 </div>
                   )
-              })}
+              })}</>: "No data"}
                 </div>
 
                 </div>

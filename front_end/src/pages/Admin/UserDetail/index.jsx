@@ -6,14 +6,13 @@ import {
     Col,
   } from "react-bootstrap";
 import Sidebar from "../../../components/sidebar/Sidebar";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 
 import moment from "moment";
 import axios from "../../../api/axios";
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_USER_DETAIL_URL = "/management/user_detail";
-const POST_DELIVERY_STATUS = "/management/order_detail/change_status";
 
 
 export default function UserDetail(){
