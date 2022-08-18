@@ -5,7 +5,7 @@ var knexQuery = require('../../db_connect');
 async function queryVoucher(props){
     var date = new Date();
     var date_str = String(date.toISOString().split('T')[0]);
-    console.log(date_str)
+    // console.log(date_str)
     const rawSQL = `  SELECT ma_voucher, phan_tram_giam_gia, giam_toi_da FROM voucher  
                         WHERE tg_bat_dau <= '${date_str}'
                         AND '${date_str}'<= tg_ket_thuc

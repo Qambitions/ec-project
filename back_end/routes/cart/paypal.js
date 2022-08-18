@@ -50,7 +50,7 @@ async function paypalCall(props, Client){
                 }
                 resolve(text)
             } else {
-                console.log("Create Payment Response");
+                console.log("Paypal Create Payment Response");
                 console.log(payment);
                 for(let i = 0;i < payment.links.length;i++){
                     if(payment.links[i].rel === 'approval_url'){
