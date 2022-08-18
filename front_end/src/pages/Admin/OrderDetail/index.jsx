@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from "../../../components/sidebar/Sidebar";
-import {Link, useParams} from "react-router-dom";
+import { useParams} from "react-router-dom";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import moment from "moment";
 import axios from "../../../api/axios";

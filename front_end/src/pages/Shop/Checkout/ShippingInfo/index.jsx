@@ -223,29 +223,6 @@ export function ShippingInfo(props) {
             class="form-check-input"
             type="radio"
             name="radio_payment"
-            id="ZaloPay"
-            value="ZaloPay"
-            onChange={handlePaymentMethod}
-          ></input>
-          <small class="form-check-small" for="ZaloPay">
-            <img
-              className="payment__icon"
-              src={
-                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656773094/icon/icon-payment-method-zalo-pay_fzqlod.svg"
-              }
-              alt={
-                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656773094/icon/icon-payment-method-zalo-pay_fzqlod.svg"
-              }
-            ></img>
-            Thanh toán bằng ví ZaloPay
-          </small>
-          <br></br>
-        </div>
-        <div className="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="radio_payment"
             id="VNPay"
             value="VNPay"
             onChange={handlePaymentMethod}
