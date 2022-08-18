@@ -8,7 +8,7 @@ import TotalCard from "./TotalCard";
 import { CheckoutProvider } from "../../../context/CheckoutProvider";
 import CheckoutContext from "../../../context/CheckoutProvider";
 import axios from "../../../api/axios";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Cookies from "js-cookie";
 import debounce from 'lodash.debounce' 
 
@@ -50,7 +50,7 @@ export default function Checkout(props) {
           phi_van_chuyen:  shipprice,
           phi_giam: discount,
           phi_san_pham: tempPay,
-          items,
+          items: items,
         },
       }).then((res) => {
         console.log(res.data);
@@ -60,13 +60,11 @@ export default function Checkout(props) {
           console.log("tao don hang that bai");
         } else {
           console.log("tao thanh cong", res.data.paymentURL);
-          window.location.assign(res.data.paymentURL);
+          window.location.href(res.data.paymentURL);
         }
       });
     } catch (error) {}
   }
-
-  const debounceCreateOrderAPI = useCallback(debounce((items,ckInfo,discount,shipprice,tempPay)=>callCreateOrderAPI(items,ckInfo,discount,shipprice,tempPay),1000),[])
 
   const handleOrder = async () => {
     var checkoutInfo = localStorage.getItem("checkoutInfo");
@@ -82,14 +80,52 @@ export default function Checkout(props) {
       item.gia_phai_tra = element.gia_ban_giam;
       itemsBuy.push(item);
     });
-    console.log("CART", itemsBuy);
-    console.log("CHECKOUTINFO", checkoutInfo);
+    console.log("id_gh",checkoutInfo.id_dia_chi_giao);
+    console.log("httt",checkoutInfo.hinh_thuc_thanh_toan);
+    console.log("macn",checkoutInfo.macn);
+    console.log("htgh",checkoutInfo.hinh_thuc_giao_hang);
     console.log(
       "shipprice",
       document.getElementById("checkoutShippingCost").textContent
     );
+    let shipPrice = document.getElementById("checkoutShippingCost").textContent;
+    let total = document.getElementById("checkoutTotal").textContent;
     console.log("psp", document.getElementById("checkoutTotal").textContent);
-      debounceCreateOrderAPI(itemsBuy,checkoutInfo,0,document.getElementById("checkoutShippingCost").textContent,document.getElementById("checkoutTotal").textContent)
+    console.log("items",itemsBuy)
+
+    let id = checkoutInfo.id_dia_chi_giao;
+    var httt = "MOMO";
+    let cn = checkoutInfo.macn;
+    let htgh = "GHN";
+
+    try {
+      await axios({
+        method: "post",
+        url: process.env.REACT_APP_CREATE_ORDER,
+        headers: { token: Cookies.get("token") },
+        data: {
+          id_dia_chi_giao: checkoutInfo.id_dia_chi_giao,
+          hinh_thuc_thanh_toan: "VNPAY",
+          macn: checkoutInfo.macn,
+          hinh_thuc_giao_hang: "GHN",
+          phi_van_chuyen: 10000,
+          phi_giam: 0,
+          phi_san_pham: 100000,
+          items: itemsBuy,
+        },
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.exitcode === 106) {
+          console.log("token k ton tai");
+        } else if (res.data.exitcode === 101) {
+          console.log("tao don hang that bai");
+        } else {
+          setTimeout(500);
+          console.log("tao thanh cong", res.data.paymentURL);
+          // window.location.replace(res.data.paymentURL);
+        }
+      });
+    } catch (error) {}
   };
 
   return (

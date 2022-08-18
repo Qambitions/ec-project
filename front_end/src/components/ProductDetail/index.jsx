@@ -1,4 +1,5 @@
 import "./style.css";
+import { Rate } from "antd";
 import {
   AiFillStar,
   AiOutlineStar,
@@ -26,9 +27,13 @@ export function ProductDetail() {
   const [comments, setComments] = useState([]);
   const [product, setProduct] = useState([]);
   const [availableBranch, setAvailableBranch] = useState([]);
+  const [starAvg, setStarAvg] = useState();
   const [rattingConsult, setRattingConsult] = useState({});
+
+
   useEffect(() => {
     fetchDetail();
+    setStarAvg(3);
   }, []);
 
   const handleAddToCart = () => {
@@ -43,13 +48,13 @@ export function ProductDetail() {
       },
       params: { masp: id },
     }).then((res) => {
-      console.log("PD",res.data)
       setProduct(res.data.item);
       setComments(res.data.item.comment);
       setRatting(res.data.item.sao);
       setAvailableBranch(res.data.item.branch_available);
       calRattingConsult();
     });
+    setStarAvg(ratting.avg);
   };
 
   const calRattingConsult = () => {
@@ -116,13 +121,10 @@ export function ProductDetail() {
             <div className="container__flex">
               <div>
                 {ratting?.avg}
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
+                <Rate disabled defaultValue={3}/>
                 {product?.luot_danh_gia}
               </div>
+
               <div>
                 <AiOutlineShoppingCart />
                 <label>{product?.tong_da_ban}</label>
@@ -290,11 +292,11 @@ export function ProductDetail() {
                 </div>
               </div>
               <div className="rating__overview_right_col">
-                <label>{ratting['5']}</label>
-                <label>{ratting['4']}</label>
-                <label>{ratting['3']}</label>
-                <label>{ratting['2']}</label>
-                <label>{ratting['1']?.count}</label>
+                <label>({ratting['5']?.count})</label>
+                <label>({ratting['4']?.count})</label>
+                <label>({ratting['3']?.count})</label>
+                <label>({ratting['2']?.count})</label>
+                <label>({ratting['1']?.count})</label>
               </div>
             </div>
           </div>
