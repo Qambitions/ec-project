@@ -114,11 +114,12 @@ export default function ImportDashboard() {
      <div className="input-group p-4">
         <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
         <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
-          {branches.map((item, index) => {
+          {branches.length !=0 ? <>
+            {branches.map((item, index) => {
           return (
             <option value={item.macn}>{item.macn}</option>
           )
-      })}
+      })}</>: "No data"}
         </select>
         </div>
 
@@ -136,21 +137,24 @@ export default function ImportDashboard() {
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                   <Form.Label>Chi nhánh&nbsp;&nbsp;</Form.Label>
                   <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
-                    {branches.map((item, index) => {
+                    {branches.length !=0 ? <>
+                      {branches.map((item, index) => {
                     return (
                       <option value={item.macn}>{item.macn}</option>
                     )
-                })}
+                })}</>: "No data"}
                   </select>
                 </Form.Group>
                 <Form.Group>
                 <Form.Label>Nhà phân phối&nbsp;&nbsp;</Form.Label>
                   <select value={supplierValue} onChange={e => setSupplierValue(e.target.value)} className="px-5">
-                    {suppliers.map((item, index) => {
+                    {suppliers.length != 0? <>
+                      {suppliers.map((item, index) => {
                     return (
                       <option value={item.ten_npp}>{item.ten_npp}</option>
                     )
                 })}
+                    </> : "No data"}
                   </select>
                 </Form.Group>
               </Form>
@@ -179,7 +183,8 @@ export default function ImportDashboard() {
                 </tr>
               </thead>
               <tbody>
-      {currentData.map((item, index) => {
+      {currentData.length!=0 ? <>
+        {currentData.map((item, index) => {
           return (
             <tr onClick={()=> handleRowCLick(item.mapn)}>
               <td>
@@ -196,7 +201,7 @@ export default function ImportDashboard() {
             </tr>
           )
       })}
-
+</> : "No data"}
       <SweetPagination
         currentPageData={setCurrentData}
         dataPerPage={10}

@@ -145,7 +145,8 @@ export default function OrderDetail(){
                   <div className="checkout-main-col-3">Số lượng</div>
                   <div className="checkout-main-col-3">Thành tiền</div>
               </div>
-              {products.map((product, index) => {
+              {products.length !=0 ? <>
+                {products.map((product, index) => {
             return (
               <div  className="checkout-main-row">
                 <div className="checkout-main-col-1">
@@ -171,7 +172,7 @@ export default function OrderDetail(){
               <div className="checkout-main-col-3">{product.thanh_tien_mua}</div>
           </div>
             )
-        })}
+        })}</>: "No data"}
           <div  className="checkout-main-row">
           <div className="checkout-main-col-2">Phí sản phẩm: </div>
           <div className="checkout-main-col-3">{detail.phi_san_pham}</div>

@@ -12,6 +12,7 @@
   "author": "Diastic",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^7.2.2"
+    "concurrently": "^7.2.2",
+    "crypto-js": "^4.1.1"
   }
 }
