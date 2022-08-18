@@ -3,13 +3,16 @@ import {useNavigate  } from 'react-router-dom';
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import SweetPagination from "sweetpagination";
+import { ToastContainer, toast } from 'react-toastify';
 
 import {
   Card,
   Table,
   Button,
   Form,
-  Modal
+  Modal,
+  Row,
+  Col,
 } from "react-bootstrap";
 
 import moment from "moment";
@@ -18,6 +21,8 @@ const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PO_URL = "/management/purchase_overview";
 const GET_BRANCH_URL = "/management/list_branch";
 const GET_SUPPLIER_URL = "/management/list_supplier";
+const GET_PRODUCTS_URL = "/product/view";
+const POST_PO = "/management/create_po";
 
 export default function ImportDashboard() {
   const [branchValue, setBranchValue] = useState("200");
@@ -25,15 +30,28 @@ export default function ImportDashboard() {
 
   const [branches, setBranches] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [selectedPrds, setSelectedPrds] = useState([]); 
 
 
   const [po, setPO] = useState([]);
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleCancel = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const addMoreProducts = (e) => {
+    var prd = {
+      ten_sp: e.target[0].value,
+      so_luong: e.target[1].value
+
+  };
+
+    const newPrd = [prd, ...selectedPrds];
+    setSelectedPrds(newPrd);
+    console.log(...selectedPrds);
+  };
 
   const [currentData, setCurrentData] = useState([
     {
@@ -49,6 +67,7 @@ export default function ImportDashboard() {
     fetchPurchaseOrders("200");
     fetchBranchID();
     fetchSupplier();
+    fetchProducts();
   }, []);
 
 
@@ -61,7 +80,6 @@ export default function ImportDashboard() {
       },
       params: {macn: iVal },
     }).then((res) => {
-      console.log(res.data.list_purchase);
       setPO(res.data.list_purchase);
     });
   };
@@ -90,10 +108,52 @@ export default function ImportDashboard() {
     });
   };
 
+  const fetchProducts = async () => {
+    await axios(GET_PRODUCTS_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      },
+    }).then((res) => {
+      setProducts(res.data.items);
+    });
+  };
+
   const handleChange = (e) => {
     setBranchValue(e.target.value);
     fetchPurchaseOrders(e.target.value);
   }
+
+   
+  const postPO = (e) => {
+    // var postData = {
+    //     macn: e.target[0].value,
+    //     manpp: e.target[1].value,
+    //     masp: e.target[2].value,
+    //     so_luong_nhap: e.target[3].value,
+    //     don_gia_nhap: e.target[4].value
+    // };
+    console.log(e.target.value);
+  //   let axiosConfig = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "magic_pass": REACT_APP_MAGIC_PASS
+  //     }
+  //   };
+
+  // await axios.post(POST_PO, postData, axiosConfig).then((res) => {
+  //   setShow(false);
+  //   toast(res.data.message, {
+  //     position: "top-center",
+  //     autoClose: 4000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: false,
+  //     draggable: true,
+  //     });
+  // });
+  };
 
   const navigate = useNavigate();
   const handleRowCLick = (id) => {
@@ -114,11 +174,12 @@ export default function ImportDashboard() {
      <div className="input-group p-4">
         <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
         <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
-          {branches.map((item, index) => {
+          {branches.length !=0 ? <>
+            {branches.map((item, index) => {
           return (
             <option value={item.macn}>{item.macn}</option>
           )
-      })}
+      })}</>: "No data"}
         </select>
         </div>
 
@@ -127,41 +188,67 @@ export default function ImportDashboard() {
             Tạo mới phiếu nhập
           </Button>
 
-          <Modal show={show} onHide={handleClose}>
+          <Modal show={show} onHide={handleCancel}>
             <Modal.Header closeButton>
               <Modal.Title>Tạo mới phiếu nhập</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form>
+              <Form onSubmit={postPO}>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                   <Form.Label>Chi nhánh&nbsp;&nbsp;</Form.Label>
                   <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
-                    {branches.map((item, index) => {
+                    {branches.length !=0 ? <>
+                      {branches.map((item, index) => {
                     return (
                       <option value={item.macn}>{item.macn}</option>
                     )
-                })}
+                })}</>: "No data"}
                   </select>
                 </Form.Group>
                 <Form.Group>
                 <Form.Label>Nhà phân phối&nbsp;&nbsp;</Form.Label>
                   <select value={supplierValue} onChange={e => setSupplierValue(e.target.value)} className="px-5">
-                    {suppliers.map((item, index) => {
+                    {suppliers.length != 0? <>
+                      {suppliers.map((item, index) => {
                     return (
-                      <option value={item.ten_npp}>{item.ten_npp}</option>
+                      <option value={item.ma_npp}>{item.ten_npp}</option>
+                    )
+                })}
+                    </> : "No data"}
+                  </select>
+                </Form.Group>
+
+                <h4 className="mt-3">Chọn danh sách sản phẩm</h4>
+                <Form.Group>
+                <Form.Label>Tên sản phẩm&nbsp;&nbsp;</Form.Label>
+                  <select className="p-2 w-100">
+                    {products.map((item, index) => {
+                    return (
+                      <option value={item.masp}>{item.ten_sp}</option>
                     )
                 })}
                   </select>
                 </Form.Group>
+                  <Row className="my-2">
+                  <Form.Group as={Col}>
+                  <Form.Label>Số lượng</Form.Label>
+                  <Form.Control type="number"/>
+                  </Form.Group>
+
+                  <Form.Group as={Col}>
+                  <Form.Label>Đơn giá nhập</Form.Label>
+                  <Form.Control type="number"/>
+                  </Form.Group>
+                </Row>
+                <Button variant="secondary" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button variant="primary" type="submit">
+                Thêm
+              </Button>
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-              <Button variant="primary" onClick={handleClose}>
-                Thêm
-              </Button>
             </Modal.Footer>
           </Modal>
         </div>
@@ -179,7 +266,8 @@ export default function ImportDashboard() {
                 </tr>
               </thead>
               <tbody>
-      {currentData.map((item, index) => {
+      {currentData.length!=0 ? <>
+        {currentData.map((item, index) => {
           return (
             <tr onClick={()=> handleRowCLick(item.mapn)}>
               <td>
@@ -196,7 +284,7 @@ export default function ImportDashboard() {
             </tr>
           )
       })}
-
+</> : "No data"}
       <SweetPagination
         currentPageData={setCurrentData}
         dataPerPage={10}
