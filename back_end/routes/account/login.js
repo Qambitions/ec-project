@@ -59,6 +59,7 @@ router.post('/', async (req, res, next) =>{
       response.account_type = 0
       response.message      = "Chào mừng mấy đứa đua đòi làm zàu!!"
       response.exitcode     = 0
+      console.log("admin : ", req.body.username, " đăng nhập thành công")
       return res.send(response)
     }
     else {
@@ -70,6 +71,7 @@ router.post('/', async (req, res, next) =>{
         response.account_info = retUser
         response.token = require('crypto').randomBytes(47).toString('hex');
         await updateToken(req.body, response.token);
+        console.log("user : ", Client, " đăng nhập thành công")
         return res.send(response)
       }
       else return res.send(response)

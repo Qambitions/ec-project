@@ -65,6 +65,7 @@ router.post('/', async (req, res, next) =>{
             response.message    = "Mã sản phẩm không tồn tại"
             return res.send(response)
         }
+        console.log("user : ", Client, " add comment thành công")
         response.exitcode   = 0
         response.message    = "Update thông tin thành công"
     }
