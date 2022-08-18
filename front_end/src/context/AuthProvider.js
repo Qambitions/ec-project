@@ -1,31 +1,19 @@
 import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "../../src/api/axios";
-import { decrypt10 } from "../utils/crypto";
+
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) =>{
-    const [auth, setAuth] = useState({});
+
+    const [auth, setAuth] = useState({user:'test'});
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
 
-    
-
     useEffect(()=>{
-
         getInfo();
         getDelivery();
-        let time = Cookies.get("login_time")
-        let token = Cookies.get("token_u")
-        let decrypted = decrypt10(token,time);
-        if (decrypted==="30") {
-            let info = {roles:[2],user:'test'}
-            setAuth(info)
-        } else if (decrypted==="31"){
-            let info = {roles:[1],user:'test'}
-            setAuth(info)
-        }
     },[])
 
     const getDelivery = async() =>{
@@ -49,7 +37,12 @@ export const AuthProvider = ({ children }) =>{
     }
 
     const toggleLogout = () =>{
+      localStorage.removeItem("account_info")
+        localStorage.removeItem("checkoutInfo")
         Cookies.remove("token");
+        Cookies.remove("token_u")
+        Cookies.remove("login_time");
+        setAuth({});
     }
 
     const toggleLoggin =async(username, password) =>{

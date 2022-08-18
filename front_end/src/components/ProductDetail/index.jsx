@@ -1,4 +1,5 @@
 import "./style.css";
+import { Rate } from "antd";
 import {
   AiFillStar,
   AiOutlineStar,
@@ -26,9 +27,13 @@ export function ProductDetail() {
   const [comments, setComments] = useState([]);
   const [product, setProduct] = useState([]);
   const [availableBranch, setAvailableBranch] = useState([]);
+  const [starAvg, setStarAvg] = useState();
   const [rattingConsult, setRattingConsult] = useState({});
+
+
   useEffect(() => {
     fetchDetail();
+    setStarAvg(3);
   }, []);
 
   const handleAddToCart = () => {
@@ -49,6 +54,7 @@ export function ProductDetail() {
       setAvailableBranch(res.data.item.branch_available);
       calRattingConsult();
     });
+    setStarAvg(ratting.avg);
   };
 
   const calRattingConsult = () => {
@@ -100,40 +106,37 @@ export function ProductDetail() {
       <Breadcrumb className="container breadcrumbs">
         <Breadcrumb.Item href="/">Trang chủ</Breadcrumb.Item>
         <Breadcrumb.Item href="/">Loại hàng</Breadcrumb.Item>
-        <Breadcrumb.Item active>{product.tensp}</Breadcrumb.Item>
+        <Breadcrumb.Item active>{product?.tensp}</Breadcrumb.Item>
       </Breadcrumb>
       <div className="container product__detail">
         <div className="product__detail_head">
           <img
             className="produtct__detail_head_left"
-            src={product.hinh_anh}
-            alt={product.hinh_anh}
+            src={product?.hinh_anh}
+            alt={product?.hinh_anh}
           ></img>
           <div className="product__detail_head_right">
-            <h3>{product.ten_npp}</h3>
-            <h5>{product.tensp}</h5>
+            <h3>{product?.ten_npp}</h3>
+            <h5>{product?.tensp}</h5>
             <div className="container__flex">
               <div>
-                {ratting.avg}
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                {product.luot_danh_gia}
+                {ratting?.avg}
+                <Rate disabled defaultValue={3}/>
+                {product?.luot_danh_gia}
               </div>
+
               <div>
                 <AiOutlineShoppingCart />
-                <label>{product.tong_da_ban}</label>
+                <label>{product?.tong_da_ban}</label>
               </div>
-              <label>Mã sản phẩm: {product.masp}</label>
+              <label>Mã sản phẩm: {product?.masp}</label>
             </div>
             <div className="container__flex">
               <label className="product__card_price_left">
-                {product.gia_ban_goc}
+                {product?.gia_ban_goc}
               </label>
               <label className="product__card_price_right">
-                {product.phan_tram_giam_gia > 0 ? <span>%</span> : <></>}
+                {product?.phan_tram_giam_gia > 0 ? <span>%</span> : <></>}
               </label>
             </div>
             <div className="container__flex">
@@ -161,7 +164,7 @@ export function ProductDetail() {
                   +
                 </button>
               </div>
-              <label>{product.ton_kho}</label>
+              <label>{product?.ton_kho}</label>
             </div>
             <div className="container__flex">
               <button className="button_pink" onClick={handleAddToCart}>
@@ -176,7 +179,7 @@ export function ProductDetail() {
                   <div className="container__flex">
                     <IoLocationSharp className="location__icon" />
                     <label>
-                      {availableBranch.length} chi nhánh còn sản phẩm
+                      {availableBranch?.length} chi nhánh còn sản phẩm
                     </label>
                   </div>
                 </OverlayTrigger>
@@ -192,25 +195,25 @@ export function ProductDetail() {
             <tbody>
               <tr>
                 <td>Thương hiệu</td>
-                <td>{product.ten_npp}</td>
+                <td>{product?.ten_npp}</td>
               </tr>
               <tr>
                 <td>Xuất xứ</td>
-                {product.xuat_xu ? <td>Jacob</td> : <></>}
+                {product?.xuat_xu ? <td>Jacob</td> : <></>}
               </tr>
               <tr>
                 <td>Khối lượng</td>
-                <td>{product.khoi_luong}</td>
+                <td>{product?.khoi_luong}</td>
               </tr>
               <tr>
                 <td>Hạn sử dụng</td>
-                {product.hsd ? <td>Jacob</td> : <></>}
+                {product?.hsd ? <td>Jacob</td> : <></>}
               </tr>
             </tbody>
           </Table>
           <div className="product__detail_info_title">Mô tả</div>
           <div className="product__detail_info_content">
-            <p>{product.mo_ta}</p>
+            <p>{product?.mo_ta}</p>
           </div>
         </div>
         <div className="product__detail_comment">
@@ -220,7 +223,7 @@ export function ProductDetail() {
             <div className="rating__overview_left">
               <span>
                 <lable className="rating__overview_current_rate">
-                  {ratting.avg}
+                  {ratting?.avg}
                 </lable>
                 /5
               </span>
@@ -231,7 +234,7 @@ export function ProductDetail() {
                 <AiFillStar />
                 <AiFillStar />
               </div>
-              <label>{product.luot_danh_gia} đánh giá</label>
+              <label>{product?.luot_danh_gia} đánh giá</label>
             </div>
             <div className="rating__overview_right">
               <div className="rating__overview_right_col">
@@ -247,7 +250,7 @@ export function ProductDetail() {
                   <div className="rating__container_grey">
                     <div
                       className="rating__container_red"
-                      style={{ width: rattingConsult.five_star_percent }}
+                      style={{ width: rattingConsult?.five_star_percent }}
                     ></div>
                   </div>
                 </div>
@@ -256,7 +259,7 @@ export function ProductDetail() {
                   <div className="rating__container_grey">
                     <div
                       className="rating__container_red"
-                      style={{ width: rattingConsult.four_star_percent }}
+                      style={{ width: rattingConsult?.four_star_percent }}
                     ></div>
                   </div>
                 </div>
@@ -265,7 +268,7 @@ export function ProductDetail() {
                   <div className="rating__container_grey">
                     <div
                       className="rating__container_red"
-                      style={{ width: rattingConsult.three_star_percent }}
+                      style={{ width: rattingConsult?.three_star_percent }}
                     ></div>
                   </div>
                 </div>
@@ -274,7 +277,7 @@ export function ProductDetail() {
                   <div className="rating__container_grey">
                     <div
                       className="rating__container_red"
-                      style={{ width: rattingConsult.two_star_percent }}
+                      style={{ width: rattingConsult?.two_star_percent }}
                     ></div>
                   </div>
                 </div>
@@ -283,17 +286,17 @@ export function ProductDetail() {
                   <div className="rating__container_grey">
                     <div
                       className="rating__container_red"
-                      style={{ width: rattingConsult.one_star_percent }}
+                      style={{ width: rattingConsult?.one_star_percent }}
                     ></div>
                   </div>
                 </div>
               </div>
               <div className="rating__overview_right_col">
-                <label>({ratting["5"]})</label>
-                <label>({ratting["4"]})</label>
-                <label>({ratting["3"]})</label>
-                <label>({ratting["2"]})</label>
-                <label>({ratting["1"]})</label>
+                <label>({ratting['5']?.count})</label>
+                <label>({ratting['4']?.count})</label>
+                <label>({ratting['3']?.count})</label>
+                <label>({ratting['2']?.count})</label>
+                <label>({ratting['1']?.count})</label>
               </div>
             </div>
           </div>
