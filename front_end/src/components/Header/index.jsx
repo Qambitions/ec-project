@@ -22,7 +22,7 @@ export default function Header() {
   };
 
   const toggleMyorder = ()=>{
-
+    navigate('/user/myorder',{replace:true})
   }
 
   useEffect(() => {

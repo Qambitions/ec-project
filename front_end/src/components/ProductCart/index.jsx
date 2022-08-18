@@ -4,6 +4,7 @@ import "./style.css";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import axios from "../../api/axios";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import CartContext from "../../context/CartProvider";
 import { ConfirmRemoveItemPopUp } from "../PopUp";
 const GET_PRODUCT = "/product/details";
@@ -135,13 +136,13 @@ export default function ProductCart(props) {
         </div>
         <div className="checkout-main-col-2">
           <div className="checkout__product_card">
-            <a href="https://www.petmart.vn/sup-thuong-cho-meo-vi-ca-ngu-ca-chep-ciao-tuna-bonito">
+            <Link to={`/product/${card.itemID}`}>
               <img
                 className="checkout__cart_product_img"
                 src={card.img}
                 alt={card.img}
               ></img>
-            </a>
+            </Link>
             <div>
               <h5>{card.pdBrand}</h5>
               <label>{card.pdName}</label>
