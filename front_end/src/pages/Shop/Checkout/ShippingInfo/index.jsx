@@ -9,6 +9,7 @@ export function ShippingInfo(props) {
   const [GHN, setGHN] = useState({});
   const [GHTK_fast, setGHTK_fast] = useState({});
   const [GHTK_norm, setGHTK] = useState({});
+  const [weight, setWeight] = useState(0);
   const handleShippingMethod = (e) => {
     updateCheckoutShippingMethod(e.target.id);
     checkoutContext.setShippingPrice(e.target.value);
@@ -24,7 +25,6 @@ export function ShippingInfo(props) {
         updateCheckoutMacn(GHTK_fast.macn);
         break;
     }
-    // console.log("PM", e.target);
   };
 
   const handlePaymentMethod = (e) => {
@@ -57,8 +57,6 @@ export function ShippingInfo(props) {
       checkoutContext.setShippingPrice(0);
       return;
     }
-    console.log("INFO", checkoutContext.deliveryInfo);
-
     let token = Cookies.get("token");
     let res = await axios({
       url: process.env.REACT_APP_GET_SHIPPING_PRICE,
@@ -101,16 +99,41 @@ export function ShippingInfo(props) {
       }
     }
   };
+
+  async function fetchProductWeight (id){
+    await axios({
+      method:'get',
+      url:process.env.REACT_APP_GET_PRODUCT_DETAIL,
+      params:{masp:id},
+    }).then((res)=>{
+    let wei = weight;
+    setWeight(wei+res.data.item.khoi_luong);
+    })
+  }
+
+
+  const calCartWeight = ()=>{
+    var cart = localStorage.getItem("cart");
+    cart = cart ? JSON.parse(cart) : [];
+    cart.forEach(element => {
+      if(element.isChecked){
+        fetchProductWeight(element.itemID);
+      }
+    });
+  }
+
   useEffect(() => {
+    calCartWeight();
+    console.log("init")
     checkoutContext.setShippingPrice(0);
     updateCheckoutShippingMethod("GHN");
     updateCheckoutPaymentMethod("MOMO");
   }, []);
   useEffect(() => {
-    let weight = props.weight;
-    calShippingPrice("GHN", weight);
+    console.log(weight)
+    if(weight>0){    calShippingPrice("GHN", weight);
     calShippingPrice("GHTK_fast", weight);
-    calShippingPrice("GHTK_norm", weight);
+    calShippingPrice("GHTK_norm", weight);}
   }, [checkoutContext.deliveryInfo]);
 
   return (

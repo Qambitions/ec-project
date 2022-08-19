@@ -138,12 +138,12 @@ export default function Checkout(props) {
           <div className="payment__body">
             <div className="container__flex_col payment__body_left">
               <DeliveryInfo />
-              <ShippingInfo weight={location.state.totalWeight} />
+              <ShippingInfo/>
             </div>
             <div className="container__flex_col payment__body_right">
               <OrderInfo itemsList={items} />
               <VoucherInfo />
-              <TotalCard info={location.state.tempPay} />
+              <TotalCard />
               <button className="button_pink" onClick={handleOrder}>
                 Đặt hàng
               </button>
