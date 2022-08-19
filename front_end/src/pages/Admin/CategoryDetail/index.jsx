@@ -15,6 +15,7 @@ import axios from "../../../api/axios";
 import SweetPagination from "sweetpagination";
 import { ToastContainer, toast } from 'react-toastify';
 import {useParams, Link, useNavigate} from "react-router-dom";
+import AddProduct from "../../../components/AddProduct";
 
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PRODUCTS_URL = "/management/inventory_overview_product";
@@ -42,6 +43,11 @@ export default function CategoryDetail(){
   const handleCancel = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const handleChange = (e) => {
+    setBranchValue(e.target.value);
+    fetchProducts(e.target.value);
+  }
+
   const [currentData, setCurrentData] = useState([
     {
       masp: '001',
@@ -53,8 +59,6 @@ export default function CategoryDetail(){
   useEffect(() => {
     fetchProducts("200");
     fetchBranchID();
-    fetchSupplier();
-    fetchCategory();
   }, []);
 
 
@@ -84,78 +88,7 @@ export default function CategoryDetail(){
     });
   };
 
-  const fetchCategory = async () => {
-    await axios(GET_CATEGORY_URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "magic_pass": REACT_APP_MAGIC_PASS
-      }
-    }).then((res) => {
-      setCategory(res.data.loai_hang);
-    });
-  };
-
-  const fetchSupplier = async () => {
-    await axios(GET_SUPPLIER_URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "magic_pass": REACT_APP_MAGIC_PASS
-      }
-    }).then((res) => {
-      setSuppliers(res.data.nha_phan_phoi);
-    });
-  };
-
-  const handleChange = (e) => {
-    setBranchValue(e.target.value);
-    fetchProducts(e.target.value);
-  }
-
-
-  const handleSubmit = async(e) => {
-    const formData = new FormData();
-    formData.append("file", image);
-    formData.append("upload_preset", "j3eosdqd");
-    await axios.post("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", formData).then((res) => {
-      postItem(e, res.data.url);
-
-    });
-
-  }
   
-  const postItem = async (e, uploadImg) => {
-    var postData = {
-        ten_sp: e.target[0].value,
-        malh: e.target[1].value,
-        manpp: e.target[2].value,
-        gia_ban: e.target[3].value,
-        khoi_luong: e.target[4].value,
-        mo_ta: e.target[5].value,
-        hinh_anh: uploadImg
-
-    };
-    console.log(postData);
-    let axiosConfig = {
-      headers: {
-        "Content-Type": "application/json",
-        "magic_pass": REACT_APP_MAGIC_PASS
-      }
-    };
-
-  await axios.post(POST_ITEM, postData, axiosConfig).then((res) => {
-    setShow(false);
-    toast(res.data.message, {
-      position: "top-center",
-      autoClose: 4000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      });
-  });
-  };
 
   const handleRowCLick = (id) => {
     navigate(`/product/${id}`);
@@ -189,79 +122,8 @@ export default function CategoryDetail(){
           </>: "No data"}
         </select>
         </div>
-
-        <div>
-        <Button onClick={handleShow} style={{padding: "1rem", width: "200px"}}>
-            Thêm sản phẩm
-          </Button>
-
-          <Modal show={show} onHide={handleCancel}>
-
-            <Modal.Header closeButton>
-              <Modal.Title>Thêm sản phẩm</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form onSubmit={handleSubmit}> 
-              <Form.Group className="mb-3">
-              <Form.Label>Tên sản phẩm</Form.Label>
-              <Form.Control type="text"/>
-            </Form.Group>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Form.Label>Loại hàng&nbsp;&nbsp;</Form.Label>
-                  <select className="p-2 w-100">
-                    {category.length !=0 ? <>
-                      {category.map((item, index) => {
-                    return (
-                      <option value={item.malh}>{item.ten_lh}</option>
-                    )
-                })}
-                    </> : "No data"
-                    }
-                  </select>
-                </Form.Group>
-                <Form.Group>
-                <Form.Label>Nhà phân phối&nbsp;&nbsp;</Form.Label>
-                  <select className="p-2 w-100">
-                    {suppliers.length !=0 ? <>
-                      {suppliers.map((item, index) => {
-                    return (
-                      <option value={item.manpp}>{item.ten_npp}</option>
-                    )
-                })}</> : "No data"}
-                  </select>
-                </Form.Group>
-                <Row className="my-2">
-                  <Form.Group as={Col} controlId="formGridEmail">
-                  <Form.Label>Giá tiền (VND)</Form.Label>
-                  <Form.Control type="number"/>
-                  </Form.Group>
-
-                  <Form.Group as={Col} controlId="formGridPassword">
-                  <Form.Label>Khối lượng (g)</Form.Label>
-                  <Form.Control type="number"/>
-                  </Form.Group>
-                </Row>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                  <Form.Label>Mô tả</Form.Label>
-                  <Form.Control as="textarea" rows={3} />
-                </Form.Group>
-                <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Label>Hình ảnh</Form.Label>
-                  <Form.Control type="file" onChange={(e) => {setImage(e.target.files[0])}}/>
-                </Form.Group>
-                <Button variant="secondary" onClick={handleCancel}>
-                Cancel
-              </Button>
-              <Button variant="primary" type="submit">
-                Thêm
-              </Button>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              
-            </Modal.Footer>
-          </Modal>
-        </div>
+        <AddProduct/>
+        
      </div>
 
           <Card className="card-plain table-plain-bg">

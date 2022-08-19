@@ -6,7 +6,7 @@ import {
     Col,
   } from "react-bootstrap";
 import Sidebar from "../../../components/sidebar/Sidebar";
-import {useParams} from "react-router-dom";
+import {useParams, Link} from "react-router-dom";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 
 import moment from "moment";
@@ -46,7 +46,8 @@ export default function UserDetail(){
           <Col>
           <Row>
           <AdminNavbar 
-          title="Quản lý người dùng"/>
+          title="Quản lý người dùng"
+          subtitle= {user_id}/>
           <Card className="card-plain table-plain-bg">
             <Card.Body className="table-full-width table-responsive px-0">
               <Table>
@@ -105,8 +106,11 @@ export default function UserDetail(){
                 <button type="button" class="btn btn-danger">Cập nhật</button>
               </Card.Body>
             </Card>
+     <Link to="/admin/user"><h5 className="p-2">{'<<'} Trở về </h5></Link>
+
           </Row>
           </Col>
+
             </Row>
 
     </>);
