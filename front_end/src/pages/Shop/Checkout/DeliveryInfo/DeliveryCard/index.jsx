@@ -36,12 +36,13 @@ export function DeliveryCard(props) {
           defaultChecked={props.info.mac_dinh}
           onChange={handleCheck}
         ></input>
-        <div className="container__flex_col">
+        <div className="card__info">
           <div className="container__flex">
             <label>{authContext.info.tenkh}</label>
           </div>
-          <small>{authContext.info.sdt_kh}</small>
-          <small>
+          <label>{authContext.info.sdt_kh}</label>
+          <br/>
+          <label>
             {props.info.so_nha_duong +
               ", phường " +
               props.info.phuong_xa +
@@ -49,10 +50,10 @@ export function DeliveryCard(props) {
               props.info.quan_tp +
               ", TP " +
               props.info.tp_tinh}
-          </small>
+          </label>
         </div>
       </div>
-      {props.info.mac_dinh ? <label>Mặc định</label> : <></>}
+      {props.info.mac_dinh ? <label style={{color:"#DA4141"}}>Mặc định</label> : <></>}
     </div>
   );
 }

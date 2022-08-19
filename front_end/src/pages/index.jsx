@@ -24,6 +24,7 @@ import CategoryDetail from "./Admin/CategoryDetail";
 import ImportDashboard from "./Admin/ImportDashboard";
 import ImportDetail from "./Admin/ImportDetail";
 import RequireAuth from "../components/RequireAuth";
+import { FailTransaction, SuccessTransaction } from "../components/TransactionPopUp";
 const ROLES = {
   User: process.env.REACT_APP_ROLE_USER,
   Admin: process.env.REACT_APP_ROLE_ADMIN,
@@ -50,10 +51,12 @@ export default function Pages() {
             <Route path="/user/cart" element={<Cart />} />
             <Route path="/user/checkout" element={<Checkout />} />
           </Route>
+          <Route path="/payment/fail" element={<FailTransaction/>}/>
+          <Route path="/payment/success" element={<SuccessTransaction/>}/>
         </Route>
         <Route path="/" element={<Homepage />} />
         <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/view/:categories" element={<CategoryPage />} />
+        <Route path="/view/:categories" element={<CategoryPage/>} />
         <Route path="/search/:str" element={<Catalog />} />
       </Route>
       <Route path="/user/dang-nhap" element={<SignInWindow />} />

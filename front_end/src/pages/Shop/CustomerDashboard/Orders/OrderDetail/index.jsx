@@ -1,6 +1,5 @@
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import "./style.css";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { useEffect } from "react";
@@ -10,6 +9,7 @@ import Cookies from "js-cookie";
 import OrderDetailItemCard from "./OrderDetailItemCard";
 
 export default function OrderDetail({orderID}) {
+  const [listState, setListState] = useState([]);
   const [progress, setProgress] = useState();
   const [info, setInfo] = useState({});
   const [items, setItems] = useState([]);
@@ -17,7 +17,7 @@ export default function OrderDetail({orderID}) {
     let res = await axios({
       method: "get",
       headers: { token: Cookies.get("token") },
-      url: "/account/user_info/user_order_detail/items",
+      url: process.env.REACT_APP_ORDERS_DETAIL,
       params: { madh: orderID},
     });
     if (res.data.exitcode === 0) {
@@ -27,10 +27,22 @@ export default function OrderDetail({orderID}) {
 
   const handleProgressBar = (listState) => {
     let states = listState;
+    console.log("LS",listState);
     states.forEach((state) => {
-      if (state?.trang_thai === "ĐÃ GIAO") {
+      if (state.trang_thai.localeCompare("CHỜ XÁC NHẬN")==0 || state.trang_thai.localeCompare("WAIT FOR PAYMENT")==0) {        
+        setProgress(0);
+      }
+      if(state.trang_thai.localeCompare("ĐÃ XÁC NHẬN")==0){
+        setProgress(33);
+      }
+      if(state.trang_thai.localeCompare("ĐANG GIAO HÀNG")==0){
+        setProgress(66);
+      }if(state.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG")==0){
         setProgress(100);
       }
+      // else{
+      //   setProgress(0);
+      // }
     });
   };
   const fetchDetail = async () => {
@@ -42,6 +54,8 @@ export default function OrderDetail({orderID}) {
     });
     console.log(res.data);
     if (res.data.exitcode === 0) {
+      // setListState(res.data.list_state);
+      handleProgressBar(res.data.list_state);
       setInfo(res.data.info);
     } else {
     }
@@ -50,7 +64,7 @@ export default function OrderDetail({orderID}) {
   useEffect(() => {
     fetchDetail();
     fetchItem();
-    setProgress(33);
+    // handleProgressBar(listState) ;
   }, []);
   return (
     <div>
@@ -127,6 +141,8 @@ export default function OrderDetail({orderID}) {
           </div>
         </Col>
       </Container>
+
+      <a href="/user/myorder">Quay lại đơn hàng của tôi</a>
     </div>
   );
 }

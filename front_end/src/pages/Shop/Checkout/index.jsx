@@ -8,9 +8,8 @@ import TotalCard from "./TotalCard";
 import { CheckoutProvider } from "../../../context/CheckoutProvider";
 import CheckoutContext from "../../../context/CheckoutProvider";
 import axios from "../../../api/axios";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {  useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import debounce from 'lodash.debounce' 
 
 export default function Checkout(props) {
   const location = useLocation();
@@ -90,29 +89,30 @@ export default function Checkout(props) {
     );
     let shipPrice = document.getElementById("checkoutShippingCost").textContent;
     let total = document.getElementById("checkoutTotal").textContent;
-    console.log("psp", document.getElementById("checkoutTotal").textContent);
-    console.log("items",itemsBuy)
+
 
     let id = checkoutInfo.id_dia_chi_giao;
     var httt = "MOMO";
     let cn = checkoutInfo.macn;
     let htgh = "GHN";
-
+    let dataOrder = {
+      id_dia_chi_giao: checkoutInfo.id_dia_chi_giao,
+      hinh_thuc_thanh_toan: httt,
+      macn: checkoutInfo.macn,
+      hinh_thuc_giao_hang: htgh,
+      phi_van_chuyen: Number(document.getElementById("checkoutShippingCost").textContent),
+      phi_giam: 0,
+      phi_san_pham: Number(document.getElementById("checkoutTotal").textContent),
+      items: itemsBuy,
+    }
+    console.log("orderInfo",dataOrder);
     try {
       await axios({
         method: "post",
         url: process.env.REACT_APP_CREATE_ORDER,
         headers: { token: Cookies.get("token") },
-        data: {
-          id_dia_chi_giao: checkoutInfo.id_dia_chi_giao,
-          hinh_thuc_thanh_toan: "VNPAY",
-          macn: checkoutInfo.macn,
-          hinh_thuc_giao_hang: "GHN",
-          phi_van_chuyen: 10000,
-          phi_giam: 0,
-          phi_san_pham: 100000,
-          items: itemsBuy,
-        },
+        data: dataOrder
+        ,
       }).then((res) => {
         console.log(res.data);
         if (res.data.exitcode === 106) {
@@ -122,7 +122,9 @@ export default function Checkout(props) {
         } else {
           setTimeout(500);
           console.log("tao thanh cong", res.data.paymentURL);
-          // window.location.replace(res.data.paymentURL);
+          window.location.replace(res.data.paymentURL);
+          localStorage.removeItem("cart");
+          localStorage.removeItem("checkoutInfo");
         }
       });
     } catch (error) {}

@@ -22,7 +22,7 @@ export function OrderInfo({ itemsList }) {
     <div className="payment__info_container">
       <div className="container__flex payment__info_head">
         <h4>Đơn hàng</h4>
-        <a>Thay đổi</a>
+        <a className="navigate__detail">Thay đổi</a>
       </div>
       <div className="payment__info_body">
         {items.map((item) => (
