@@ -78,24 +78,24 @@ export default function AddProduct(){
 
     };
     console.log(postData);
-//     let axiosConfig = {
-//       headers: {
-//         "Content-Type": "application/json",
-//         "magic_pass": REACT_APP_MAGIC_PASS
-//       }
-//     };
+    let axiosConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      }
+    };
 
-//   await axios.post(POST_ITEM, postData, axiosConfig).then((res) => {
-//     setShow(false);
-//     toast(res.data.message, {
-//       position: "top-center",
-//       autoClose: 4000,
-//       hideProgressBar: false,
-//       closeOnClick: true,
-//       pauseOnHover: false,
-//       draggable: true,
-//       });
-//   });
+  await axios.post(POST_ITEM, postData, axiosConfig).then((res) => {
+    setShow(false);
+    toast(res.data.message, {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      });
+  });
   };
 
     return (
