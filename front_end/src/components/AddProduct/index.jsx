@@ -55,15 +55,26 @@ export default function AddProduct(){
   };
 
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = (e) => {
     const formData = new FormData();
     formData.append("file", image);
-    formData.append("upload_preset", "j3eosdqd");
-    await axios.post("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", formData).then((res) => {
-      postItem(e, res.data.url);
+    formData.append("upload_preset", "ec_upload");
+    // await axios.post("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", formData).then((res) => {
+    //   console.log(res);
+    //   postItem(e, res.data.url);
 
-    });
-
+    // });
+    try {
+        fetch("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => postItem(e, data.url));
+    }
+    catch (err) {
+        console.log(err);
+    }
   }
   
   const postItem = async (e, uploadImg) => {
@@ -95,7 +106,10 @@ export default function AddProduct(){
       pauseOnHover: false,
       draggable: true,
       });
+    window.location.reload();
   });
+
+
   };
 
     return (
