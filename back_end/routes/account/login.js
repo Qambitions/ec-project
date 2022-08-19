@@ -54,7 +54,6 @@ router.post('/', async (req, res, next) =>{
   }
   try{
     const retAdmin = await queryAdmin(req.body);
-    console.log(retAdmin)
     if (retAdmin.count > 0){
       response.account_type = 0
       response.message      = "Chào mừng mấy đứa đua đòi làm zàu!!"
@@ -74,7 +73,10 @@ router.post('/', async (req, res, next) =>{
         console.log("user : ", Client, " đăng nhập thành công")
         return res.send(response)
       }
-      else return res.send(response)
+      else {
+        console.log(req.body,"đăng nhập thất bại")
+        return res.send(response)
+      }
     }
   }
   catch (e){
