@@ -70,7 +70,7 @@ router.post('/', async (req, res, next) =>{
         response.account_info = retUser
         response.token = require('crypto').randomBytes(47).toString('hex');
         await updateToken(req.body, response.token);
-        console.log("user : ", Client, " đăng nhập thành công")
+        console.log("user : ", req.body.username, " đăng nhập thành công")
         return res.send(response)
       }
       else {
@@ -83,8 +83,9 @@ router.post('/', async (req, res, next) =>{
     response.exitcode = 1
     response.message = e
     response['warning'] = "có lỗi bất ngờ xảy ra..."
+    return res.send(response)
   }
-  return res.send(response)
+  
 });
 
 module.exports = router;
