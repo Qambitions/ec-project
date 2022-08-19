@@ -123,7 +123,6 @@ async function updateOrderStatus(Client, status, token=false){
 }
 
 async function updatePaymentToken(Client, token){
-    console.log(token)
     await knexQuery('don_hang')
     .where('makh','=',Client.makh)
     .andWhere('trang_thai','=','WAIT FOR PAYMENT')
@@ -149,6 +148,7 @@ router.post('/', async (req, res, next) =>{
             response.message = "Token không tồn tại"
             return res.send(response)
         }
+        console.log("create_order === user:",Client)
         const waitOrder = await checkOrder(Client); 
         if (typeof(waitOrder) != "undefined"){
             response.exitcode = 107
@@ -194,7 +194,6 @@ router.post('/', async (req, res, next) =>{
         }
         else if (req.body.hinh_thuc_thanh_toan == 'PAYPAL'){
             const result = await paypalCall(req.body, Client);
-            console.log(result)
             if (result.resultCode != 0){
                 updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
             }
@@ -218,7 +217,6 @@ router.post('/', async (req, res, next) =>{
         
     }
     catch (e) {
-        console.log(e)
         response.exitcode=1
         response.message = e
         response['warning'] = "có lỗi bất ngờ xảy ra..."
@@ -235,7 +233,6 @@ router.get('/momo_camon', async function(req, res, next) {
         'makh': req.query.orderId.split('_')[0]
     }
     
-    console.log(Client)
     if (resultCode == 0){
         updateOrderStatus(Client,'CHỜ XÁC NHẬN')
         return res.redirect(SUCCESS_LINK)
@@ -255,14 +252,13 @@ router.get('/paypal_camon_success', async function(req, res, next) {
     const execute_payment_json = {
         "payer_id": payerId,
     };
-    console.log(req)
     paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
         if (error) {
             updateOrderStatus('','THANH TOÁN THẤT BẠI',req.query.token)
             res.redirect(FAIL_LINK)
             // return res.send("that bai")
         } else {
-            console.log(JSON.stringify(payment));
+            // console.log(JSON.stringify(payment));
             updateOrderStatus('','CHỜ XÁC NHẬN',req.query.token)
             res.redirect(SUCCESS_LINK)
             // return res.send("thanh cong")

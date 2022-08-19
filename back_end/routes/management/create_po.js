@@ -49,6 +49,7 @@ router.post('/', async (req, res, next) =>{
       const orderOverview = await pushPO(req.body);
       response.exitcode   = 0
       response.message    = "Update thông tin thành công"
+      console.log('1 po đã được raise')
     }
     catch (e){
       response.exitcode= 1
