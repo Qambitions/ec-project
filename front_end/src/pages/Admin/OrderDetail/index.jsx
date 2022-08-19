@@ -87,7 +87,8 @@ export default function OrderDetail(){
     <Col>
     <Row>
     <AdminNavbar 
-    title="Quản lý đơn hàng"/>
+    title="Quản lý đơn hàng"
+    subtitle= {order_id}/>
     <Card className="card-plain table-plain-bg">
     <Card.Body className="table-full-width table-responsive px-0">
       <Table>
@@ -237,6 +238,8 @@ export default function OrderDetail(){
       <Link to="/admin/order"><h5 className="p-2">{'<<'} Trở về </h5></Link>
 
     </Row>
+    <Link to="/admin/order"><h5 className="p-2">{'<<'} Trở về </h5></Link>
+
     </Col>
       </Row>
             
