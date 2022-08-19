@@ -15,8 +15,8 @@ export function DeliveryInfo(props) {
         {authContext.deliveryAddress.map((item) => (
           <DeliveryCard info={item} />
         ))}
-
-        <a>+ Thêm địa chỉ mới</a>
+        <br/>
+        <a className="navigate__detail">+ Thêm địa chỉ mới</a>
       </div>
     </div>
   );

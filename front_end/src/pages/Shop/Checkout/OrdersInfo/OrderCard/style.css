@@ -1,8 +1,18 @@
 .order__card{
     margin-top: 0.5rem;
     margin-bottom: 1rem;
+    display: flex;
 }
 
 .order__card_img{
     height: 10ch;
+}
+
+.card_info_head{
+    display: flex;
+    justify-content: space-between;
+}
+
+.card_info{
+    align-self: center;
 }

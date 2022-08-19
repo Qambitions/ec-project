@@ -23,6 +23,7 @@ export default function Orders() {
       params: { limit: 4, offset: 0 },
     });
     if (res.data.exitcode === 0) {
+      console.log("Oder",res.data.orders);
       setOrders(res.data.orders);
     }
   };
@@ -48,7 +49,7 @@ export default function Orders() {
         <Tab eventKey="wait-confirmed" title="Chờ xác nhận">
           {orders
             .filter((order) => {
-              return order.trang_thai === "CHỜ XÁC NHẬN";
+              return order.trang_thai.localeCompare("CHỜ XÁC NHẬN")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -57,7 +58,7 @@ export default function Orders() {
         <Tab eventKey="confirmed" title="Đã xác nhận">
           {orders
             .filter((order) => {
-              return order.trang_thai === "ĐÃ XÁC NHẬN";
+              return order.trang_thai.localeCompare("ĐÃ XÁC NHẬN")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -66,7 +67,7 @@ export default function Orders() {
         <Tab eventKey="on-delivery" title="Đang giao">
           {orders
             .filter((order) => {
-              return order.trang_thai === "ĐANG GIAO";
+              return order.trang_thai.localeCompare("ĐANG GIAO")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -75,7 +76,7 @@ export default function Orders() {
         <Tab eventKey="delivered" title="Đã giao">
           {orders
             .filter((order) => {
-              return order.trang_thai === "ĐÃ GIAO";
+              return order.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -84,7 +85,7 @@ export default function Orders() {
         <Tab eventKey="canceled" title="Đã hủy">
           {orders
             .filter((order) => {
-              return order.trang_thai === "ĐÃ HỦY";
+              return order.trang_thai.localeCompare("THANH TOÁN THẤT BẠI")===0 || order.trang_thai.localeCompare("ĐÃ HỦY")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />

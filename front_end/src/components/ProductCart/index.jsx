@@ -4,6 +4,7 @@ import "./style.css";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import axios from "../../api/axios";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import CartContext from "../../context/CartProvider";
 import { ConfirmRemoveItemPopUp } from "../PopUp";
 const GET_PRODUCT = "/product/details";
@@ -11,6 +12,7 @@ const GET_PRODUCT = "/product/details";
 export default function ProductCart(props) {
   const [isRemove, setIsRemove] = useState(false);
   const [card, setCard] = useState({});
+  const [quantity, setQuantity] = useState(1);
   const cartContext = useContext(CartContext);
   const obj = props.obj;
   const getProductInfo = async () => {
@@ -29,9 +31,11 @@ export default function ProductCart(props) {
           weight: res.data.item.khoi_luong,
           pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
         });
+        setQuantity()
       });
   };
   useEffect(() => {
+    console.log("itemID",card.itemID)
     getProductInfo();
     if (document.getElementById(obj.itemID) !== null) {
       var cart = localStorage.getItem("cart");
@@ -43,8 +47,7 @@ export default function ProductCart(props) {
             if (!isNaN(card.pay)) {
               cartContext.calTempPay(card.pay);
               cartContext.calWeight(card.weight);
-              console.log(card.pay);
-              console.log(card.weight);
+
             } else {
               cartContext.calTempPay(0);
               cartContext.calWeight(0);
@@ -75,21 +78,25 @@ export default function ProductCart(props) {
   };
 
   var increaseQuantity = () => {
+    console.log("quantity-en",card.itemID,card.quantity)
     if (card.quantity < 50) {
       setCard((prevState) => {
-        return { ...prevState, quantity: prevState.quantity++ };
+        return { ...prevState, quantity: prevState.quantity+1 };
       });
       handleUpdateAmount(true);
     }
   };
 
   var decreaseQuantity = () => {
+
+    console.log("quantity-de",card.itemID,card.quantity)
     if (card.quantity > 1) {
       setCard((prevState) => {
-        return { ...prevState, quantity: prevState.quantity-- };
+        return { ...prevState, quantity: prevState.quantity-1 };
       });
       handleUpdateAmount(false);
     }
+    console.log("quantity-de",card.itemID,card.quantity)
   };
 
   const handleRemove = () => {
@@ -129,13 +136,13 @@ export default function ProductCart(props) {
         </div>
         <div className="checkout-main-col-2">
           <div className="checkout__product_card">
-            <a href="https://www.petmart.vn/sup-thuong-cho-meo-vi-ca-ngu-ca-chep-ciao-tuna-bonito">
+            <Link to={`/product/${card.itemID}`}>
               <img
                 className="checkout__cart_product_img"
                 src={card.img}
                 alt={card.img}
               ></img>
-            </a>
+            </Link>
             <div>
               <h5>{card.pdBrand}</h5>
               <label>{card.pdName}</label>

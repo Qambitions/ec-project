@@ -3,18 +3,15 @@ import ProductCard from "../../../components/ProductCard";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "../../../api/axios";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 const GETVIEW_URL = "/product/view";
 export default function CategoryPage(props) {
   let { categories } = useParams();
   const [productCards, setProductCards] = useState([]);
-
+  const location = useLocation();
   const fetchDetail = async () => {
     await axios(GETVIEW_URL, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
       params: { malh: categories, limit: 15, offset: 0 },
     }).then((res) => {
       setProductCards(res.data.items);
@@ -29,7 +26,7 @@ export default function CategoryPage(props) {
     <div className="body">
       <div className="container categorypage">
         <div className="homepage_section_head_title">
-          <h1>Title</h1>
+          <h1>{location.state.from}</h1>
           <img
             src={
               "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832639/icon/1312091_qharxb.png"

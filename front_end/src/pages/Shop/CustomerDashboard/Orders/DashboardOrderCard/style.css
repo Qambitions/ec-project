@@ -21,8 +21,8 @@ padding: 0 1rem;
 
 .waitconfirm_label{
     background: #FEFBB2;
-border-radius: 30px;
-padding: 0 1rem;
+    border-radius: 30px;
+    padding: 0 1rem;
 }
 
 .ondelivery_label{
@@ -41,4 +41,13 @@ padding: 0 1rem;
     background: #D3D3D3;
     border-radius: 30px;
     padding: 0 1rem;
+}
+
+.navigate__detail{
+    color: #A4B4C9;
+    font-weight: 600;
+}
+
+.navigate__detail:hover{
+    cursor: pointer;
 }
