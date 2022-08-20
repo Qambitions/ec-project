@@ -1,12 +1,16 @@
 import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "../../src/api/axios";
+
+
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) =>{
-    const [auth, setAuth] = useState({roles:[1,2],user:'ntnd1'});
+
+    const [auth, setAuth] = useState({user:'test'});
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
+
     useEffect(()=>{
         getInfo();
         getDelivery();
@@ -33,14 +37,49 @@ export const AuthProvider = ({ children }) =>{
     }
 
     const toggleLogout = () =>{
+      localStorage.removeItem("account_info")
+        localStorage.removeItem("checkoutInfo")
         Cookies.remove("token");
+        Cookies.remove("token_u")
+        Cookies.remove("login_time");
+        setAuth({});
     }
 
-    const toggleLoggin = () =>{
-        setAuth(prevState=>{return{...prevState, valid:true}});
-    }   
+    const toggleLoggin =async(username, password) =>{
+        if (username && password) {
+            try {
+              const res = await axios.post(process.env.REACT_APP_LOGIN_URL, {
+                username: username,
+                password: password,
+              });
+    
+              if (res.data.exitcode === 0) {
+                Cookies.set("token", res.data.token, {
+                  expires: 1,
+                  path: "/",
+                  sameSite: "strict",
+                  secure: true,
+                });
+                localStorage.setItem(
+                  "account_info",
+                  JSON.stringify(res.data.account_info)
+                );
+                let info = { user: 'username', roles: [1] }
+                // console.log(info)
+                // setAuth(info)
+                // setAuth({ user: username, roles: [1] });
+                return res.data.exitcode;
 
-    const value ={auth,toggleLogout, toggleLoggin ,setDeliveryAddress,handleLogin,setAuth,info,deliveryAddress}
+
+              } else if (res.data.exitcode === 104) {
+                console.log("sai roi");
+                return res.data.exitcode
+              }
+            } catch (error) {}
+          }
+    } 
+
+    const value ={auth,toggleLogout,setDeliveryAddress,handleLogin,info,deliveryAddress}
 
     return (
         <AuthContext.Provider value={value}>

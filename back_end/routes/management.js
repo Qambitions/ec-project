@@ -20,6 +20,7 @@ var main_dashboard = require('./management/main_dashboard.js');
 var create_po = require('./management/create_po.js');
 var list_branch = require('./management/list_branch.js');
 var list_supplier = require('./management/list_supplier.js');
+var list_category = require('./management/list_category.js');
 var add_item = require('./management/add_item.js');
 
 app.use('/purchase_detail', purchase_detail);
@@ -34,6 +35,7 @@ app.use('/main', main_dashboard);
 app.use('/create_po', create_po);
 app.use('/list_branch', list_branch);
 app.use('/list_supplier', list_supplier);
+app.use('/list_category', list_category);
 app.use('/add_item', add_item);
 
 app.use(function(req, res, next) {

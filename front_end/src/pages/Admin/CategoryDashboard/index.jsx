@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.css";
-
+import AddProduct from "../../../components/AddProduct";
 import {
     Card,
     Container,
@@ -60,11 +60,14 @@ export default function CategoryDashboard(){
           <Col>
           <Row>
           <AdminNavbar 
-          title="Quản lý đơn hàng"
+          title="Quản lý kho"
           text ="Danh mục sản phẩm"
           count = "6"/>
           </Row>
+        <div className="d-flex justify-content-between">
           <Link to="/admin/all-products"><h5 className="p-2">Xem tất cả {'>>'} </h5></Link>
+            <AddProduct/>
+        </div>
           <Row>  
           {type.map((item, index) => {
           return (

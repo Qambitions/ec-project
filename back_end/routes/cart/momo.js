@@ -19,7 +19,7 @@ async function momoCall(props, Client){
         var amount = props.phi_san_pham + props.phi_van_chuyen - props.phi_giam;
         var requestType = "captureWallet";
         var extraData = ""; 
-        
+        // console.log(redirectUrl)
                 
         var rawSignature = "accessKey="+accessKey
                             +"&amount=" + amount
@@ -32,15 +32,15 @@ async function momoCall(props, Client){
                             +"&requestId=" + requestId
                             +"&requestType=" + requestType;
         //puts raw signature
-        console.log("--------------------RAW SIGNATURE----------------")
-        console.log(rawSignature)
+        // console.log("--------------------RAW SIGNATURE----------------")
+        // console.log(rawSignature)
 
         
         var signature = crypto.createHmac('sha256', secretkey)
             .update(rawSignature)
             .digest('hex');
-        console.log("--------------------SIGNATURE----------------")
-        console.log(signature)
+        // console.log("--------------------SIGNATURE----------------")
+        // console.log(signature)
 
         const requestBody = JSON.stringify({
             partnerCode : partnerCode,
@@ -69,8 +69,8 @@ async function momoCall(props, Client){
         }
 
         const req = https.request(options, res => {
-            console.log(`Status: ${res.statusCode}`);
-            console.log(`Headers: ${JSON.stringify(res.headers)}`);
+            // console.log(`Status: ${res.statusCode}`);
+            // console.log(`Headers: ${JSON.stringify(res.headers)}`);
             res.setEncoding('utf8');
             res.on('data', (body) => {
                 // console.log('Body: ');
@@ -81,7 +81,7 @@ async function momoCall(props, Client){
 
             });
             res.on('end', () => {
-                console.log('No more data in response.');
+                // console.log('No more data in response.');
             });
         })
 
@@ -89,7 +89,7 @@ async function momoCall(props, Client){
             console.log(`problem with request: ${e.message}`);
         });
         // write data to request body
-        console.log("Sending....")
+        // console.log("Sending....")
         req.write(requestBody);
         req.end();
     });

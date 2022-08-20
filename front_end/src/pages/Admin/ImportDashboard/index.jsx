@@ -182,11 +182,12 @@ export default function ImportDashboard() {
      <div className="input-group p-4">
         <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
         <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
-          {branches.map((item, index) => {
+          {branches.length !=0 ? <>
+            {branches.map((item, index) => {
           return (
             <option value={item.macn}>{item.macn}</option>
           )
-      })}
+      })}</>: "No data"}
         </select>
         </div>
 
@@ -208,7 +209,7 @@ export default function ImportDashboard() {
                     return (
                       <option value={item.macn}>{item.macn}</option>
                     )
-                })}
+                })}</>: "No data"}
                   </select>
                 </Form.Group>
                 <Form.Group>
@@ -219,6 +220,7 @@ export default function ImportDashboard() {
                       <option value={item.manpp}>{item.ten_npp}</option>
                     )
                 })}
+                    </> : "No data"}
                   </select>
                 </Form.Group>
 
@@ -325,7 +327,6 @@ export default function ImportDashboard() {
             </tr>
           )
       })}</>: "No data"}
-
       <SweetPagination
         currentPageData={setCurrentData}
         dataPerPage={10}

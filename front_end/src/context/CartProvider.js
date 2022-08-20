@@ -107,13 +107,11 @@ export const CartProvider = ({ children }) =>{
     }
 
     const calWeight = (weight) =>{
-        console.log("ttWeight",cartInfo.totalWeight);
         setCartInfo((prevState)=>{return{...prevState,totalWeight:prevState.totalWeight+parseInt(weight)}});
     }
 
 
     const calTempPay = (amount) =>{
-        console.log("ttPay",cartInfo.totalPay);
         setCartInfo((prevState) => {
             return { ...prevState, tempPay: prevState.tempPay + parseInt(amount) };
           });

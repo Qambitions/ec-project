@@ -15,7 +15,7 @@ async function pushItem(props){
         khoi_luong     : props.khoi_luong,
         gia_ban        : props.gia_ban
     }).returning('masp').then(function (masp){
-        console.log(masp)
+        // console.log(masp)
         ma_phieu_nhap = masp
     }).catch(error => {
         console.log(error)
@@ -37,6 +37,7 @@ router.post('/', async (req, res, next) =>{
       const orderOverview = await pushItem(req.body);
       response.exitcode   = 0
       response.message    = "Update thông tin thành công"
+      console.log("1 items đã được add")
     }
     catch (e){
       response.exitcode= 1

@@ -71,6 +71,7 @@ router.post('/', async (req, res, next) =>{
       await addAccount(req.body);
       response.message      = "Đăng ký tài khoản thành công!!"
       response.exitcode     = 0
+      console.log("user : ", req.body.tenkh, " đăng ký thành công")
     }
   }
   catch (e){

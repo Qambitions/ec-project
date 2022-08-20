@@ -5,9 +5,7 @@ var knexQuery = require('../../db_connect');
 async function queryWeeklyReport(){
     var date = new Date()
     date.setDate(date.getDate() - 7);
-    console.log(date)
     var dateStr = date.toISOString().split('T')[0]
-    console.log(dateStr)
     const rawSQL = `SELECT dh.thoi_gian::date, sum(tong_phi),count(*)
                     FROM don_hang dh
                     LEFT JOIN chi_tiet_don_hang ctdh on dh.madh = ctdh.madh
@@ -24,9 +22,7 @@ async function queryWeeklyReport(){
 async function queryTopSelling(){
   var date = new Date()
   date.setDate(date.getDate() - 7);
-  console.log(date)
   var dateStr = date.toISOString().split('T')[0]
-  console.log(dateStr)
   const rawSQL = `SELECT sp.masp, sp.ten_sp,sum(sp.gia_ban * ctdh.so_luong_mua) as GMV
                   FROM chi_tiet_don_hang ctdh 
                   LEFT JOIN san_pham sp on ctdh.masp = sp.masp 
@@ -53,7 +49,6 @@ router.get('/weekly_report', async (req, res, next) =>{
           res.send(response)
           return
       }
-      console.log("aaaa")
       const weeklyReport = await queryWeeklyReport();
       response.exitcode = 0
       response.message = "lấy thông tin thành công"
@@ -79,7 +74,6 @@ router.get('/top_selling', async (req, res, next) =>{
         res.send(response)
         return
     }
-    console.log("aaaa")
     const topProduct = await queryTopSelling();
     response.exitcode = 0
     response.message = "lấy thông tin thành công"

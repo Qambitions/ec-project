@@ -5,8 +5,13 @@ import DashboardOrderCard from "./DashboardOrderCard";
 import { useEffect, useState } from "react";
 import axios from "../../../../api/axios";
 import Cookies from "js-cookie";
+import OrderDetail from "./OrderDetail";
+import { useContext } from "react";
+import OrdersContext, { OrdersProvider } from "../../../../context/OrdersProvider";
+
 
 export default function Orders() {
+  const ordersContext = useContext(OrdersContext);
   const [orders, setOrders] = useState([]);
   const getOrders = async () => {
     let res = await axios({
@@ -18,6 +23,7 @@ export default function Orders() {
       params: { limit: 4, offset: 0 },
     });
     if (res.data.exitcode === 0) {
+      console.log("Oder",res.data.orders);
       setOrders(res.data.orders);
     }
   };
@@ -27,7 +33,7 @@ export default function Orders() {
   }, []);
 
   return (
-    <div>
+    <>{ordersContext.viewDetail===true? (<OrderDetail orderID={ordersContext?.orderID}/>):(<div>
       <label>Đơn hàng của tôi</label>
       <Tabs
         defaultActiveKey="profile"
@@ -43,7 +49,7 @@ export default function Orders() {
         <Tab eventKey="wait-confirmed" title="Chờ xác nhận">
           {orders
             .filter((order) => {
-              return order.trang_thai === "CHỜ XÁC NHẬN";
+              return order.trang_thai.localeCompare("CHỜ XÁC NHẬN")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -52,7 +58,7 @@ export default function Orders() {
         <Tab eventKey="confirmed" title="Đã xác nhận">
           {orders
             .filter((order) => {
-              return order.trang_thai === "ĐÃ XÁC NHẬN";
+              return order.trang_thai.localeCompare("ĐÃ XÁC NHẬN")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -61,7 +67,7 @@ export default function Orders() {
         <Tab eventKey="on-delivery" title="Đang giao">
           {orders
             .filter((order) => {
-              return order.trang_thai === "ĐANG GIAO";
+              return order.trang_thai.localeCompare("ĐANG GIAO")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -70,7 +76,7 @@ export default function Orders() {
         <Tab eventKey="delivered" title="Đã giao">
           {orders
             .filter((order) => {
-              return order.trang_thai === "ĐÃ GIAO";
+              return order.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -79,13 +85,15 @@ export default function Orders() {
         <Tab eventKey="canceled" title="Đã hủy">
           {orders
             .filter((order) => {
-              return order.trang_thai === "ĐÃ HỦY";
+              return order.trang_thai.localeCompare("THANH TOÁN THẤT BẠI")===0 || order.trang_thai.localeCompare("ĐÃ HỦY")===0;
             })
             .map((order) => (
               <DashboardOrderCard key={order.madh} orderInfo={order} />
             ))}
         </Tab>
       </Tabs>
-    </div>
+    </div>)}    
+
+    </>
   );
 }

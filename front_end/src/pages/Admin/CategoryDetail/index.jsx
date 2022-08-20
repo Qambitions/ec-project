@@ -5,25 +5,48 @@ import {
     Container,
     Row,
     Col,
+    Button,
+    Form,
+    Modal
   } from "react-bootstrap";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import axios from "../../../api/axios";
 import SweetPagination from "sweetpagination";
+import { ToastContainer, toast } from 'react-toastify';
 import {useParams, Link, useNavigate} from "react-router-dom";
+import AddProduct from "../../../components/AddProduct";
 
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PRODUCTS_URL = "/management/inventory_overview_product";
 const GET_BRANCH_URL = "/management/list_branch";
+const GET_CATEGORY_URL = "/management/list_category";
+const GET_SUPPLIER_URL = "/management/list_supplier";
+const POST_ITEM = "/management/add_item";
 
 
 export default function CategoryDetail(){
   const navigate = useNavigate();
   const {category_id} = useParams();
-  const [value, setValue] = useState("200");
+  const [branchValue, setBranchValue] = useState("200");
+  const [image, setImage] = useState();
+
+
   const [total, setTotal] = useState(0);
   const [pdt, setPdt] = useState([]);
   const [branches, setBranches] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+
+  const [show, setShow] = useState(false);
+
+  const handleCancel = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleChange = (e) => {
+    setBranchValue(e.target.value);
+    fetchProducts(e.target.value);
+  }
 
   const [currentData, setCurrentData] = useState([
     {
@@ -65,16 +88,17 @@ export default function CategoryDetail(){
     });
   };
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-    fetchProducts(e.target.value);
-  }
+  
 
-
-
+  const handleRowCLick = (id) => {
+    navigate(`/product/${id}`);
+   }  
 
     return (<>
+
         <Container fluid>    
+        <ToastContainer style={{ width: "500px" }}/>
+
         <Row>
           <Col lg="2">
           <Sidebar/>
@@ -82,19 +106,25 @@ export default function CategoryDetail(){
           <Col>
           <AdminNavbar 
           title="Quản lý kho"
+          subtitle= {category_id}
           text ="Tổng số mặt hàng"
           count = {total}/>
-        <div className="input-group p-4">
-          <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
-          <select value={value}  onChange={e => handleChange(e)} className="px-5">
+        <div style={{display: "flex"}}>
+     <div className="input-group p-4">
+        <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
+        <select value={branchValue} onChange={e => handleChange(e)} className="px-5">
+          {branches.length !=0 ? <>
             {branches.map((item, index) => {
-                return (
-                  <option value={item.macn}>{item.macn}</option>
-                )
-            })}
-          </select>
-          
+          return (
+            <option value={item.macn}>{item.macn}</option>
+          )
+      })}
+          </>: "No data"}
+        </select>
         </div>
+        <AddProduct/>
+        
+     </div>
 
           <Card className="card-plain table-plain-bg">
             <Card.Body className="table-full-width table-responsive px-0">
@@ -107,9 +137,10 @@ export default function CategoryDetail(){
                   </tr>
                 </thead>
                 <tbody>
-                {currentData.map((item, index) => {
+                {currentData.length != 0 ? <>
+                  {currentData.map((item, index) => {
                   return (
-                    <tr>
+                    <tr onClick={()=> handleRowCLick(item.masp)}>
                       <td>
                         <div class="d-flex align-items-center">
                           <div class="ms-3">
@@ -124,6 +155,7 @@ export default function CategoryDetail(){
                     </tr>
                   )
               })}
+              </> : "No data"}
               <SweetPagination
                 currentPageData={setCurrentData}
                 dataPerPage={10}

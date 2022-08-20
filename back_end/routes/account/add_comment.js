@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var knexQuery = require('../../db_connect');
+require("dotenv").config();
+const crypto = require("crypto");
+const secret = process.env.SECRET_KEY;
+
 
 async function checkClient(props){
     if (typeof(props.token) == "undefined") props.token = '' 
@@ -61,6 +65,7 @@ router.post('/', async (req, res, next) =>{
             response.message    = "Mã sản phẩm không tồn tại"
             return res.send(response)
         }
+        console.log("user : ", Client, " add comment thành công")
         response.exitcode   = 0
         response.message    = "Update thông tin thành công"
     }

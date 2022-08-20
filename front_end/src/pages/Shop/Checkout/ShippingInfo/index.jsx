@@ -53,6 +53,12 @@ export function ShippingInfo(props) {
   };
 
   const calShippingPrice = async (method, weight) => {
+    if (!checkoutContext?.deliveryInfo) {
+      checkoutContext.setShippingPrice(0);
+      return;
+    }
+    console.log("INFO", checkoutContext.deliveryInfo);
+
     let token = Cookies.get("token");
     let res = await axios({
       url: process.env.REACT_APP_GET_SHIPPING_PRICE,
@@ -95,19 +101,17 @@ export function ShippingInfo(props) {
       }
     }
   };
-
+  useEffect(() => {
+    checkoutContext.setShippingPrice(0);
+    updateCheckoutShippingMethod("GHN");
+    updateCheckoutPaymentMethod("MOMO");
+  }, []);
   useEffect(() => {
     let weight = props.weight;
     calShippingPrice("GHN", weight);
     calShippingPrice("GHTK_fast", weight);
     calShippingPrice("GHTK_norm", weight);
   }, [checkoutContext.deliveryInfo]);
-
-  useEffect(() => {
-    checkoutContext.setShippingPrice(GHN.price);
-    updateCheckoutShippingMethod("GHN");
-    updateCheckoutPaymentMethod("MOMO");
-  }, []);
 
   return (
     <div className="payment__info_container">
@@ -211,29 +215,6 @@ export function ShippingInfo(props) {
               }
             ></img>
             Thanh toán bằng ví MoMo
-          </small>
-          <br></br>
-        </div>
-        <div className="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="radio_payment"
-            id="ZaloPay"
-            value="ZaloPay"
-            onChange={handlePaymentMethod}
-          ></input>
-          <small class="form-check-small" for="ZaloPay">
-            <img
-              className="payment__icon"
-              src={
-                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656773094/icon/icon-payment-method-zalo-pay_fzqlod.svg"
-              }
-              alt={
-                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1656773094/icon/icon-payment-method-zalo-pay_fzqlod.svg"
-              }
-            ></img>
-            Thanh toán bằng ví ZaloPay
           </small>
           <br></br>
         </div>

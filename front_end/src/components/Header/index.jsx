@@ -21,6 +21,10 @@ export default function Header() {
     authContext.toggleLogout();
   };
 
+  const toggleMyorder = ()=>{
+    navigate('/user/myorder',{replace:true})
+  }
+
   useEffect(() => {
     if (Cookies.get("token")) {
       setLoggedState(Cookies.get("token"));
@@ -45,9 +49,9 @@ export default function Header() {
         <Link to="/">
           <BsBell />{" "}
         </Link>
-        <a href="/user/cart">
+        <Link to="/user/cart">
           <BsCart2 />
-        </a>
+        </Link>
         {loggedState ? (
           <Dropdown align="end">
             <Dropdown.Toggle
@@ -57,7 +61,7 @@ export default function Header() {
 
             <Dropdown.Menu>
               <Dropdown.Item eventKey="1">Tài khoản của tôi</Dropdown.Item>
-              <Dropdown.Item eventKey="2">Đơn hàng của tôi</Dropdown.Item>
+              <Dropdown.Item eventKey="2" onClick={toggleMyorder}>Đơn hàng của tôi</Dropdown.Item>
               <Dropdown.Item eventKey="3" onClick={toggleLogout}>
                 Đăng xuất
               </Dropdown.Item>

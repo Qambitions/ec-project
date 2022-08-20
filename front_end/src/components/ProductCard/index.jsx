@@ -16,10 +16,10 @@ export default function ProductCard(props) {
       />
       <div>
         <div className="product__card_price">
-          <label className="product__card_price_left">{obj.gia_ban}</label>
+          <label className="product__card_price_left">{obj.gia_ban_giam} đ</label>
           <label className="product__card_price_right">
-            {obj.gia_ban_giam}
-            <span>{obj.phan_tram_giam_gia}%</span>
+            <del>{obj.gia_ban} đ</del>
+            {obj?.phan_tram_giam_gia && <span>{obj.phan_tram_giam_gia}%</span>}
           </label>
         </div>
         <h5>{obj.ten_npp}</h5>

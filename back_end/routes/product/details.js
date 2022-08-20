@@ -146,7 +146,7 @@ router.get('/', async (req, res, next) =>{
         response.message      = "Lấy thông tin sản phẩm thành công"
         response.exitcode     = 0
         response.item         = item
-        console.log(item)
+        // console.log(item)
     }
     catch (e){
         response.exitcode=1

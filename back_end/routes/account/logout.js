@@ -5,7 +5,7 @@ require("dotenv").config();
 const crypto = require("crypto");
 const secret = process.env.SECRET_KEY;
 
-async function updateToken(props,token){
+async function updateToken(props){
     var date = new Date();
     date.setDate(date.getDate() + 3);
     await knexQuery('khach_hang')
@@ -26,7 +26,7 @@ router.post('/', async (req, res, next) =>{
      
     }
 
-    await updateToken(req.headers,);
+    await updateToken(req.headers);
     return res.send(response)
 });
 
