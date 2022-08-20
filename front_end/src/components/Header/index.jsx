@@ -10,20 +10,26 @@ import AuthContext from "../../context/AuthProvider";
 import Dropdown from "react-bootstrap/Dropdown";
 import CustomToggle from "../CustomDropDownToggle/customDropDownToggle";
 import Cookies from "js-cookie";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
 
 export default function Header() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const [loggedState, setLoggedState] = useState();
-
+  const [show, setShow] = useState(true);
   const toggleLogout = () => {
     setLoggedState();
     authContext.toggleLogout();
   };
 
-  const toggleMyorder = ()=>{
-    navigate('/user/myorder',{replace:true})
-  }
+  const toggleMyAccount = () => {
+    navigate("/user/account", { replace: true });
+  };
+
+  const toggleMyorder = () => {
+    navigate("/user/myorder", { replace: true });
+  };
 
   useEffect(() => {
     if (Cookies.get("token")) {
@@ -52,6 +58,17 @@ export default function Header() {
         <Link to="/user/cart">
           <BsCart2 />
         </Link>
+        <ToastContainer className="add_cart_toats">
+          <Toast onClose={() => setShow(false)} show={show} delay={3000}>
+            <Toast.Header>
+              <strong className="me-auto">Bootstrap</strong>
+              <small>11 mins ago</small>
+            </Toast.Header>
+            <Toast.Body>
+              Woohoo, you're reading this text in a Toast!
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
         {loggedState ? (
           <Dropdown align="end">
             <Dropdown.Toggle
@@ -60,8 +77,12 @@ export default function Header() {
             ></Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item eventKey="1">Tài khoản của tôi</Dropdown.Item>
-              <Dropdown.Item eventKey="2" onClick={toggleMyorder}>Đơn hàng của tôi</Dropdown.Item>
+              <Dropdown.Item eventKey="1" onClick={toggleMyAccount}>
+                Tài khoản của tôi
+              </Dropdown.Item>
+              <Dropdown.Item eventKey="2" onClick={toggleMyorder}>
+                Đơn hàng của tôi
+              </Dropdown.Item>
               <Dropdown.Item eventKey="3" onClick={toggleLogout}>
                 Đăng xuất
               </Dropdown.Item>

@@ -2,3 +2,12 @@
     width: 70%;
     margin: 0 auto;
 }
+
+.user_dashboard_header{
+    color:#FB5D5D;
+    font-weight: 600;
+}
+
+.tab-content{
+    background-color: white;
+}

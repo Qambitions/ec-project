@@ -1,13 +1,15 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import AuthContext from "../../context/AuthProvider";
 import Cookies from "js-cookie";
 import { decrypt10 } from "../../utils/crypto";
 import { callAutoLoginAPI } from "../../utils/auth";
+import axios from "../../api/axios";
 
 
 const RequireAuth = ({ allowedRoles }) => {
   const authContext = useContext(AuthContext);
+  const [isAuthenticated, setisAuthenticated] = useState()
   const location = useLocation();
   let time = Cookies.get("login_time")
   let token_u = Cookies.get("token_u")
@@ -15,6 +17,9 @@ const RequireAuth = ({ allowedRoles }) => {
   let roles =[];
   var user=null;
 
+  const autoLogin= ()=>{
+    axios({})
+  }
 
   let user_info = localStorage.getItem("account_info")
   if(localStorage?.getItem("account_info")){
