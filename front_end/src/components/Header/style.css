@@ -21,3 +21,17 @@
 .dropdown-menu{
     margin-top: 1rem;
 }
+
+.add_cart_toats{
+    position: absolute;
+    top: 23% !important;
+    right: 20%!important;
+}
+
+.toast-header{
+    border-bottom: 1px solid rgb(224, 74, 74);;
+}
+
+.toast-body{
+    background-color: white;
+}
