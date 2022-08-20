@@ -3,13 +3,14 @@ var router = express.Router();
 var knexQuery = require('../../db_connect');
 
 async function queryInventoryOverview(props){
-  var rawSQL = `SELECT sp.masp, ten_sp, kho.so_luong_ton
-                    FROM san_pham sp
-                    left join kho on sp.masp = kho.masp
-                    where kho.macn = '${props.macn}'
+  var rawSQL = `SELECT sp.masp, ten_sp, kho.so_luong_ton, lh.ten_lh 
+                FROM san_pham sp
+                LEFT JOIN kho ON sp.masp = kho.masp
+                LEFT JOIN loai_hang lh ON sp.malh = lh.malh 
+                WHERE kho.macn = '${props.macn}'
                   `
   if (typeof props.malh != 'undefined'){
-    rawSQL += ` and malh = '${props.malh}' ` 
+    rawSQL += ` and sp.malh = '${props.malh}' ` 
   }
   // rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
                   

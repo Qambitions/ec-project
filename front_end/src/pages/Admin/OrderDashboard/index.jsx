@@ -71,7 +71,8 @@ export default function OrderDashboard(props) {
                 </tr>
               </thead>
               <tbody>
-      {currentPageData.map((item, index) => {
+      {currentPageData.length !=0 ? <>
+        {currentPageData.map((item, index) => {
           return (
             <tr onClick={()=> handleRowCLick(item.madh)}>
               <td>
@@ -96,7 +97,7 @@ export default function OrderDashboard(props) {
               
             </tr>
           )
-      })}
+      })}</>: "No data"}
       <SweetPagination
         currentPageData={setCurrentPageData}
         dataPerPage={10}

@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) =>{
                   expires: 1,
                   path: "/",
                   sameSite: "strict",
-                  secure: true,
+                  secure: false,
                 });
                 localStorage.setItem(
                   "account_info",

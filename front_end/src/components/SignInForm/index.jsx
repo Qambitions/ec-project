@@ -66,7 +66,7 @@ export default function SignInForm() {
             expires: 1,
             path: "/",
             sameSite: "strict",
-            secure: true,
+            secure: false,
           });
           localStorage.setItem(
             "account_info",
@@ -78,7 +78,7 @@ export default function SignInForm() {
             expires: 1,
             path: "/",
             sameSite: "strict",
-            secure: true,
+            secure: false,
           });
           var encryptedString = encrypt10(
             res.data.account_type,
@@ -88,7 +88,7 @@ export default function SignInForm() {
             expires: 1,
             path: "/",
             sameSite: "strict",
-            secure: true,
+            secure: false,
           });
           navigate(from, { replace: true });
           setUsername("");
@@ -96,19 +96,9 @@ export default function SignInForm() {
         } else {
         }
         setExitCode(res.data.exitcode);
-      } catch (error) {}
-      // =======
-      //   const handleSubmit = async (e) => {
-      //     e.preventDefault();
-
-      //     setFormErrors(validate({ username, password }));
-      //     let res = await authContext.toggleLoggin(username, password);
-      //     console.log(res);
-      //     setExitCode(res);
-      //     if (res === 0) {
-      //       console.log("dung roi");
-      //       navigate(from, { replace: true });
-      // >>>>>>> Shop_checkout
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
