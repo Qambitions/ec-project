@@ -30,11 +30,10 @@ export default function ProductCart(props) {
           price: res.data.item.gia_ban_giam,
           pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
         });
-        setQuantity()
+        setQuantity();
       });
   };
   useEffect(() => {
-    console.log("itemID",card.itemID)
     getProductInfo();
     if (document.getElementById(obj.itemID) !== null) {
       var cart = localStorage.getItem("cart");
@@ -72,25 +71,23 @@ export default function ProductCart(props) {
   };
 
   var increaseQuantity = () => {
-    console.log("quantity-en",card.itemID,card.quantity)
     if (card.quantity < 50) {
       setCard((prevState) => {
-        return { ...prevState, quantity: prevState.quantity+1 };
+        return { ...prevState, quantity: prevState.quantity + 1 };
       });
       handleUpdateAmount(true);
     }
   };
 
   var decreaseQuantity = () => {
-
-    console.log("quantity-de",card.itemID,card.quantity)
+    console.log("quantity-de", card.itemID, card.quantity);
     if (card.quantity > 1) {
       setCard((prevState) => {
-        return { ...prevState, quantity: prevState.quantity-1 };
+        return { ...prevState, quantity: prevState.quantity - 1 };
       });
       handleUpdateAmount(false);
     }
-    console.log("quantity-de",card.itemID,card.quantity)
+    console.log("quantity-de", card.itemID, card.quantity);
   };
 
   const handleRemove = () => {
