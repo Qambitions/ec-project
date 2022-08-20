@@ -11,7 +11,7 @@ export function ShippingInfo(props) {
   const [GHTK_norm, setGHTK] = useState({});
   const [weight, setWeight] = useState(0);
   const handleShippingMethod = (e) => {
-    updateCheckoutShippingMethod(e.target.id);
+    updateCheckoutShippingMethod(e.target.id.toUpperCase());
     checkoutContext.setShippingPrice(e.target.value);
     switch (e.target.id) {
       case "GHN":
@@ -21,27 +21,26 @@ export function ShippingInfo(props) {
         updateCheckoutMacn(GHTK_norm.macn);
         break;
       case "GHTK_fast":
-        console.log("GHTK_fast", GHTK_fast.macn);
         updateCheckoutMacn(GHTK_fast.macn);
         break;
     }
   };
 
   const handlePaymentMethod = (e) => {
-    updateCheckoutPaymentMethod(e.target.id);
+    updateCheckoutPaymentMethod(e.target.value);
   };
 
   const updateCheckoutShippingMethod = (method) => {
     var info = localStorage.getItem("checkoutInfo");
     info = info ? JSON.parse(info) : {};
-    info.hinh_thuc_thanh_toan = method;
+    info.hinh_thuc_giao_hang = method;
     localStorage.setItem("checkoutInfo", JSON.stringify(info));
   };
 
   const updateCheckoutPaymentMethod = (method) => {
     var info = localStorage.getItem("checkoutInfo");
     info = info ? JSON.parse(info) : {};
-    info.hinh_thuc_giao_hang = method;
+    info.hinh_thuc_thanh_toan = method;
     localStorage.setItem("checkoutInfo", JSON.stringify(info));
   };
 
@@ -100,40 +99,31 @@ export function ShippingInfo(props) {
     }
   };
 
-  async function fetchProductWeight (id){
-    await axios({
-      method:'get',
-      url:process.env.REACT_APP_GET_PRODUCT_DETAIL,
-      params:{masp:id},
-    }).then((res)=>{
-    let wei = weight;
-    setWeight(wei+res.data.item.khoi_luong);
-    })
-  }
-
-
-  const calCartWeight = ()=>{
+  const calCheckoutInfo = () => {
     var cart = localStorage.getItem("cart");
     cart = cart ? JSON.parse(cart) : [];
-    cart.forEach(element => {
-      if(element.isChecked){
-        fetchProductWeight(element.itemID);
+    let ttWeight = 0;
+    cart.forEach((item) => {
+      if (item.isChecked) {
+        ttWeight += item.quantity * item.weight;
       }
     });
-  }
+    setWeight(ttWeight);
+  };
 
   useEffect(() => {
-    calCartWeight();
-    console.log("init")
+    calCheckoutInfo();
     checkoutContext.setShippingPrice(0);
     updateCheckoutShippingMethod("GHN");
     updateCheckoutPaymentMethod("MOMO");
   }, []);
+
   useEffect(() => {
-    console.log(weight)
-    if(weight>0){    calShippingPrice("GHN", weight);
-    calShippingPrice("GHTK_fast", weight);
-    calShippingPrice("GHTK_norm", weight);}
+    if (weight > 0) {
+      calShippingPrice("GHN", weight);
+      calShippingPrice("GHTK_fast", weight);
+      calShippingPrice("GHTK_norm", weight);
+    }
   }, [checkoutContext.deliveryInfo]);
 
   return (
@@ -246,11 +236,11 @@ export function ShippingInfo(props) {
             class="form-check-input"
             type="radio"
             name="radio_payment"
-            id="VNPay"
-            value="VNPay"
+            id="VNPAY"
+            value="VNPAY"
             onChange={handlePaymentMethod}
           ></input>
-          <small class="form-check-small" for="VNPay">
+          <small class="form-check-small" for="VNPAY">
             <img
               className="payment__icon"
               src={
@@ -269,7 +259,7 @@ export function ShippingInfo(props) {
             class="form-check-input"
             type="radio"
             name="radio_payment"
-            id="PayPal"
+            id="PAYPAL"
             value="PayPal"
             onChange={handlePaymentMethod}
           ></input>
