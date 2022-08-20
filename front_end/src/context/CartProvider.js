@@ -11,8 +11,9 @@ export const CartProvider = ({ children }) =>{
         totalWeight:0
     })
 
+    const [weight,setWeight] = useState(0);
 
-    const addItem = (id,quantity,isCheck) =>{
+    const addItem = (id,quantity,isCheck,_weight) =>{
         //add items cart into local storage
         var cart = localStorage.getItem("cart");
         cart = cart ? JSON.parse(cart) : [];
@@ -27,7 +28,7 @@ export const CartProvider = ({ children }) =>{
             }
         }       
         if(flag){
-            cart.push({itemID:id,quantity:quantity,isChecked:isCheck});
+            cart.push({itemID:id,quantity:quantity,isChecked:isCheck,weight:_weight});
         }
         // Save back to localStorage 
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -119,7 +120,7 @@ export const CartProvider = ({ children }) =>{
 
     const value = {addItem,removeItem, removeAllItems,upDateQuantity, 
         calTempPay,setTempPay,getTempPay,getTotalPay,
-        getDiscount,getTotalQuantity,updateItemCheck,cartInfo,setCartInfo,calWeight}
+        getDiscount,getTotalQuantity,updateItemCheck,cartInfo,setCartInfo,calWeight,weight,setWeight}
 
     return (
         <CartContext.Provider value={value}>

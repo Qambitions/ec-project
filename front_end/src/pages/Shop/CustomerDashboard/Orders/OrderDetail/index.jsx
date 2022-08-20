@@ -40,9 +40,6 @@ export default function OrderDetail({orderID}) {
       }if(state.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG")==0){
         setProgress(100);
       }
-      // else{
-      //   setProgress(0);
-      // }
     });
   };
   const fetchDetail = async () => {

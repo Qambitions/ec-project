@@ -20,12 +20,7 @@ export default function Cart() {
     cart = cart ? JSON.parse(cart) : [];
     if (!cart.some((item) => item?.isChecked === true)) {
     } else {
-      navigate("/user/checkout", {
-        state: {
-          totalWeight: cartContext.cartInfo.totalWeight,
-          tempPay: cartContext.cartInfo.tempPay,
-        },
-      });
+      navigate("/user/checkout",{replace:true});
     }
   };
 
