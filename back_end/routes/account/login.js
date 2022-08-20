@@ -54,7 +54,6 @@ router.post('/', async (req, res, next) =>{
   }
   try{
     const retAdmin = await queryAdmin(req.body);
-    console.log(retAdmin)
     if (retAdmin.count > 0){
       response.account_type = 0
       response.message      = "Chào mừng mấy đứa đua đòi làm zàu!!"
@@ -71,18 +70,22 @@ router.post('/', async (req, res, next) =>{
         response.account_info = retUser
         response.token = require('crypto').randomBytes(47).toString('hex');
         await updateToken(req.body, response.token);
-        console.log("user : ", Client, " đăng nhập thành công")
+        console.log("user : ", req.body.username, " đăng nhập thành công")
         return res.send(response)
       }
-      else return res.send(response)
+      else {
+        console.log(req.body,"đăng nhập thất bại")
+        return res.send(response)
+      }
     }
   }
   catch (e){
     response.exitcode = 1
     response.message = e
     response['warning'] = "có lỗi bất ngờ xảy ra..."
+    return res.send(response)
   }
-  return res.send(response)
+  
 });
 
 module.exports = router;

@@ -65,7 +65,7 @@ export default function SignInForm() {
             expires: 1,
             path: "/",
             sameSite: "strict",
-            secure: true,
+            secure: false,
           });
           localStorage.setItem(
             "account_info",
@@ -77,14 +77,14 @@ export default function SignInForm() {
             expires: 1,
             path: "/",
             sameSite: "strict",
-            secure: true,
+            secure: false,
           });
           var encryptedString = encrypt10(res.data.account_type,Cookies.get("login_time"))
           Cookies.set("token_u",encryptedString,{
             expires: 1,
             path: "/",
             sameSite: "strict",
-            secure: true,
+            secure: false,
           })
           navigate(from, { replace: true });
           setUsername("");
