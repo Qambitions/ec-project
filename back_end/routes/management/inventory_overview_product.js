@@ -10,7 +10,7 @@ async function queryInventoryOverview(props){
                 WHERE kho.macn = '${props.macn}'
                   `
   if (typeof props.malh != 'undefined'){
-    rawSQL += ` and malh = '${props.malh}' ` 
+    rawSQL += ` and sp.malh = '${props.malh}' ` 
   }
   // rawSQL += ` limit '${props.limit}' offset '${props.offset}' `
                   
