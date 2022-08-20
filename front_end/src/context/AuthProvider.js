@@ -7,7 +7,7 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) =>{
 
-    const [auth, setAuth] = useState({user:'test'});
+    const [auth, setAuth] = useState({});
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
 
@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }) =>{
     }
 
     const toggleLogout = () =>{
+      localStorage.removeItem("cart")
       localStorage.removeItem("account_info")
         localStorage.removeItem("checkoutInfo")
         Cookies.remove("token");
@@ -64,18 +65,15 @@ export const AuthProvider = ({ children }) =>{
                   "account_info",
                   JSON.stringify(res.data.account_info)
                 );
-                let info = { user: 'username', roles: [1] }
-                // console.log(info)
-                // setAuth(info)
-                // setAuth({ user: username, roles: [1] });
                 return res.data.exitcode;
-
 
               } else if (res.data.exitcode === 104) {
                 console.log("sai roi");
                 return res.data.exitcode
               }
-            } catch (error) {}
+            } catch (error) {
+              console.log(error)
+            }
           }
     } 
 

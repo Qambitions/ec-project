@@ -15,6 +15,8 @@ import axios from "../../api/axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
 import CartContext from "../../context/CartProvider";
+import { encrypt10, decrypt10 } from "../../utils/crypto";
+import Cookies from "js-cookie";
 const GETDETAIL_URL = "/product/details";
 
 export function ProductDetail() {
@@ -30,14 +32,13 @@ export function ProductDetail() {
   const [starAvg, setStarAvg] = useState();
   const [rattingConsult, setRattingConsult] = useState({});
 
-
   useEffect(() => {
     fetchDetail();
     setStarAvg(3);
   }, []);
 
   const handleAddToCart = () => {
-    cartContext.addItem(id, quantity, false);
+    cartContext.addItem(id, quantity, false, product?.khoi_luong);
   };
 
   const fetchDetail = async () => {
@@ -121,7 +122,7 @@ export function ProductDetail() {
             <div className="container__flex">
               <div>
                 {ratting?.avg}
-                <Rate disabled defaultValue={3}/>
+                <Rate disabled defaultValue={3} />
                 {product?.luot_danh_gia}
               </div>
 
@@ -292,11 +293,11 @@ export function ProductDetail() {
                 </div>
               </div>
               <div className="rating__overview_right_col">
-                <label>({ratting['5']?.count})</label>
-                <label>({ratting['4']?.count})</label>
-                <label>({ratting['3']?.count})</label>
-                <label>({ratting['2']?.count})</label>
-                <label>({ratting['1']?.count})</label>
+                <label>({ratting["5"]?.count})</label>
+                <label>({ratting["4"]?.count})</label>
+                <label>({ratting["3"]?.count})</label>
+                <label>({ratting["2"]?.count})</label>
+                <label>({ratting["1"]?.count})</label>
               </div>
             </div>
           </div>

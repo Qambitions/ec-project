@@ -8,7 +8,7 @@ import TotalCard from "./TotalCard";
 import { CheckoutProvider } from "../../../context/CheckoutProvider";
 import CheckoutContext from "../../../context/CheckoutProvider";
 import axios from "../../../api/axios";
-import {  useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Checkout(props) {
@@ -38,15 +38,21 @@ export default function Checkout(props) {
     fetchDetail();
   }, []);
 
-  async function callCreateOrderAPI(items,ckInfo,discount,shipprice,tempPay){
-        try {
+  async function callCreateOrderAPI(
+    items,
+    ckInfo,
+    discount,
+    shipprice,
+    tempPay
+  ) {
+    try {
       await axios({
         method: "post",
         url: process.env.REACT_APP_CREATE_ORDER,
         headers: { token: Cookies.get("token") },
         data: {
           ckInfo,
-          phi_van_chuyen:  shipprice,
+          phi_van_chuyen: shipprice,
           phi_giam: discount,
           phi_san_pham: tempPay,
           items: items,
@@ -79,40 +85,29 @@ export default function Checkout(props) {
       item.gia_phai_tra = element.gia_ban_giam;
       itemsBuy.push(item);
     });
-    console.log("id_gh",checkoutInfo.id_dia_chi_giao);
-    console.log("httt",checkoutInfo.hinh_thuc_thanh_toan);
-    console.log("macn",checkoutInfo.macn);
-    console.log("htgh",checkoutInfo.hinh_thuc_giao_hang);
-    console.log(
-      "shipprice",
-      document.getElementById("checkoutShippingCost").textContent
-    );
-    let shipPrice = document.getElementById("checkoutShippingCost").textContent;
-    let total = document.getElementById("checkoutTotal").textContent;
-
-
-    let id = checkoutInfo.id_dia_chi_giao;
-    var httt = "MOMO";
-    let cn = checkoutInfo.macn;
-    let htgh = "GHN";
+    var hinh_thuc_giao_hang = checkoutInfo.hinh_thuc_giao_hang;
+    var hinh_thuc_thanh_toan = checkoutInfo.hinh_thuc_thanh_toan;
     let dataOrder = {
       id_dia_chi_giao: checkoutInfo.id_dia_chi_giao,
-      hinh_thuc_thanh_toan: httt,
+      hinh_thuc_thanh_toan: hinh_thuc_thanh_toan,
       macn: checkoutInfo.macn,
-      hinh_thuc_giao_hang: htgh,
-      phi_van_chuyen: Number(document.getElementById("checkoutShippingCost").textContent),
-      phi_giam: 0,
-      phi_san_pham: Number(document.getElementById("checkoutTotal").textContent),
+      hinh_thuc_giao_hang: hinh_thuc_giao_hang,
+      phi_van_chuyen: Number(
+        document.getElementById("checkoutShippingCost").textContent
+      ),
+      phi_giam: Number(document.getElementById("checkoutDiscount").textContent),
+      phi_san_pham: Number(
+        document.getElementById("checkoutTempPay").textContent
+      ),
       items: itemsBuy,
-    }
-    console.log("orderInfo",dataOrder);
+    };
+    console.log("orderInfo", dataOrder);
     try {
       await axios({
         method: "post",
         url: process.env.REACT_APP_CREATE_ORDER,
         headers: { token: Cookies.get("token") },
-        data: dataOrder
-        ,
+        data: dataOrder,
       }).then((res) => {
         console.log(res.data);
         if (res.data.exitcode === 106) {
@@ -138,12 +133,12 @@ export default function Checkout(props) {
           <div className="payment__body">
             <div className="container__flex_col payment__body_left">
               <DeliveryInfo />
-              <ShippingInfo weight={location.state.totalWeight} />
+              <ShippingInfo />
             </div>
             <div className="container__flex_col payment__body_right">
               <OrderInfo itemsList={items} />
               <VoucherInfo />
-              <TotalCard info={location.state.tempPay} />
+              <TotalCard />
               <button className="button_pink" onClick={handleOrder}>
                 Đặt hàng
               </button>

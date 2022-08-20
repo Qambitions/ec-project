@@ -30,6 +30,10 @@
     
 }
 
+hr{
+    color: rgba(155, 154, 154, 0.76);
+}
+
 .container__flex{
     display: flex;
     align-items: center;
@@ -86,4 +90,9 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.icon_button{
+    height: 1rem;
+    width: 1rem;
 }

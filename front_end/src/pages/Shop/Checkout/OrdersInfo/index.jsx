@@ -1,12 +1,12 @@
+import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Card } from "react-bootstrap";
-import axios from "../../../../api/axios";
+import CheckoutContext from "../../../../context/CheckoutProvider";
 import { OrderCard } from "./OrderCard";
 
 export function OrderInfo({ itemsList }) {
+  const checkoutContext = useContext(CheckoutContext);
   const [items, setItems] = useState([]);
-
   const fetchDetail = () => {
     if (itemsList.length > 0) {
       setItems(itemsList);
@@ -15,8 +15,16 @@ export function OrderInfo({ itemsList }) {
 
   useEffect(() => {
     fetchDetail();
-    console.log("IL", itemsList.length);
+    calTempPay();
   }, [itemsList]);
+
+  const calTempPay = () => {
+    let tmpPay = 0;
+    itemsList.forEach((item) => {
+      tmpPay += item.gia_ban_giam * item.so_luong_mua;
+    });
+    checkoutContext.setTempPay(tmpPay);
+  };
 
   return (
     <div className="payment__info_container">

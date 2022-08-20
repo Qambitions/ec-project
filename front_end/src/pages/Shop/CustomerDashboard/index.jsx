@@ -8,7 +8,9 @@ import Orders from "./Orders";
 import OrderDetail from "./Orders/OrderDetail";
 import { Routes, Route, Outlet } from "react-router-dom";
 import { OrdersProvider } from "../../../context/OrdersProvider";
-export default function CustomerDashboard({page}) {
+import MyAddress from "./MyAddress";
+import MyAccount from "./MyAccount";
+export default function CustomerDashboard({ page }) {
   return (
     <div className="body">
       <div className="customer__dashboard">
@@ -26,18 +28,30 @@ export default function CustomerDashboard({page}) {
                 <Nav.Item>
                   <Nav.Link eventKey="orders">Đơn hàng của tôi</Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="changepass">Thay đổi mật khẩu</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="address">Quản lý địa chỉ</Nav.Link>
+                </Nav.Item>
               </Nav>
             </Col>
-            <Col sm={9}>
+            <Col sm={9} style={{ backgroundColor: "white" }}>
               <Tab.Content>
                 <Tab.Pane eventKey="account">
-                  
+                  <MyAccount />
                 </Tab.Pane>
                 <Tab.Pane eventKey="orders">
                   <OrdersProvider>
                     <Orders />
                   </OrdersProvider>
                 </Tab.Pane>
+                <Tab.Pane eventKey="address">
+                  <OrdersProvider>
+                    <MyAddress />
+                  </OrdersProvider>
+                </Tab.Pane>
+                <Tab.Pane eventKey="changepass"></Tab.Pane>
               </Tab.Content>
             </Col>
           </Row>
