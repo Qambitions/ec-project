@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import Sidebar from "../../../components/sidebar/Sidebar";
-import { useParams} from "react-router-dom";
+import { useParams, Link} from "react-router-dom";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import moment from "moment";
 import axios from "../../../api/axios";
@@ -48,6 +48,8 @@ export default function OrderDetail(){
   };
 
   const postDeliveryStatus = async (newStatus, curr) => {
+    setValue(newStatus);
+
     var postData = {
         madh: order_id, 
         trang_thai_moi: newStatus,
@@ -62,7 +64,6 @@ export default function OrderDetail(){
     };
 
   await axios.post(POST_DELIVERY_STATUS, postData, axiosConfig).then((res) => {
-    setValue(detail.trang_thai);
     toast(res.data.message, {
       position: "top-center",
       autoClose: 4000,
@@ -86,7 +87,8 @@ export default function OrderDetail(){
     <Col>
     <Row>
     <AdminNavbar 
-    title="Quản lý đơn hàng"/>
+    title="Quản lý đơn hàng"
+    subtitle= {order_id}/>
     <Card className="card-plain table-plain-bg">
     <Card.Body className="table-full-width table-responsive px-0">
       <Table>
@@ -145,7 +147,8 @@ export default function OrderDetail(){
                   <div className="checkout-main-col-3">Số lượng</div>
                   <div className="checkout-main-col-3">Thành tiền</div>
               </div>
-              {products.map((product, index) => {
+              {products.length !=0 ? <>
+                {products.map((product, index) => {
             return (
               <div  className="checkout-main-row">
                 <div className="checkout-main-col-1">
@@ -171,7 +174,7 @@ export default function OrderDetail(){
               <div className="checkout-main-col-3">{product.thanh_tien_mua}</div>
           </div>
             )
-        })}
+        })}</>: "No data"}
           <div  className="checkout-main-row">
           <div className="checkout-main-col-2">Phí sản phẩm: </div>
           <div className="checkout-main-col-3">{detail.phi_san_pham}</div>
@@ -232,8 +235,11 @@ export default function OrderDetail(){
           </div>
 
       </div>
+      <Link to="/admin/order"><h5 className="p-2">{'<<'} Trở về </h5></Link>
 
     </Row>
+    <Link to="/admin/order"><h5 className="p-2">{'<<'} Trở về </h5></Link>
+
     </Col>
       </Row>
             

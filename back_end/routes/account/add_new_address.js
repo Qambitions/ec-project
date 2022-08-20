@@ -68,6 +68,7 @@ router.post('/', async (req, res, next) =>{
             response.message    = "lỗi lạ chưa define được"
             return res.send(response)
         }
+        console.log("user : ", Client, " add address thành công")
         response.exitcode   = 0
         response.message    = "Update thông tin thành công"
     }

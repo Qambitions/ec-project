@@ -77,7 +77,8 @@ const handleRowCLick = (id) => {
                   </tr>
                 </thead>
                 <tbody>
-                {currentData.map((item, index) => {
+                {currentData.length !=0 ? <>
+                  {currentData.map((item, index) => {
                   return (
                     <tr onClick={()=> handleRowCLick(item.makh)}>
                       <td>
@@ -97,7 +98,7 @@ const handleRowCLick = (id) => {
                       </td>
                     </tr>
                   )
-              })}
+              })}</>: "No data"}
               <SweetPagination
                 currentPageData={setCurrentData}
                 dataPerPage={10}
