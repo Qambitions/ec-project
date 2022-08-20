@@ -16,12 +16,18 @@ const POST_ITEM = "/management/add_item";
 
 
 export default function AddProduct(){
-  const [image, setImage] = useState();
   const [category, setCategory] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
 
-  const [show, setShow] = useState(false);
+  const [tenSP, setTenSP] = useState("");
+  const [MALH, setMALH] = useState('10');
+  const [MANPP, setMANPP] = useState('1000');
+  const [gia, setGia] = useState();
+  const [khoiLuong, setKhoiLuong] = useState();
+  const [moTa, setMoTa] = useState("");
+  const [image, setImage] = useState();
 
+  const [show, setShow] = useState(false);
   const handleCancel = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -55,40 +61,31 @@ export default function AddProduct(){
   };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     const formData = new FormData();
-    formData.append("file", image);
-    formData.append("upload_preset", "ec_upload");
-    // await axios.post("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", formData).then((res) => {
-    //   console.log(res);
-    //   postItem(e, res.data.url);
+    formData.append('file', image);
+    formData.append('upload_preset', 'ec_upload');
 
-    // });
-    try {
-        fetch("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => postItem(e, data.url));
-    }
-    catch (err) {
-        console.log(err);
-    }
+    
+    await axios.post("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", formData).then((res) => {
+        console.log(res.data);
+        postItem(e, res.data.url);
+        
+      });
   }
   
   const postItem = async (e, uploadImg) => {
     var postData = {
-        ten_sp: e.target[0].value,
-        malh: e.target[1].value,
-        manpp: e.target[2].value,
-        gia_ban: e.target[3].value,
-        khoi_luong: e.target[4].value,
-        mo_ta: e.target[5].value,
-        hinh_anh: uploadImg
+      ten_sp: tenSP,
+      malh: MALH,
+      manpp: MANPP,
+      gia_ban: gia,
+      khoi_luong: khoiLuong,
+      mo_ta: moTa,
+      hinh_anh: uploadImg
 
-    };
-    console.log(postData);
+  };
+  console.log(postData);
     let axiosConfig = {
       headers: {
         "Content-Type": "application/json",
@@ -106,7 +103,7 @@ export default function AddProduct(){
       pauseOnHover: false,
       draggable: true,
       });
-    window.location.reload();
+    // window.location.reload();
   });
 
 
@@ -127,18 +124,18 @@ export default function AddProduct(){
               <Modal.Title>Thêm sản phẩm</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form onSubmit={handleSubmit}> 
+            <Form> 
               <Form.Group className="mb-3">
               <Form.Label>Tên sản phẩm</Form.Label>
-              <Form.Control type="text"/>
+              <Form.Control type="text" onChange = {e => setTenSP(e.target.value)}/>
             </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                   <Form.Label>Loại hàng&nbsp;&nbsp;</Form.Label>
-                  <select className="p-2 w-100">
+                  <select className="p-2 w-100" value={MALH} onChange={e => setMALH(e.target.value)}>
                     {category.length != 0 ? <>
                       {category.map((item, index) => {
                     return (
-                      <option value={item.malh}>{item.ten_lh}</option>
+                      <option value={item.malh} key={index}>{item.ten_lh}</option>
                     )
                 })}
                     </> : "No data"
@@ -147,29 +144,29 @@ export default function AddProduct(){
                 </Form.Group>
                 <Form.Group>
                 <Form.Label>Nhà phân phối&nbsp;&nbsp;</Form.Label>
-                  <select className="p-2 w-100">
+                  <select className="p-2 w-100" value={MANPP} onChange={e => setMANPP(e.target.value)}>
                     {suppliers.length !=0 ? <>
                       {suppliers.map((item, index) => {
                     return (
-                      <option value={item.manpp}>{item.ten_npp}</option>
+                      <option value={item.manpp} key={index}>{item.ten_npp}</option>
                     )
                 })}</> : "No data"}
                   </select>
                 </Form.Group>
                 <Row className="my-2">
-                  <Form.Group as={Col} controlId="formGridEmail">
+                  <Form.Group as={Col}>
                   <Form.Label>Giá tiền (VND)</Form.Label>
-                  <Form.Control type="number"/>
+                  <Form.Control type="number" onChange={e => setGia(e.target.value)}/>
                   </Form.Group>
 
-                  <Form.Group as={Col} controlId="formGridPassword">
+                  <Form.Group as={Col}>
                   <Form.Label>Khối lượng (g)</Form.Label>
-                  <Form.Control type="number"/>
+                  <Form.Control type="number"  onChange={e => setKhoiLuong(e.target.value)}/>
                   </Form.Group>
                 </Row>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Mô tả</Form.Label>
-                  <Form.Control as="textarea" rows={3} />
+                  <Form.Control as="textarea" rows={3} onChange={e => setMoTa(e.target.value)}/>
                 </Form.Group>
                 <Form.Group controlId="formFile" className="mb-3">
                   <Form.Label>Hình ảnh</Form.Label>
@@ -178,7 +175,7 @@ export default function AddProduct(){
                 <Button variant="secondary" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" onClick={handleSubmit}>
                 Thêm
               </Button>
               </Form>
