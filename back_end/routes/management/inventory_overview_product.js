@@ -41,7 +41,7 @@ async function queryTotalInventory(props){
     console.log(error)
     throw new Error(error);
   });
-  console.log(result2)
+  // console.log(result2)
   return {
     total: result.rows[0].count,
     loai_hang : result2.rows[0].ten_lh,
