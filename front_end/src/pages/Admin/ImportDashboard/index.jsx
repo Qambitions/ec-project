@@ -1,5 +1,5 @@
 import React,  {useEffect, useState} from "react";
-import {useNavigate  } from 'react-router-dom';
+import {useNavigate, Link } from 'react-router-dom';
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import SweetPagination from "sweetpagination";
@@ -13,6 +13,7 @@ import {
   Modal,
   Row,
   Col,
+  Badge
 } from "react-bootstrap";
 
 import moment from "moment";
@@ -26,13 +27,16 @@ const POST_PO = "/management/create_po";
 
 export default function ImportDashboard() {
   const [branchValue, setBranchValue] = useState("200");
-  const [supplierValue, setSupplierValue] = useState();
+  const [supplierValue, setSupplierValue] = useState("1000");
+  const [selectedPrds, setSelectedPrds] = useState([]); 
+  const [currMaSP, setCurrMaSP] = useState();
+  const [currSL, setCurrSL] = useState(); 
+  const [currGia, setCurrGia] = useState(); 
+  const [total, setTotal] = useState(0); 
 
   const [branches, setBranches] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [products, setProducts] = useState([]);
-  const [selectedPrds, setSelectedPrds] = useState([]); 
-
 
   const [po, setPO] = useState([]);
 
@@ -43,14 +47,14 @@ export default function ImportDashboard() {
 
   const addMoreProducts = (e) => {
     var prd = {
-      ten_sp: e.target[0].value,
-      so_luong: e.target[1].value
-
+      masp: currMaSP,
+      so_luong_nhap: currSL,
+      don_gia_nhap: currGia
   };
-
-    const newPrd = [prd, ...selectedPrds];
-    setSelectedPrds(newPrd);
-    console.log(...selectedPrds);
+    setSelectedPrds(prev => [...prev, prd])
+    setCurrGia('')
+    setCurrSL('')
+    setTotal(prev => prev + currGia*currSL)
   };
 
   const [currentData, setCurrentData] = useState([
@@ -126,33 +130,36 @@ export default function ImportDashboard() {
   }
 
    
-  const postPO = (e) => {
-    // var postData = {
-    //     macn: e.target[0].value,
-    //     manpp: e.target[1].value,
-    //     masp: e.target[2].value,
-    //     so_luong_nhap: e.target[3].value,
-    //     don_gia_nhap: e.target[4].value
-    // };
-    console.log(e.target.value);
-  //   let axiosConfig = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "magic_pass": REACT_APP_MAGIC_PASS
-  //     }
-  //   };
+  const postPO = async(e) => {
+    var postData = {
+        macn: branchValue,
+        manpp: supplierValue,
+        tong_tien_nhap: total,
+        po_items: selectedPrds
+    };
+    setSelectedPrds([])
+    setTotal(0)
+    setBranchValue("200")
+    setSupplierValue("1000")
+    let axiosConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        "magic_pass": REACT_APP_MAGIC_PASS
+      }
+    };
 
-  // await axios.post(POST_PO, postData, axiosConfig).then((res) => {
-  //   setShow(false);
-  //   toast(res.data.message, {
-  //     position: "top-center",
-  //     autoClose: 4000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: false,
-  //     draggable: true,
-  //     });
-  // });
+  await axios.post(POST_PO, postData, axiosConfig).then((res) => {
+    setShow(false);
+    toast(res.data.message, {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      });
+  });
+
   };
 
   const navigate = useNavigate();
@@ -163,6 +170,7 @@ export default function ImportDashboard() {
   
   return (
     <>
+     <ToastContainer style={{ width: "500px" }}/>
       <div className="row">
      <div className="col-2"><Sidebar/></div>  
      <div className="col-10" style={{backgroundColor: "#F5F5F5"}}>
@@ -192,10 +200,10 @@ export default function ImportDashboard() {
               <Modal.Title>Tạo mới phiếu nhập</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Form onSubmit={postPO}>
+              <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                   <Form.Label>Chi nhánh&nbsp;&nbsp;</Form.Label>
-                  <select className="p-2 w-100">
+                  <select className="p-2 w-100" onChange={e => setBranchValue(e.target.value)}>
                     {branches.map((item, index) => {
                     return (
                       <option value={item.macn}>{item.macn}</option>
@@ -205,10 +213,10 @@ export default function ImportDashboard() {
                 </Form.Group>
                 <Form.Group>
                 <Form.Label>Nhà phân phối&nbsp;&nbsp;</Form.Label>
-                  <select className="p-2 w-100">
+                  <select className="p-2 w-100" onChange={e => setSupplierValue(e.target.value)}>
                     {suppliers.map((item, index) => {
                     return (
-                      <option value={item.ma_npp}>{item.ten_npp}</option>
+                      <option value={item.manpp}>{item.ten_npp}</option>
                     )
                 })}
                   </select>
@@ -217,7 +225,7 @@ export default function ImportDashboard() {
                 <h4 className="mt-3">Chọn danh sách sản phẩm</h4>
                 <Form.Group>
                 <Form.Label>Tên sản phẩm&nbsp;&nbsp;</Form.Label>
-                  <select className="p-2 w-100">
+                  <select className="p-2 w-100" value={currMaSP} onChange={e => setCurrMaSP(e.target.value)}>
                     {products.map((item, index) => {
                     return (
                       <option value={item.masp}>{item.ten_sp}</option>
@@ -225,21 +233,58 @@ export default function ImportDashboard() {
                 })}
                   </select>
                 </Form.Group>
+                
                   <Row className="my-2">
-                  <Form.Group as={Col}>
-                  <Form.Label>Số lượng</Form.Label>
-                  <Form.Control type="number"/>
-                  </Form.Group>
+                    <Form.Group as={Col}>
+                      <Form.Label>Số lượng</Form.Label>
+                      <Form.Control type="number" value={currSL} onChange={e => setCurrSL(e.target.value)}/>
+                    </Form.Group>
 
-                  <Form.Group as={Col}>
-                  <Form.Label>Đơn giá nhập</Form.Label>
-                  <Form.Control type="number"/>
-                  </Form.Group>
+                    <Form.Group as={Col}>
+                      <Form.Label>Đơn giá nhập (VND)</Form.Label>
+                      <Form.Control type="number" value={currGia} onChange={e => setCurrGia(e.target.value)}/>
+                    </Form.Group>
                 </Row>
+                <a className="text-primary" onClick={addMoreProducts}>+ Thêm sản phẩm</a>
+                <h5 className="mt-3">Preview</h5>
+                <Table className="table-hover">
+                  <thead>
+                    <tr style={{backgroundColor: "#FF9B7F"}}>
+                      <th>Mã sản phẩm</th>
+                      <th>Số lượng nhập</th>
+                      <th>Đơn giá nhập</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedPrds.map((item, index) => {
+                        return (
+                          <tr>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="ms-3">
+                                  <p class="fw-bold mb-1">{item.masp}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td>{item.so_luong_nhap}</td>
+                            <td>{item.don_gia_nhap}</td>
+                          </tr>
+                        )
+                    })}
+                  </tbody>
+                </Table>
+                <br/>
+                <Form.Group>
+                  <Form.Label>Thành tiền</Form.Label>
+                  <h1><Badge bg="warning" text="dark" >{total} VND</Badge></h1>
+                  
+                  {/* <Form.Control type="number" disable value={total}/> */}
+                  </Form.Group>
+                
                 <Button variant="secondary" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" onClick={postPO}>
                 Thêm
               </Button>
               </Form>
@@ -262,7 +307,8 @@ export default function ImportDashboard() {
                 </tr>
               </thead>
               <tbody>
-      {currentData.map((item, index) => {
+      {currentData.length !=0? <>
+        {currentData.map((item, index) => {
           return (
             <tr onClick={()=> handleRowCLick(item.mapn)}>
               <td>
@@ -278,7 +324,7 @@ export default function ImportDashboard() {
               <td>{item.tong_tien_nhap}</td>
             </tr>
           )
-      })}
+      })}</>: "No data"}
 
       <SweetPagination
         currentPageData={setCurrentData}
@@ -290,7 +336,7 @@ export default function ImportDashboard() {
             </Table>
           </Card.Body>
         </Card>
-      
+        <Link to="/admin/stock"><h5 className="p-2">{'<<'} Trở về </h5></Link>
       </div>
 
       </div>
