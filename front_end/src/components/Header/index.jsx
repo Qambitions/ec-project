@@ -17,7 +17,7 @@ export default function Header() {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const [loggedState, setLoggedState] = useState();
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const toggleLogout = () => {
     setLoggedState();
     authContext.toggleLogout();
