@@ -38,8 +38,8 @@ router.get('/', async (req, res, next) =>{
     try{
       if (req.headers.magic_pass != 'LamZauKhumKho'){
           response.message = "sai Pass ròi!!"
-          res.send(response)
-          return
+          return res.send(response)
+          
       }
       req.query.limit = (typeof req.query.limit === 'undefined') ? 5 : req.query.limit;
       req.query.offset = (typeof req.query.offset === 'undefined') ? 0 : req.query.offset;

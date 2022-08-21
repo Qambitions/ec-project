@@ -43,8 +43,7 @@ router.get('/', async (req, res, next) =>{
     }
     if (req.headers.magic_pass != 'LamZauKhumKho'){
         response.message = "sai Pass ròi!!"
-        res.send(response)
-        return
+        return res.send(response) 
     }
     
     try{
@@ -56,7 +55,6 @@ router.get('/', async (req, res, next) =>{
       response.exitcode = 0
       response.message = "lấy thông tin thành công"
       response.list_purchase = purhchaseOverview
-      console.log(purhchaseOverview)
       response.total_purchase = totalPurchase
     }
     catch (e){
