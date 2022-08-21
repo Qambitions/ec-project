@@ -4,48 +4,35 @@ import {
     Table,
     Container,
     Row,
-    Col,
-    Button,
-    Form,
-    Modal
+    Col
   } from "react-bootstrap";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/NavBar/Navbar";
 import axios from "../../../api/axios";
 import SweetPagination from "sweetpagination";
-import { ToastContainer, toast } from 'react-toastify';
 import {useParams, Link, useNavigate} from "react-router-dom";
 import AddProduct from "../../../components/AddProduct";
 
 const {REACT_APP_MAGIC_PASS} = process.env;
 const GET_PRODUCTS_URL = "/management/inventory_overview_product";
 const GET_BRANCH_URL = "/management/list_branch";
-const GET_CATEGORY_URL = "/management/list_category";
-const GET_SUPPLIER_URL = "/management/list_supplier";
-const POST_ITEM = "/management/add_item";
-
 
 export default function CategoryDetail(){
   const navigate = useNavigate();
   const {category_id} = useParams();
   const [branchValue, setBranchValue] = useState("200");
-  const [image, setImage] = useState();
 
 
   const [total, setTotal] = useState(0);
   const [pdt, setPdt] = useState([]);
   const [branches, setBranches] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
-
-  const [show, setShow] = useState(false);
-
-  const handleCancel = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [category, setCategory] = useState("");
 
   const handleChange = (e) => {
     setBranchValue(e.target.value);
     fetchProducts(e.target.value);
+
+
   }
 
   const [currentData, setCurrentData] = useState([
@@ -59,6 +46,7 @@ export default function CategoryDetail(){
   useEffect(() => {
     fetchProducts("200");
     fetchBranchID();
+
   }, []);
 
 
@@ -73,6 +61,7 @@ export default function CategoryDetail(){
     }).then((res) => {
       setPdt(res.data.list_order);
       setTotal(res.data.total);
+      setCategory(res.data.ten_loai_hang)
     });
   };
 
@@ -97,7 +86,6 @@ export default function CategoryDetail(){
     return (<>
 
         <Container fluid>    
-        <ToastContainer style={{ width: "500px" }}/>
 
         <Row>
           <Col lg="2">
@@ -106,7 +94,7 @@ export default function CategoryDetail(){
           <Col>
           <AdminNavbar 
           title="Quản lý kho"
-          subtitle= {category_id}
+          subtitle= {category}
           text ="Tổng số mặt hàng"
           count = {total}/>
         <div style={{display: "flex"}}>
