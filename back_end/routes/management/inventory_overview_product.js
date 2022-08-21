@@ -25,13 +25,14 @@ async function queryTotalInventory(props){
     var rawSQL = `SELECT count(*)
                     FROM san_pham dh 
                   `
-    if (typeof props.malh != 'undefined'){
+    var result2 = {rows :[{}]}
+    if (typeof(props.malh) != 'undefined'){
       rawSQL += ` where malh = '${props.malh}' `
       var rawSQL2 = `SELECT ten_lh 
                     FROM loai_hang
                     where malh = '${props.malh}'
                   ` 
-      var result2 = await knexQuery.raw(rawSQL2).catch(error => {
+      result2 = await knexQuery.raw(rawSQL2).catch(error => {
         console.log(error)
         throw new Error(error);
       });
@@ -41,7 +42,6 @@ async function queryTotalInventory(props){
     console.log(error)
     throw new Error(error);
   });
-  // console.log(result2)
   return {
     total: result.rows[0].count,
     loai_hang : result2.rows[0].ten_lh,
