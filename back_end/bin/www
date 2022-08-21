@@ -19,8 +19,8 @@ require("dotenv").config();
 var port = normalizePort(process.env.PORT);
 
 var options = {
-  key: fs.readFileSync('./.cert/key.pem'),
-  cert: fs.readFileSync('./.cert/cert.pem'),
+  key: fs.readFileSync(process.env.KEY_PEM_PATH),
+  cert: fs.readFileSync(process.env.CERT_PEM_PATH),
 };
 
 var server = https.createServer(options, app);
