@@ -34,7 +34,7 @@ async function paypalCall(props, Client){
                 // },
                 "amount": {
                     "currency": "USD",
-                    "total": (props.phi_san_pham + props.phi_van_chuyen - props.phi_giam)/23000
+                    "total": Math.max(0.1, (props.phi_san_pham + props.phi_van_chuyen - props.phi_giam)/23000).toFixed(1).toString()
                 },
                 "description": "Thành viên " + Client.tenkh + " thực hiện thanh toán",
             }]
@@ -51,7 +51,7 @@ async function paypalCall(props, Client){
                 resolve(text)
             } else {
                 console.log("Paypal Create Payment Response");
-                console.log(payment);
+                // console.log(payment);
                 for(let i = 0;i < payment.links.length;i++){
                     if(payment.links[i].rel === 'approval_url'){
                         var query = url_lib.parse(payment.links[i].href);
