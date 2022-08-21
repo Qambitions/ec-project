@@ -90,9 +90,17 @@ export default function SignInForm() {
             sameSite: "strict",
             secure: false,
           });
-          navigate(from, { replace: true });
           setUsername("");
           setPassword("");
+          if (res.data.account_type === 0) {
+            if (from === "/") {
+              navigate("/admin", { replace: true });
+            } else {
+              navigate(from, { replace: true });
+            }
+          } else {
+            navigate(from, { replace: true });
+          }
         } else {
         }
         setExitCode(res.data.exitcode);
