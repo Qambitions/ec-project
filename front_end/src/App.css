@@ -96,3 +96,27 @@ input[type=number] {
     height: 1rem;
     width: 1rem;
 }
+
+.input__bordered{
+    border: 1px solid rgba(199, 199, 199, 0.87);
+}
+
+.FF5D5D_button{
+    background-color:#FF5D5D;
+    color:white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+}
+
+.FF5D5D_button:hover{
+    cursor: pointer;
+}
+
+.FF8888_button{
+    background-color: #FF8888;
+    color:white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+}

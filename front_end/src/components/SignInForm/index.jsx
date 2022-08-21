@@ -145,14 +145,14 @@ export default function SignInForm() {
               <span>Chưa có tài khoản? </span>Đăng ký
             </Link>
           </div>
-          <button className="btn signin-form-signbutton">Đăng nhập</button>
+          <button className="FF5D5D_button">Đăng nhập</button>
         </form>
         <div className="divider">
           <hr className="line"></hr>
           <p>Hoặc</p>
           <hr className="line"></hr>
         </div>
-        <button className="btn sign-form-continue-google">
+        <button className="sign-form-continue-google">
           <FcGoogle className="google-icon" />
           Tiếp tục với Google
         </button>

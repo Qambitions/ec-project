@@ -13,8 +13,9 @@
     justify-content: center;
   }
   .logo {
-    width: 40px;
-    height: 40px;
+    width: 8vh;
+    margin: auto 0;
+
   }
 
   hr {
