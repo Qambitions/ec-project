@@ -64,6 +64,7 @@ async function addOrder(props, Client){
     }).returning("madh").then(function (madh){
         // console.log(madh)
         res = madh
+        console.log(madh)
     }).catch(error => {
         console.log(error)
         throw new Error(error);
@@ -148,7 +149,7 @@ router.post('/', async (req, res, next) =>{
             response.message = "Token không tồn tại"
             return res.send(response)
         }
-        console.log("create_order === user:",Client)
+        console.log("create_order === user:",Client.makh)
         const waitOrder = await checkOrder(Client); 
         if (typeof(waitOrder) != "undefined"){
             response.exitcode = 107
@@ -173,7 +174,7 @@ router.post('/', async (req, res, next) =>{
 
         // console.log(req.body)
         var order = await addOrder(req.body, Client);
-        var items_add = addItems(req.body.items, order);
+        var items_add = await addItems(req.body.items, order);
 
         if (req.body.hinh_thuc_thanh_toan == 'COD'){
             updateOrderStatus(Client,'CHỜ XÁC NHẬN')
