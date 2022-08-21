@@ -27,7 +27,6 @@ async function queryTotalInventory(props){
                   `
     var result2 = {rows :[{}]}
     if (typeof(props.malh) != 'undefined'){
-      console.log("aaaa")
       rawSQL += ` where malh = '${props.malh}' `
       var rawSQL2 = `SELECT ten_lh 
                     FROM loai_hang
