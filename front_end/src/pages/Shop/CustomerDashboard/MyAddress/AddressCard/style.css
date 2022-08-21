@@ -1,0 +1,23 @@
+.address_card{
+    background-color: white;
+    border-bottom: 1px solid rgba(228, 225, 225, 0.952);
+    padding: 1rem 0;
+}
+
+.address_card_col1{
+    text-align: center;
+    align-self: center;
+}
+
+.address_card_col2{
+    text-align: right;
+}
+
+.address_card_col1{
+    text-align: center;
+}
+
+.address_card_col4{
+    text-align: right;
+    align-self: center;
+}
