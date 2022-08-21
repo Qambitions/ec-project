@@ -267,7 +267,6 @@ create TRIGGER tao_san_pham_moi
      AFTER INSERT ON SAN_PHAM
      FOR EACH ROW
      EXECUTE PROCEDURE insert_new_item_to_inventory();
-   
 --=======================================================
 CREATE FUNCTION func_update_tong_san_pham() RETURNS TRIGGER AS
 $BODY$
@@ -585,7 +584,6 @@ VALUES
 -- 500000, 1
 INSERT INTO DON_HANG (MAKH, MACN, PHI_SAN_PHAM, PHI_VAN_CHUYEN, HINH_THUC_THANH_TOAN, HINH_THUC_GIAO_HANG, ID_DIA_CHI_GIAO,TRANG_THAI,thoi_gian) 
 VALUES 
-
 (1000000, 200, 279000, 35000, N'COD' ,'GHN', 1, 'ĐÃ XÁC NHẬN','2022-08-03 01:16:46.867'),
 (1000003, 208, 327000, 20000, N'MOMO','GHN', 1, 'ĐÃ GIAO THÀNH CÔNG','2022-08-02 01:16:46.867'),
 (1000008, 203, 175000, 35000, N'MOMO','GHN', 1, 'ĐANG GIAO','2022-08-01 01:16:46.867'),
@@ -597,6 +595,7 @@ VALUES
 (1000002, 203, 460000, 20000, N'MOMO','GHTK_FAST', 1, 'ĐANG GIAO','2022-08-02 01:16:46.867'),
 (1000001, 202, 420000, 45000, N'COD' ,'GHN', 1, 'CHỜ XÁC NHẬN','2022-08-01 01:16:46.867'),
 (1000001, 205, 480000, 45000, N'COD' ,'GHN',1, 'CHỜ XÁC NHẬN','2022-08-02 01:16:46.867');
+
 --
 INSERT INTO CHI_TIET_DON_HANG (MADH, MASP, MA_VOUCHER, SO_LUONG_MUA, GIA_PHAI_TRA) 
 VALUES 
@@ -1445,7 +1444,6 @@ UPDATE SAN_PHAM
 SET MA_VOUCHER = 100014
 WHERE MASP IN (200080, 200079, 200050, 200052, 200057, 200053, 200059); 
 
-
 CREATE FUNCTION function_add_comment() RETURNS TRIGGER AS
 $BODY$
 BEGIN
@@ -1463,6 +1461,7 @@ create TRIGGER trig_add_comment
      FOR EACH ROW
      EXECUTE PROCEDURE function_add_comment();
 
+--
 INSERT INTO DANH_GIA (MAKH, MASP, NOI_DUNG, NGAY_DANG, SAO) 
 VALUES 
 (1000000, 200000, N'Tạm ổn', '2022-06-30 11:05:24', 4),
@@ -1631,12 +1630,15 @@ $$ LANGUAGE plpgsql;
 --=====================
 CREATE FUNCTION function_copy_trang_thai() RETURNS TRIGGER AS
 $BODY$
-BEGIN
-    INSERT INTO
-        trang_thai_dh (madh,trang_thai)
-        VALUES(new.madh,new.trang_thai);
-
-           RETURN new;
+begin
+	case
+		when (new.payment_token is null)  then
+	    INSERT INTO
+	        trang_thai_dh (madh,trang_thai)
+	        VALUES(new.madh,new.trang_thai);
+	    else null;
+	end case;
+	RETURN null;
 END;
 $BODY$
 language plpgsql;
@@ -1752,3 +1754,22 @@ create TRIGGER trig_update_kho_nhap_hang
 --CREATE USER dong_phan WITH PASSWORD '200107712';
 --GRANT select, insert, update, delete  ON ALL TABLES IN SCHEMA public TO dev_acc;
 --GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO dev_acc;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
