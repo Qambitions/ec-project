@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from "react";
+import React,{useEffect, useState } from "react";
 import {
     Card,
     Table,
@@ -32,7 +32,6 @@ export default function CategoryDetail(){
     setBranchValue(e.target.value);
     fetchProducts(e.target.value);
 
-
   }
 
   const [currentData, setCurrentData] = useState([
@@ -46,7 +45,6 @@ export default function CategoryDetail(){
   useEffect(() => {
     fetchProducts("200");
     fetchBranchID();
-
   }, []);
 
 
@@ -61,9 +59,12 @@ export default function CategoryDetail(){
     }).then((res) => {
       setPdt(res.data.list_order);
       setTotal(res.data.total);
-      setCategory(res.data.ten_loai_hang)
+      if (category_id){
+        setCategory(res.data.ten_loai_hang)
+      } else setCategory('Tất cả')
+
     });
-  };
+  }
 
   const fetchBranchID = async () => {
     await axios(GET_BRANCH_URL, {
