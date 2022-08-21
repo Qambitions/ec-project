@@ -20,7 +20,7 @@ export default function CategoryPage(props) {
 
   useEffect(() => {
     fetchDetail();
-  }, []);
+  }, [location.state.from]);
 
   return (
     <div className="body">

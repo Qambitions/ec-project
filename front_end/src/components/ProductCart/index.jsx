@@ -28,14 +28,12 @@ export default function ProductCart(props) {
           pdName: res.data.item.tensp,
           pdBrand: res.data.item.ten_npp,
           price: res.data.item.gia_ban_giam,
-          weight: res.data.item.khoi_luong,
           pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
         });
-        setQuantity()
+        setQuantity();
       });
   };
   useEffect(() => {
-    console.log("itemID",card.itemID)
     getProductInfo();
     if (document.getElementById(obj.itemID) !== null) {
       var cart = localStorage.getItem("cart");
@@ -46,11 +44,8 @@ export default function ProductCart(props) {
           if (cart[i].isChecked === true) {
             if (!isNaN(card.pay)) {
               cartContext.calTempPay(card.pay);
-              cartContext.calWeight(card.weight);
-
             } else {
               cartContext.calTempPay(0);
-              cartContext.calWeight(0);
             }
           }
         }
@@ -65,10 +60,8 @@ export default function ProductCart(props) {
     if (document.getElementById(card.itemID).checked) {
       if (isIncrease) {
         cartContext.calTempPay(card.price);
-        cartContext.calWeight(card.weight);
       } else {
         cartContext.calTempPay(card.price * -1);
-        cartContext.calWeight(card.weight * -1);
       }
     }
   };
@@ -78,31 +71,28 @@ export default function ProductCart(props) {
   };
 
   var increaseQuantity = () => {
-    console.log("quantity-en",card.itemID,card.quantity)
     if (card.quantity < 50) {
       setCard((prevState) => {
-        return { ...prevState, quantity: prevState.quantity+1 };
+        return { ...prevState, quantity: prevState.quantity + 1 };
       });
       handleUpdateAmount(true);
     }
   };
 
   var decreaseQuantity = () => {
-
-    console.log("quantity-de",card.itemID,card.quantity)
+    console.log("quantity-de", card.itemID, card.quantity);
     if (card.quantity > 1) {
       setCard((prevState) => {
-        return { ...prevState, quantity: prevState.quantity-1 };
+        return { ...prevState, quantity: prevState.quantity - 1 };
       });
       handleUpdateAmount(false);
     }
-    console.log("quantity-de",card.itemID,card.quantity)
+    console.log("quantity-de", card.itemID, card.quantity);
   };
 
   const handleRemove = () => {
     cartContext.removeItem(card.itemID);
     cartContext.calTempPay(card.pay * -1);
-    cartContext.calWeight(card.weight * -1);
   };
 
   const toggleRemove = () => {
@@ -115,10 +105,8 @@ export default function ProductCart(props) {
     if (!isNaN(card.pay)) {
       if (document.getElementById(card.itemID).checked === true) {
         cartContext.calTempPay(card.pay);
-        cartContext.calWeight(card.weight);
       } else {
         cartContext.calTempPay(card.pay * -1);
-        cartContext.calWeight(card.weight * -1);
       }
     }
   }

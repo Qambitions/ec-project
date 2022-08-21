@@ -13,7 +13,7 @@ export default function TotalCard(props) {
       <div className="container__flex">
         <label>Tạm tính: </label>
         <span>
-          {props.info}
+          <span id="checkoutTempPay">{checkoutContext.tempPay}</span>
           <label className="currency">đ</label>
         </span>
       </div>
@@ -27,7 +27,7 @@ export default function TotalCard(props) {
       <div className="container__flex">
         <label>Giảm giá:</label>
         <span>
-          <span id="checkoutDiscount">2</span>
+          <span id="checkoutDiscount">{checkoutContext.discount}</span>
           <label className="currency">đ</label>
         </span>
       </div>
@@ -39,13 +39,9 @@ export default function TotalCard(props) {
             id="checkoutTotal"
             style={{ fontSize: "1.2rem", color: "#E04A4A" }}
           >
-            {parseInt(
-              document.getElementById("checkoutShippingCost")?.textContent
-            ) +
-              parseInt(props.info) -
-              parseInt(
-                document.getElementById("checkoutDiscount")?.textContent
-              )}
+            {Number(checkoutContext.tempPay) +
+              Number(checkoutContext.shippingPrice) +
+              Number(checkoutContext.discount)}
           </span>
           <label className="currency">đ</label>
         </span>
