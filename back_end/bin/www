@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('back-end:server');
 var http = require('http');
+var https = require('https');
+var fs = require( 'fs' );
 
 require("dotenv").config();
 
@@ -15,18 +17,13 @@ require("dotenv").config();
  */
 
 var port = normalizePort(process.env.PORT);
-app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+var options = {
+  key: fs.readFileSync('./.cert/key.pem'),
+  cert: fs.readFileSync('./.cert/cert.pem'),
+};
 
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
+var server = https.createServer(options, app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
