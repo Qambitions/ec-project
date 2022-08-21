@@ -10,12 +10,12 @@ import CheckoutContext from "../../../context/CheckoutProvider";
 import axios from "../../../api/axios";
 import { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-
+import { MyVerticallyCenteredModal } from "../../../components/PopUp";
 export default function Checkout(props) {
-  const location = useLocation();
+  const [errorMess, setErrorMess] = useState("");
   const checkoutContext = useContext(CheckoutContext);
   const [items, setItems] = useState([]);
-
+  const [modalShow, setModalShow] = useState(false);
   const fetchDetail = async () => {
     var cart = localStorage.getItem("cart");
     cart = cart ? JSON.parse(cart) : [];
@@ -37,39 +37,6 @@ export default function Checkout(props) {
   useEffect(() => {
     fetchDetail();
   }, []);
-
-  async function callCreateOrderAPI(
-    items,
-    ckInfo,
-    discount,
-    shipprice,
-    tempPay
-  ) {
-    try {
-      await axios({
-        method: "post",
-        url: process.env.REACT_APP_CREATE_ORDER,
-        headers: { token: Cookies.get("token") },
-        data: {
-          ckInfo,
-          phi_van_chuyen: shipprice,
-          phi_giam: discount,
-          phi_san_pham: tempPay,
-          items: items,
-        },
-      }).then((res) => {
-        console.log(res.data);
-        if (res.data.exitcode === 106) {
-          console.log("token k ton tai");
-        } else if (res.data.exitcode === 101) {
-          console.log("tao don hang that bai");
-        } else {
-          console.log("tao thanh cong", res.data.paymentURL);
-          window.location.href(res.data.paymentURL);
-        }
-      });
-    } catch (error) {}
-  }
 
   const handleOrder = async () => {
     var checkoutInfo = localStorage.getItem("checkoutInfo");
@@ -109,12 +76,18 @@ export default function Checkout(props) {
         headers: { token: Cookies.get("token") },
         data: dataOrder,
       }).then((res) => {
+        setErrorMess(res.data.message);
         console.log(res.data);
         if (res.data.exitcode === 106) {
           console.log("token k ton tai");
+          setModalShow(true);
         } else if (res.data.exitcode === 101) {
           console.log("tao don hang that bai");
-        } else {
+          setModalShow(true);
+        } else if (res.data.exitcode === 107) {
+          console.log("Tồn tại đơn hàng đang chờ thanh toán");
+          setModalShow(true);
+        } else if (res.data.exitcode === 0) {
           setTimeout(500);
           console.log("tao thanh cong", res.data.paymentURL);
           window.location.replace(res.data.paymentURL);
@@ -146,6 +119,12 @@ export default function Checkout(props) {
           </div>
         </div>
       </div>
+      <MyVerticallyCenteredModal
+        title={"Xảy ra lỗi trong quá trình thanh toán"}
+        body={errorMess}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </CheckoutProvider>
   );
 }
