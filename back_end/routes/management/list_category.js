@@ -21,8 +21,7 @@ router.get('/', async (req, res, next) =>{
     }
     if (req.headers.magic_pass != 'LamZauKhumKho'){
         response.message = "sai Pass ròi!!"
-        res.send(response)
-        return
+        return res.send(response)
     }
     
     try{

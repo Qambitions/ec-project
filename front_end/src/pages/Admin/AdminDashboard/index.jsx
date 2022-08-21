@@ -58,7 +58,6 @@ export default function Dashboard() {
         "magic_pass": REACT_APP_MAGIC_PASS
       }
     }).then((res) => {
-      console.log(res.data.top_product);
       setTopSelling(res.data.top_product);
     });
   };

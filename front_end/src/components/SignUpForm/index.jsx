@@ -363,13 +363,13 @@ export default function SignUpForm() {
             <span>Đã có tài khoản? </span>Đăng nhập
           </Link>
         </div>
-        <button className="btn signin-form-signbutton"> Đăng ký</button>
+        <button className="FF5D5D_button"> Đăng ký</button>
         <div className="divider">
           <hr className="line"></hr>
           <p>Hoặc</p>
           <hr className="line"></hr>
         </div>
-        <button className="btn sign-form-continue-google">
+        <button className="sign-form-continue-google">
           <FcGoogle />
           Tiếp tục với Google
         </button>

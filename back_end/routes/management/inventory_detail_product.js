@@ -48,8 +48,7 @@ router.get('/', async (req, res, next) =>{
     try{
         const itemsInformation = await queryItem(req.query);
         if (typeof itemsInformation == 'undefined'){
-            res.send(response)
-            return
+            return res.send(response)
         }
         var tonkho = await queryStock(req.query);
         var item = {
@@ -67,11 +66,9 @@ router.get('/', async (req, res, next) =>{
             'ten_lh': itemsInformation.ten_lh,
         };
         
-        
         response.message      = "Lấy thông tin sản phẩm thành công"
         response.exitcode     = 0
         response.item         = item
-        // console.log(item)
     }
     catch (e){
         response.exitcode=1

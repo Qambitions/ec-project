@@ -1,0 +1,33 @@
+.user_profile_avt{
+    max-width: 6rem;
+    padding: 1rem;
+    border: 1px solid grey;
+    border-radius: 50%;
+}
+
+.user_dashboard_body{
+
+}
+
+.user_dashboard_body_left{
+    margin-top: 2rem;
+    padding-left: 2rem;
+}
+
+.user_dashboard_body_right{
+    margin-top: 2rem;
+}
+
+.user_dashboard_body_left img{
+    margin-bottom: 1rem;
+}
+
+.vertical_divider{
+    border-left: 1.8px solid rgb(230, 227, 227);
+    height: 38vh;
+}
+
+.horizontal_divider{
+    border-top: 1.8px solid rgb(230, 227, 227);
+    width: 100%;
+}

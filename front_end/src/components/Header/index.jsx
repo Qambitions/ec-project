@@ -32,16 +32,19 @@ export default function Header() {
   };
 
   useEffect(() => {
-    if (Cookies.get("token")) {
-      setLoggedState(Cookies.get("token"));
+    if (Cookies.get("token_u")) {
+      setLoggedState(Cookies.get("token_u"));
     }
   }, []);
 
   return (
     <div className="container header">
-      <Link to="/">
-        <img className="logo" src={logo} alt={logo}></img>
-      </Link>
+      <div className="logo_container">
+        {" "}
+        <Link to="/">
+          <img className="logo" src={logo} alt={logo}></img>
+        </Link>
+      </div>
       <SearchBar />
       <div className="head__nav_signin_menu">
         <Link to="/">
