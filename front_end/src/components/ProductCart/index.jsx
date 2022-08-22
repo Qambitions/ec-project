@@ -12,7 +12,6 @@ const GET_PRODUCT = "/product/details";
 export default function ProductCart(props) {
   const [isRemove, setIsRemove] = useState(false);
   const [card, setCard] = useState({});
-  const [quantity, setQuantity] = useState(1);
   const cartContext = useContext(CartContext);
   const obj = props.obj;
   const getProductInfo = async () => {
@@ -30,7 +29,6 @@ export default function ProductCart(props) {
           price: res.data.item.gia_ban_giam,
           pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
         });
-        setQuantity();
       });
   };
   useEffect(() => {
@@ -66,12 +64,9 @@ export default function ProductCart(props) {
     }
   };
 
-  const handleQuantity = () => {
-    cartContext.upDateQuantity(card.itemID, card.quantity);
-  };
-
   var increaseQuantity = () => {
     if (card.quantity < 50) {
+      cartContext.upDateQuantity(card.itemID, card.quantity + 1);
       setCard((prevState) => {
         return { ...prevState, quantity: prevState.quantity + 1 };
       });
@@ -82,12 +77,12 @@ export default function ProductCart(props) {
   var decreaseQuantity = () => {
     console.log("quantity-de", card.itemID, card.quantity);
     if (card.quantity > 1) {
+      cartContext.upDateQuantity(card.itemID, card.quantity - 1);
       setCard((prevState) => {
         return { ...prevState, quantity: prevState.quantity - 1 };
       });
       handleUpdateAmount(false);
     }
-    console.log("quantity-de", card.itemID, card.quantity);
   };
 
   const handleRemove = () => {
@@ -154,7 +149,7 @@ export default function ProductCart(props) {
               className="checkout__product_input_quantity"
               type="number"
               value={card.quantity}
-              onChange={handleQuantity}
+              // onChange={handleQuantity}
             ></input>
             <button
               className="checkout__product_increase"

@@ -39,3 +39,18 @@
 .logo_container{
     margin: auto 0;
 }
+
+.cart_item_count{
+    font-size: 0.8rem;
+    width: 1.5em;
+    height: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right:19.2%;
+    top:17.5%;
+    border: 1px solid rgb(79, 176, 255);
+    background-color:  rgb(79, 176, 255);
+    border-radius: 50%;
+}

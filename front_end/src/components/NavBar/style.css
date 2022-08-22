@@ -13,3 +13,12 @@
 .nav-container{
     background-color: rgba(224, 74, 74, 0.84);
 }
+
+.nav_item{
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.nav_item:hover{
+    color: rgb(79, 176, 255);;
+}
