@@ -88,7 +88,7 @@ export default function Checkout(props) {
           console.log("Tồn tại đơn hàng đang chờ thanh toán");
           setModalShow(true);
         } else if (res.data.exitcode === 0) {
-          setTimeout(500);
+          setTimeout(2000);
           console.log("tao thanh cong", res.data.paymentURL);
           window.location.replace(res.data.paymentURL);
           localStorage.removeItem("cart");
