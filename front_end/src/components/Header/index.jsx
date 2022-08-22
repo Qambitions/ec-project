@@ -62,26 +62,30 @@ export default function Header() {
         <Link to="/user/cart">
           <BsCart2 />
         </Link>
-        <div className="cart_item_count">{cartContext.itemCount}</div>
-        {loggedState ? (
-          <Dropdown align="end">
-            <Dropdown.Toggle
-              as={CustomToggle}
-              id="dropdown-custom-components"
-            ></Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item eventKey="1" onClick={toggleMyAccount}>
-                Tài khoản của tôi
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="2" onClick={toggleMyorder}>
-                Đơn hàng của tôi
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="3" onClick={toggleLogout}>
-                Đăng xuất
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+        {loggedState ? (
+          <>
+            {" "}
+            <div className="cart_item_count">{cartContext.itemCount}</div>{" "}
+            <Dropdown align="end">
+              <Dropdown.Toggle
+                as={CustomToggle}
+                id="dropdown-custom-components"
+              ></Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="1" onClick={toggleMyAccount}>
+                  Tài khoản của tôi
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="2" onClick={toggleMyorder}>
+                  Đơn hàng của tôi
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="3" onClick={toggleLogout}>
+                  Đăng xuất
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </>
         ) : (
           <div className="container__flex" style={{ columnGap: "1rem" }}>
             <BsPersonFill style={{ fontSize: "1.5rem" }} />
