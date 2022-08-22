@@ -1,11 +1,9 @@
-export default function StoreAddress(store){
-    const obj = store.obj;
-
-    return(
-        <div>
-            <h5>{`${obj.name}`}</h5>
-            <p>{`${obj.address}`}</p>
-            <p>{`${obj.phone}`}</p>
-        </div>
-    )
+export default function StoreAddress({ name, address, phone }) {
+  return (
+    <div>
+      <h5>{name}</h5>
+      <p>{address}</p>
+      <p>{phone}</p>
+    </div>
+  );
 }

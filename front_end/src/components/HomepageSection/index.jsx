@@ -24,14 +24,14 @@ export default function HomepageSection(props) {
     });
   };
 
-  const handleViewAll=()=>{
-    let des = `/view/${props.malh}`
-    navigate(des,{
-      state:{      
-        from: props.header
-      }
-    })
-  }
+  const handleViewAll = () => {
+    let des = `/view/${props.malh}`;
+    navigate(des, {
+      state: {
+        from: props.header,
+      },
+    });
+  };
 
   return (
     <div className="container homepage_section">
@@ -40,7 +40,7 @@ export default function HomepageSection(props) {
           <h1>{props.header}</h1>
           <img src={props.icon}></img>
         </div>
-        <label onClick={handleViewAll}>
+        <label onClick={handleViewAll} className="view_all">
           Xem tất cả
           <img
             style={{ height: "20px" }}

@@ -8,7 +8,7 @@ import axios from "../../../../../api/axios";
 import Cookies from "js-cookie";
 import OrderDetailItemCard from "./OrderDetailItemCard";
 
-export default function OrderDetail({orderID}) {
+export default function OrderDetail({ orderID }) {
   const [listState, setListState] = useState([]);
   const [progress, setProgress] = useState();
   const [info, setInfo] = useState({});
@@ -18,7 +18,7 @@ export default function OrderDetail({orderID}) {
       method: "get",
       headers: { token: Cookies.get("token") },
       url: process.env.REACT_APP_ORDERS_DETAIL,
-      params: { madh: orderID},
+      params: { madh: orderID },
     });
     if (res.data.exitcode === 0) {
       setItems(res.data.items);
@@ -27,17 +27,21 @@ export default function OrderDetail({orderID}) {
 
   const handleProgressBar = (listState) => {
     let states = listState;
-    console.log("LS",listState);
+    console.log("LS", listState);
     states.forEach((state) => {
-      if (state.trang_thai.localeCompare("CHỜ XÁC NHẬN")==0 || state.trang_thai.localeCompare("WAIT FOR PAYMENT")==0) {        
+      if (
+        state.trang_thai.localeCompare("CHỜ XÁC NHẬN") == 0 ||
+        state.trang_thai.localeCompare("WAIT FOR PAYMENT") == 0
+      ) {
         setProgress(0);
       }
-      if(state.trang_thai.localeCompare("ĐÃ XÁC NHẬN")==0){
+      if (state.trang_thai.localeCompare("ĐÃ XÁC NHẬN") == 0) {
         setProgress(33);
       }
-      if(state.trang_thai.localeCompare("ĐANG GIAO HÀNG")==0){
+      if (state.trang_thai.localeCompare("ĐANG GIAO HÀNG") == 0) {
         setProgress(66);
-      }if(state.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG")==0){
+      }
+      if (state.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG") == 0) {
         setProgress(100);
       }
     });
@@ -65,7 +69,7 @@ export default function OrderDetail({orderID}) {
   }, []);
   return (
     <div>
-      <label>Chi tiết đơn hàng</label>
+      <h3 className="user_dashboard_header">Chi tiết đơn hàng</h3>
       <hr />
       <Container className="orderdetail_info_container">
         <Col xs={4}>

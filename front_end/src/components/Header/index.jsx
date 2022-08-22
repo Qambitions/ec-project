@@ -10,14 +10,15 @@ import AuthContext from "../../context/AuthProvider";
 import Dropdown from "react-bootstrap/Dropdown";
 import CustomToggle from "../CustomDropDownToggle/customDropDownToggle";
 import Cookies from "js-cookie";
-import Toast from "react-bootstrap/Toast";
-import ToastContainer from "react-bootstrap/ToastContainer";
+import CartContext from "../../context/CartProvider";
 
 export default function Header() {
   const authContext = useContext(AuthContext);
+  const cartContext = useContext(CartContext);
   const navigate = useNavigate();
   const [loggedState, setLoggedState] = useState();
   const [show, setShow] = useState(false);
+
   const toggleLogout = () => {
     setLoggedState();
     authContext.toggleLogout();
@@ -51,46 +52,40 @@ export default function Header() {
           <AiOutlineQuestionCircle />
           Cần giúp đỡ
         </Link>
-        <Link to="/">
+        <a href="#branches">
           <AiOutlineHome />
           Hệ thống cửa hàng
-        </Link>
+        </a>
         <Link to="/">
           <BsBell />{" "}
         </Link>
         <Link to="/user/cart">
           <BsCart2 />
         </Link>
-        <ToastContainer className="add_cart_toats">
-          <Toast onClose={() => setShow(false)} show={show} delay={3000}>
-            <Toast.Header>
-              <strong className="me-auto">Bootstrap</strong>
-              <small>11 mins ago</small>
-            </Toast.Header>
-            <Toast.Body>
-              Woohoo, you're reading this text in a Toast!
-            </Toast.Body>
-          </Toast>
-        </ToastContainer>
-        {loggedState ? (
-          <Dropdown align="end">
-            <Dropdown.Toggle
-              as={CustomToggle}
-              id="dropdown-custom-components"
-            ></Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item eventKey="1" onClick={toggleMyAccount}>
-                Tài khoản của tôi
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="2" onClick={toggleMyorder}>
-                Đơn hàng của tôi
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="3" onClick={toggleLogout}>
-                Đăng xuất
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+        {loggedState ? (
+          <>
+            {" "}
+            <div className="cart_item_count">{cartContext.itemCount}</div>{" "}
+            <Dropdown align="end">
+              <Dropdown.Toggle
+                as={CustomToggle}
+                id="dropdown-custom-components"
+              ></Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="1" onClick={toggleMyAccount}>
+                  Tài khoản của tôi
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="2" onClick={toggleMyorder}>
+                  Đơn hàng của tôi
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="3" onClick={toggleLogout}>
+                  Đăng xuất
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </>
         ) : (
           <div className="container__flex" style={{ columnGap: "1rem" }}>
             <BsPersonFill style={{ fontSize: "1.5rem" }} />

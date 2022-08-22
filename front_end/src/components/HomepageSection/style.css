@@ -55,5 +55,18 @@
 .homepage_section_head_title{
     display: flex;
     align-items: center;
+
+}
+
+.homepage_section_head_title h1{
     color: #E04A4A;
+}
+
+.homepage_section_head .view_all{
+    color: #FF0000;
+    font-size: 1.5rem;
+}
+
+.homepage_section_head .view_all:hover{
+    cursor: pointer;
 }
