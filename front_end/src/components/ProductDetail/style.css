@@ -139,3 +139,17 @@
 .breadcrumbs a:hover{
     text-decoration: underline;
 }
+
+.add_cart_toats .toast-header{
+    justify-content: space-between;
+}
+
+.add_cart_toats .toast-body{
+    padding: 0.5rem 5rem;
+}
+
+.add_cart_toats .toast-body button{
+    width: 100%;
+    border: none;
+    background-color: rgb(250, 206, 85);
+}

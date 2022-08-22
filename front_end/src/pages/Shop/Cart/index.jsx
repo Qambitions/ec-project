@@ -20,7 +20,7 @@ export default function Cart() {
     cart = cart ? JSON.parse(cart) : [];
     if (!cart.some((item) => item?.isChecked === true)) {
     } else {
-      navigate("/user/checkout",{replace:true});
+      navigate("/user/checkout", { replace: true });
     }
   };
 
@@ -56,8 +56,8 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    if(!localStorage?.getItem("cart")){
-      localStorage.setItem("cart",JSON.stringify([]));
+    if (!localStorage?.getItem("cart")) {
+      localStorage.setItem("cart", JSON.stringify([]));
     }
     var cart = localStorage.getItem("cart");
     cart = cart ? JSON.parse(cart) : [];
@@ -130,14 +130,18 @@ export default function Cart() {
               <div className="container__flex">
                 <label>Giảm giá: </label>
                 <span>
-                  -1 <text>đ</text>
+                  {cartContext.cartInfo.discount > 0 ? (
+                    <text>-{cartContext.cartInfo.discount} đ</text>
+                  ) : (
+                    <text>{cartContext.cartInfo.discount} đ</text>
+                  )}
                 </span>
               </div>
               <hr />
               <div className="container__flex">
                 <label>Tổng cộng: </label>
                 <span>
-                  {cartContext.cartInfo.totalPay} <text>đ</text>
+                  {Number(cartContext.cartInfo.tempPay) + 0} <text>đ</text>
                 </span>
               </div>
               <p>(đã bao gồm VAT)</p>

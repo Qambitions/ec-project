@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 const CartContext = createContext({});
 
 export const CartProvider = ({ children }) =>{
@@ -12,6 +12,22 @@ export const CartProvider = ({ children }) =>{
     })
 
     const [weight,setWeight] = useState(0);
+
+    const [itemCount,setItemCount] = useState();
+
+    const countItems = ()=>{
+        var cart = localStorage.getItem("cart");
+        cart = cart ? JSON.parse(cart) : [];
+        let total = 0;
+        cart.forEach(item => {
+            total+=item.quantity;
+        });
+        setItemCount(total)
+    }
+
+    useEffect(()=>{
+        countItems();
+    },[])
 
     const addItem = (id,quantity,isCheck,_weight) =>{
         //add items cart into local storage
@@ -120,7 +136,7 @@ export const CartProvider = ({ children }) =>{
 
     const value = {addItem,removeItem, removeAllItems,upDateQuantity, 
         calTempPay,setTempPay,getTempPay,getTotalPay,
-        getDiscount,getTotalQuantity,updateItemCheck,cartInfo,setCartInfo,calWeight,weight,setWeight}
+        getDiscount,getTotalQuantity,updateItemCheck,cartInfo,setCartInfo,calWeight,weight,setWeight,itemCount,countItems}
 
     return (
         <CartContext.Provider value={value}>

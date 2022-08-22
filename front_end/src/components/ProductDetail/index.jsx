@@ -15,9 +15,7 @@ import axios from "../../api/axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
 import CartContext from "../../context/CartProvider";
-import { encrypt10, decrypt10 } from "../../utils/crypto";
-import Cookies from "js-cookie";
-const GETDETAIL_URL = "/product/details";
+import ToastContainer from "react-bootstrap/ToastContainer";
 
 export function ProductDetail() {
   const navigate = useNavigate();
@@ -31,7 +29,7 @@ export function ProductDetail() {
   const [availableBranch, setAvailableBranch] = useState([]);
   const [starAvg, setStarAvg] = useState();
   const [rattingConsult, setRattingConsult] = useState({});
-
+  const [show, setShow] = useState(false);
   useEffect(() => {
     fetchDetail();
     setStarAvg(3);
@@ -39,10 +37,12 @@ export function ProductDetail() {
 
   const handleAddToCart = () => {
     cartContext.addItem(id, quantity, false, product?.khoi_luong);
+    cartContext.countItems();
+    setShow(true);
   };
 
   const fetchDetail = async () => {
-    await axios(GETDETAIL_URL, {
+    await axios(process.env.REACT_APP_GET_PRODUCT_DETAIL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -104,6 +104,21 @@ export function ProductDetail() {
 
   return (
     <div className="body">
+      <ToastContainer className="add_cart_toats">
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+          <Toast.Header>
+            <img
+              style={{ maxHeight: "2vh" }}
+              src="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057715/icon/190411_dbftms.png"
+              alt="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057715/icon/190411_dbftms.png"
+            ></img>
+            <h6>Thêm vào giỏ hàng thành công</h6>
+          </Toast.Header>
+          <Toast.Body>
+            <button>Xem giỏ hàng và thanh toán</button>
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
       <Breadcrumb className="container breadcrumbs">
         <Breadcrumb.Item href="/">Trang chủ</Breadcrumb.Item>
         <Breadcrumb.Item href="/">Loại hàng</Breadcrumb.Item>
