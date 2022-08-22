@@ -90,9 +90,8 @@ export default function Checkout(props) {
         } else if (res.data.exitcode === 0) {
           setTimeout(500);
           console.log("tao thanh cong", res.data.paymentURL);
-          window.setTimeout(function() {
-            window.location.replace(res.data.paymentURL);
-          }, 3000);
+          window.location.replace(res.data.paymentURL);
+          
           localStorage.removeItem("cart");
           localStorage.removeItem("checkoutInfo");
         }
