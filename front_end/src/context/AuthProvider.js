@@ -10,11 +10,23 @@ export const AuthProvider = ({ children }) =>{
     const [auth, setAuth] = useState({});
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
-
     useEffect(()=>{
+      autoLogin();
         getInfo();
         getDelivery();
     },[])
+
+    const autoLogin = async()=>{
+      let res = await axios({
+        method:'post',
+        url:process.env.REACT_APP_AUTO_LOGIN,
+        headers:{token:Cookies.get("token")}
+      })
+      console.log(res.data);
+      if(res.data.exitcode!==0){
+        toggleLogout();
+      }
+    }
 
     const getDelivery = async() =>{
         await axios(process.env.REACT_APP_GET_DELIVERY_INFO, {
