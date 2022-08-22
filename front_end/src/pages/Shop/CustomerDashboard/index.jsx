@@ -10,6 +10,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import { OrdersProvider } from "../../../context/OrdersProvider";
 import MyAddress from "./MyAddress";
 import MyAccount from "./MyAccount";
+import MyPassword from "./MyPassword";
 export default function CustomerDashboard({ page }) {
   return (
     <div className="body">
@@ -51,7 +52,9 @@ export default function CustomerDashboard({ page }) {
                     <MyAddress />
                   </OrdersProvider>
                 </Tab.Pane>
-                <Tab.Pane eventKey="changepass"></Tab.Pane>
+                <Tab.Pane eventKey="changepass">
+                  <MyPassword />
+                </Tab.Pane>
               </Tab.Content>
             </Col>
           </Row>

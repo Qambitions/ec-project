@@ -8,9 +8,12 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CartContext from "../../../context/CartProvider";
+import { MyVerticallyCenteredModal } from "../../../components/PopUp";
 
 export default function Cart() {
   const navigate = useNavigate();
+  const [modalShow, setModalShow] = useState(false);
+  const [errorMess, setErrorMess] = useState("");
   const cartContext = useContext(CartContext);
   const [selectAll, setSelectAll] = useState();
   const [items, setItems] = useState([]);
@@ -19,6 +22,7 @@ export default function Cart() {
     var cart = localStorage.getItem("cart");
     cart = cart ? JSON.parse(cart) : [];
     if (!cart.some((item) => item?.isChecked === true)) {
+      setModalShow(true);
     } else {
       navigate("/user/checkout", { replace: true });
     }
@@ -78,6 +82,12 @@ export default function Cart() {
 
   return (
     <>
+      <MyVerticallyCenteredModal
+        title={"Giỏ hàng của bạn đang trống"}
+        body={"Hãy mua hàng rồi quay lại thanh toán nhé"}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
       <div className="body cart">
         <h3 className="container">Giỏ hàng</h3>
         <div className="container cart-body">
@@ -100,7 +110,7 @@ export default function Cart() {
               </div>
             </div>
             {items.length === 0 ? (
-              <label>Mua hàng đi</label>
+              <label>Giỏ hàng đang trống</label>
             ) : (
               <>
                 {" "}
@@ -118,7 +128,6 @@ export default function Cart() {
           <div className="checkout-aside">
             <div className="checkout-product-invoice">
               <h4>Hóa đơn của bạn</h4>
-              <label>{cartContext.cartInfo.totalQuantity}</label>
               <hr />
               <div className="container__flex">
                 <label>Tạm tính:</label>

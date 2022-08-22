@@ -20,3 +20,14 @@
     flex-direction: column;
     padding: 25px;
 }
+
+.loading_popup .modal-content{
+    background-color:transparent;
+    border: none;
+}
+
+.loading_icon{
+    max-height: 40ch;
+    max-width: 40ch;
+    margin: 0 auto;
+}

@@ -56,8 +56,26 @@ function MyVerticallyCenteredModal(props) {
         <p>{props.body}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button onClick={props.onHide}>Đóng</Button>
       </Modal.Footer>
+    </Modal>
+  );
+}
+
+function LoadingOverlay(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      className="loading_popup"
+    >
+      <img
+        className="loading_icon"
+        src="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655547531/Huimitu-Logo-Final_zakn2y.png"
+        alt="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655547531/Huimitu-Logo-Final_zakn2y.png"
+      ></img>
     </Modal>
   );
 }
@@ -66,4 +84,5 @@ export {
   ConfirmRemoveItemPopUp,
   VoucherPickerPopUp,
   MyVerticallyCenteredModal,
+  LoadingOverlay,
 };

@@ -1,18 +1,14 @@
 import "./style.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import {
-  ProvinceSelector,
-  DistrictSelector,
-  WardSelector,
-} from "../../components/Selector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "../../api/axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
+import { MyVerticallyCenteredModal } from "../PopUp";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const PHONE_REGEX = /^[0-9]{10}$/;
@@ -20,6 +16,8 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 const REGISTER_URL = "/account/signup";
 
 export default function SignUpForm() {
+  const [modalShow, setModalShow] = useState(false);
+  const [errorMess, setErrorMess] = useState("");
   const [inputType, setInputType] = useState("password");
   const [iconType, setIconType] = useState(faEye);
   const [formValues, setFormValues] = useState({});
@@ -67,7 +65,6 @@ export default function SignUpForm() {
       },
       params: { district_id: id },
     }).then((res) => {
-      console.log(res.data.data);
       setWards(res.data.data);
     });
   };
@@ -102,7 +99,6 @@ export default function SignUpForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(e.target);
     setFormValues({ ...formValues, [name]: value });
     setFormErrors({ ...formErrors, [name]: null });
   };
@@ -112,10 +108,16 @@ export default function SignUpForm() {
     let res = validate(formValues);
     setFormErrors(res);
 
-    console.log("error", formErrors);
-    var selectedDistrict = document.getElementById("district");
-    var district_id =
-      selectedDistrict.options[selectedDistrict.selectedIndex].value;
+    var wards = document.getElementById("ward");
+    var selectedWard = wards.options[wards.selectedIndex].text;
+
+    var districts = document.getElementById("district");
+    var districtId = districts.value;
+    var selectedDistrict = districts.options[districts.selectedIndex].text;
+
+    var citys = document.getElementById("city");
+    var selectedCity = citys.options[citys.selectedIndex].text;
+
     if (res.validate) {
       try {
         const res = await axios.post(REGISTER_URL, {
@@ -124,26 +126,19 @@ export default function SignUpForm() {
           sdt_kh: formValues.phone,
           mat_khau: formValues.pass,
           so_nha_duong: formValues.address,
-          phuong_xa: formValues.ward,
-          quan_tp: formValues.district,
-          tp_tinh: formValues.city,
-          districtid: district_id,
+          phuong_xa: selectedWard,
+          quan_tp: selectedDistrict,
+          tp_tinh: selectedCity,
+          districtid: districtId,
         });
+        setErrorMess(res.data.message);
+        setModalShow(true);
         if (res.data.exitcode === 104) {
           console.log("existed");
         } else if (res.data.exitcode === 101) {
           console.log("signup failed");
-        } else {
-          let res = await authContext.toggleLoggin(
-            formValues.email,
-            formValues.confirm
-          );
-          console.log(res);
-          // setExitCode(res);
-          if (res === 0) {
-            console.log("dung roi");
-            navigate(from, { replace: true });
-          }
+        } else if (res.data.exitcode === 0) {
+          navigate("/", { replace: true });
         }
       } catch (error) {
         console.log("sv failed");
@@ -374,6 +369,12 @@ export default function SignUpForm() {
           Tiếp tục với Google
         </button>
       </form>
+      <MyVerticallyCenteredModal
+        title={"Đăng ký"}
+        body={errorMess}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </div>
   );
 }

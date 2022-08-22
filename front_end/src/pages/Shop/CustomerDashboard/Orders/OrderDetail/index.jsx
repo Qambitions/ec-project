@@ -29,20 +29,24 @@ export default function OrderDetail({ orderID }) {
     let states = listState;
     console.log("LS", listState);
     states.forEach((state) => {
+      if (state.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG") == 0) {
+        setProgress(100);
+        return;
+      }
+      if (state.trang_thai.localeCompare("ĐANG GIAO HÀNG") == 0) {
+        setProgress(66);
+        return;
+      }
+      if (state.trang_thai.localeCompare("ĐÃ XÁC NHẬN") == 0) {
+        setProgress(33);
+        return;
+      }
       if (
         state.trang_thai.localeCompare("CHỜ XÁC NHẬN") == 0 ||
         state.trang_thai.localeCompare("WAIT FOR PAYMENT") == 0
       ) {
         setProgress(0);
-      }
-      if (state.trang_thai.localeCompare("ĐÃ XÁC NHẬN") == 0) {
-        setProgress(33);
-      }
-      if (state.trang_thai.localeCompare("ĐANG GIAO HÀNG") == 0) {
-        setProgress(66);
-      }
-      if (state.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG") == 0) {
-        setProgress(100);
+        return;
       }
     });
   };
@@ -55,7 +59,6 @@ export default function OrderDetail({ orderID }) {
     });
     console.log(res.data);
     if (res.data.exitcode === 0) {
-      // setListState(res.data.list_state);
       handleProgressBar(res.data.list_state);
       setInfo(res.data.info);
     } else {
@@ -65,7 +68,6 @@ export default function OrderDetail({ orderID }) {
   useEffect(() => {
     fetchDetail();
     fetchItem();
-    // handleProgressBar(listState) ;
   }, []);
   return (
     <div>
