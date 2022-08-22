@@ -1,62 +1,27 @@
+import { useState } from "react";
+import { useEffect } from "react";
 import StoreAddress from "../../components/StoreAddress";
 import "./style.css";
+import axios from "../../api/axios";
 export default function Footer() {
-  const stores = [
-    {
-      id: 1,
-      name: "Chi nhánh Quận 1",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-    {
-      id: 2,
-      name: "Chi nhánh Quận 2",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-    {
-      id: 3,
-      name: "Chi nhánh Quận 3",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-    {
-      id: 4,
-      name: "Chi nhánh Quận 5",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-    {
-      id: 4,
-      name: "Chi nhánh Quận 7",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-    {
-      id: 4,
-      name: "Chi nhánh Quận 7",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-    {
-      id: 4,
-      name: "Chi nhánh Quận 7",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-    {
-      id: 4,
-      name: "Chi nhánh Quận 7",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-    {
-      id: 4,
-      name: "Chi nhánh Quận 7",
-      address: "123 stress, phường XY, quận 1, TP HCM",
-      phone: "0987654321",
-    },
-  ];
+  const [branches, setBranches] = useState([]);
+  async function fetchBranchesAddress() {
+    let res = await axios({
+      method: "get",
+      url: process.env.REACT_APP_GET_BRANCHES,
+      headers: { magic_pass: process.env.REACT_APP_MAGIC_PASS },
+    });
+    if (res.data.exitcode === 0) {
+      console.log(res.data.chi_nhanh);
+      setBranches(res.data.chi_nhanh);
+    } else {
+      console.log("fetch branch fail");
+    }
+  }
+  useEffect(() => {
+    fetchBranchesAddress();
+  }, []);
+
   return (
     <div>
       <div className="container footer">
@@ -176,8 +141,21 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-stores" id="branches">
-          {stores.map((item, index) => (
-            <StoreAddress key={index} obj={item} />
+          {branches.map((item) => (
+            <StoreAddress
+              key={item.macn}
+              name={"Chi nhánh " + item.macn}
+              address={
+                item.so_nha_duong +
+                ", phường " +
+                item.phuong_xa +
+                ", quận " +
+                item.quan_tp +
+                ", tp " +
+                item.tp_tinh
+              }
+              phone={item.sdt_cn}
+            />
           ))}
         </div>
         <div className="company">
