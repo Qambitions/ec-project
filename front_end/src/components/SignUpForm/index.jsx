@@ -8,11 +8,13 @@ import { useState, useEffect } from "react";
 import axios from "../../api/axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
+
 import {
   LoadingOverlay,
   SignupSuccessPopup,
   MyVerticallyCenteredModal,
 } from "../PopUp";
+
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const PHONE_REGEX = /^[0-9]{10}$/;
@@ -146,7 +148,6 @@ export default function SignUpForm() {
           console.log("signup failed");
           setModalShow(true);
         } else if (res.data.exitcode === 0) {
-          // navigate("/", { replace: true });
           setModalSuccessShow(true);
         }
       } catch (error) {

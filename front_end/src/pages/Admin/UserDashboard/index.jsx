@@ -63,6 +63,7 @@ const handleRowCLick = (id) => {
           <Col style={{backgroundColor: "#F5F5F5"}}>
           <AdminNavbar 
           title="Quản lý người dùng"
+          subtitle = "Tất cả"
           text ="Tổng số người dùng"
           count = {total}/>
           <Card className="card-plain table-plain-bg">
