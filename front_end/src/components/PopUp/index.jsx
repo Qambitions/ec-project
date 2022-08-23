@@ -282,7 +282,7 @@ function EditAddress(props) {
         </Modal.Header>
         <Modal.Body>
           <form>
-            <Row className="justify-content-md-center">
+            {/* <Row className="justify-content-md-center">
               <input
                 className="input__bordered"
                 placeholder="Họ và tên"
@@ -315,7 +315,7 @@ function EditAddress(props) {
                 {formErrors.phone}
               </div>
             </Row>
-            <br />
+            <br /> */}
             <Row
               className="justify-content-md-center half_half_input"
               style={{ width: "70%" }}
@@ -366,11 +366,11 @@ function EditAddress(props) {
                 <div className="input_error" style={{ width: "65%" }}>
                   {formErrors.ward}
                 </div>
-                <input type={"checkbox"}></input>
+                {/* <input type={"checkbox"}></input>
                 <label style={{ marginLeft: "0.5rem" }}>
                   {" "}
                   Đặt làm mặc định
-                </label>
+                </label> */}
               </Col>
               <Col xs={6}>
                 <select
@@ -407,6 +407,7 @@ function EditAddress(props) {
                 <div className="input_error">{formErrors.detail}</div>
               </Col>
             </Row>
+            <br />
             <Row className="justify-content-md-center">
               <Col xs lg="2"></Col>
               <Col md="auto">
