@@ -6,7 +6,7 @@ import { EditAddress } from "../../../../components/PopUp";
 import AddressCard from "./AddressCard";
 
 export default function MyAddress() {
-  const [modalShow, setModalShow] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
   const [addressList, setAddressList] = useState([]);
   const [info, setInfo] = useState({});
   const fetchBasicInfo = async () => {
@@ -40,11 +40,23 @@ export default function MyAddress() {
 
   return (
     <>
+      <EditAddress
+        show={modalShow}
+        onHide={() => {
+          setModalShow(false);
+        }}
+      />
       <div>
-        <EditAddress show={modalShow} onHide={() => setModalShow(false)} />
         <div className="user_dashboard_header">
           <h3 className="user_dashboard_header_title">Địa chỉ nhận hàng</h3>{" "}
-          <button className="FF8888_button">Thêm địa chỉ mới</button>
+          <button
+            className="FF8888_button"
+            onClick={(e) => {
+              setModalShow(true);
+            }}
+          >
+            Thêm địa chỉ mới
+          </button>
         </div>
         <hr />
         {addressList.map((item) => (

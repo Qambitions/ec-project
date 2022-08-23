@@ -59,6 +59,10 @@ export default function Pages() {
               path="/user/account"
               element={<CustomerDashboard page={"account"} />}
             ></Route>
+            <Route
+              path="/user/myadress"
+              element={<CustomerDashboard page={"address"} />}
+            ></Route>
             <Route path="/user/cart" element={<Cart />} />
             <Route path="/user/checkout" element={<Checkout />} />
           </Route>

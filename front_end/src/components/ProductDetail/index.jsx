@@ -16,8 +16,10 @@ import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
 import CartContext from "../../context/CartProvider";
 import ToastContainer from "react-bootstrap/ToastContainer";
+import { LoadingOverlay } from "../PopUp";
 
 export function ProductDetail() {
+  const [modalShow, setModalShow] = useState(true);
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
   const cartContext = useContext(CartContext);
@@ -42,6 +44,7 @@ export function ProductDetail() {
   };
 
   const fetchDetail = async () => {
+    setModalShow(true);
     await axios(process.env.REACT_APP_GET_PRODUCT_DETAIL, {
       method: "GET",
       headers: {
@@ -55,6 +58,7 @@ export function ProductDetail() {
       setAvailableBranch(res.data.item.branch_available);
       calRattingConsult();
     });
+    setModalShow(false);
     setStarAvg(ratting.avg);
   };
 
@@ -103,224 +107,235 @@ export function ProductDetail() {
   );
 
   return (
-    <div className="body">
-      <ToastContainer className="add_cart_toats">
-        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
-          <Toast.Header>
+    <>
+      <LoadingOverlay show={modalShow} onHide={() => setModalShow(false)} />
+      <div className="body">
+        <ToastContainer className="add_cart_toats">
+          <Toast
+            onClose={() => setShow(false)}
+            show={show}
+            delay={3000}
+            autohide
+          >
+            <Toast.Header>
+              <img
+                style={{ maxHeight: "2vh" }}
+                src="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057715/icon/190411_dbftms.png"
+                alt="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057715/icon/190411_dbftms.png"
+              ></img>
+              <h6>Thêm vào giỏ hàng thành công</h6>
+            </Toast.Header>
+            <Toast.Body>
+              <button>Xem giỏ hàng và thanh toán</button>
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
+        <Breadcrumb className="container breadcrumbs">
+          <Breadcrumb.Item href="/">Trang chủ</Breadcrumb.Item>
+          <Breadcrumb.Item href="/">Loại hàng</Breadcrumb.Item>
+          <Breadcrumb.Item active>{product?.tensp}</Breadcrumb.Item>
+        </Breadcrumb>
+        <div className="container product__detail">
+          <div className="product__detail_head">
             <img
-              style={{ maxHeight: "2vh" }}
-              src="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057715/icon/190411_dbftms.png"
-              alt="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057715/icon/190411_dbftms.png"
+              className="produtct__detail_head_left"
+              src={product?.hinh_anh}
+              alt={product?.hinh_anh}
             ></img>
-            <h6>Thêm vào giỏ hàng thành công</h6>
-          </Toast.Header>
-          <Toast.Body>
-            <button>Xem giỏ hàng và thanh toán</button>
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
-      <Breadcrumb className="container breadcrumbs">
-        <Breadcrumb.Item href="/">Trang chủ</Breadcrumb.Item>
-        <Breadcrumb.Item href="/">Loại hàng</Breadcrumb.Item>
-        <Breadcrumb.Item active>{product?.tensp}</Breadcrumb.Item>
-      </Breadcrumb>
-      <div className="container product__detail">
-        <div className="product__detail_head">
-          <img
-            className="produtct__detail_head_left"
-            src={product?.hinh_anh}
-            alt={product?.hinh_anh}
-          ></img>
-          <div className="product__detail_head_right">
-            <h3>{product?.ten_npp}</h3>
-            <h5>{product?.tensp}</h5>
-            <div className="container__flex">
-              <div>
-                {ratting?.avg}
-                <Rate disabled defaultValue={3} />
-                {product?.luot_danh_gia}
-              </div>
-
-              <div>
-                <AiOutlineShoppingCart />
-                <label>{product?.tong_da_ban}</label>
-              </div>
-              <label>Mã sản phẩm: {product?.masp}</label>
-            </div>
-            <div className="container__flex">
-              <label className="product__card_price_left">
-                {product?.gia_ban_goc}
-              </label>
-              <label className="product__card_price_right">
-                {product?.phan_tram_giam_gia > 0 ? <span>%</span> : <></>}
-              </label>
-            </div>
-            <div className="container__flex">
-              <label>Số lượng</label>
-              <div className="checkout__product_quantity_indicator">
-                <button
-                  className="checkout__product_decrease"
-                  onClick={() => {
-                    if (quantity > 0) setQuantity(quantity - 1);
-                  }}
-                >
-                  -
-                </button>
-                <input
-                  value={quantity}
-                  className="checkout__product_input_quantity"
-                  type="number"
-                ></input>
-                <button
-                  className="checkout__product_increase"
-                  onClick={() => {
-                    if (quantity < 50) setQuantity(quantity + 1);
-                  }}
-                >
-                  +
-                </button>
-              </div>
-              <label>{product?.ton_kho}</label>
-            </div>
-            <div className="container__flex">
-              <button className="button_pink" onClick={handleAddToCart}>
-                Thêm vào giỏ hàng
-              </button>
-              <button className="button_flex_warp">
-                <OverlayTrigger
-                  trigger="click"
-                  placement="right"
-                  overlay={AvailableStorePopOver}
-                >
-                  <div className="container__flex">
-                    <IoLocationSharp className="location__icon" />
-                    <label>
-                      {availableBranch?.length} chi nhánh còn sản phẩm
-                    </label>
-                  </div>
-                </OverlayTrigger>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="product__detail_info">
-          <h3>Thông tin sản phẩm</h3>
-          <hr></hr>
-          <div className="product__detail_info_title">Thông tin chi tiết</div>
-          <Table striped bordered hover size="sm">
-            <tbody>
-              <tr>
-                <td>Thương hiệu</td>
-                <td>{product?.ten_npp}</td>
-              </tr>
-              <tr>
-                <td>Xuất xứ</td>
-                {product?.xuat_xu ? <td>Jacob</td> : <></>}
-              </tr>
-              <tr>
-                <td>Khối lượng</td>
-                <td>{product?.khoi_luong}</td>
-              </tr>
-              <tr>
-                <td>Hạn sử dụng</td>
-                {product?.hsd ? <td>Jacob</td> : <></>}
-              </tr>
-            </tbody>
-          </Table>
-          <div className="product__detail_info_title">Mô tả</div>
-          <div className="product__detail_info_content">
-            <p>{product?.mo_ta}</p>
-          </div>
-        </div>
-        <div className="product__detail_comment">
-          <h3>Đánh giá</h3>
-          <hr />
-          <div className="container__flex rating__overview">
-            <div className="rating__overview_left">
-              <span>
-                <lable className="rating__overview_current_rate">
+            <div className="product__detail_head_right">
+              <h3>{product?.ten_npp}</h3>
+              <h5>{product?.tensp}</h5>
+              <div className="container__flex">
+                <div>
                   {ratting?.avg}
-                </lable>
-                /5
-              </span>
-              <div>
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
-                <AiFillStar />
+                  <Rate disabled defaultValue={3} />
+                  {product?.luot_danh_gia}
+                </div>
+
+                <div>
+                  <AiOutlineShoppingCart />
+                  <label>{product?.tong_da_ban}</label>
+                </div>
+                <label>Mã sản phẩm: {product?.masp}</label>
               </div>
-              <label>{product?.luot_danh_gia} đánh giá</label>
-            </div>
-            <div className="rating__overview_right">
-              <div className="rating__overview_right_col">
-                <label>5</label>
-                <label>4</label>
-                <label>3</label>
-                <label>2</label>
-                <label>1</label>
+              <div className="container__flex">
+                <label className="product__card_price_left">
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(product?.gia_ban_goc)}
+                </label>
+                <label className="product__card_price_right">
+                  {product?.phan_tram_giam_gia > 0 ? <span>%</span> : <></>}
+                </label>
               </div>
-              <div className="rating__overview_right_col">
-                <div className="rating__overview_right_row">
-                  <AiFillStar />
-                  <div className="rating__container_grey">
-                    <div
-                      className="rating__container_red"
-                      style={{ width: rattingConsult?.five_star_percent }}
-                    ></div>
-                  </div>
+              <div className="container__flex">
+                <label>Số lượng</label>
+                <div className="checkout__product_quantity_indicator">
+                  <button
+                    className="checkout__product_decrease"
+                    onClick={() => {
+                      if (quantity > 0) setQuantity(quantity - 1);
+                    }}
+                  >
+                    -
+                  </button>
+                  <input
+                    value={quantity}
+                    className="checkout__product_input_quantity"
+                    type="number"
+                  ></input>
+                  <button
+                    className="checkout__product_increase"
+                    onClick={() => {
+                      if (quantity < 50) setQuantity(quantity + 1);
+                    }}
+                  >
+                    +
+                  </button>
                 </div>
-                <div className="rating__overview_right_row">
-                  <AiFillStar />
-                  <div className="rating__container_grey">
-                    <div
-                      className="rating__container_red"
-                      style={{ width: rattingConsult?.four_star_percent }}
-                    ></div>
-                  </div>
-                </div>
-                <div className="rating__overview_right_row">
-                  <AiFillStar />
-                  <div className="rating__container_grey">
-                    <div
-                      className="rating__container_red"
-                      style={{ width: rattingConsult?.three_star_percent }}
-                    ></div>
-                  </div>
-                </div>
-                <div className="rating__overview_right_row">
-                  <AiFillStar />
-                  <div className="rating__container_grey">
-                    <div
-                      className="rating__container_red"
-                      style={{ width: rattingConsult?.two_star_percent }}
-                    ></div>
-                  </div>
-                </div>
-                <div className="rating__overview_right_row">
-                  <AiFillStar />
-                  <div className="rating__container_grey">
-                    <div
-                      className="rating__container_red"
-                      style={{ width: rattingConsult?.one_star_percent }}
-                    ></div>
-                  </div>
-                </div>
+                <label>{product?.ton_kho}</label>
               </div>
-              <div className="rating__overview_right_col">
-                <label>({ratting["5"]?.count})</label>
-                <label>({ratting["4"]?.count})</label>
-                <label>({ratting["3"]?.count})</label>
-                <label>({ratting["2"]?.count})</label>
-                <label>({ratting["1"]?.count})</label>
+              <div className="container__flex">
+                <button className="button_pink" onClick={handleAddToCart}>
+                  Thêm vào giỏ hàng
+                </button>
+                <button className="button_flex_warp">
+                  <OverlayTrigger
+                    trigger="click"
+                    placement="right"
+                    overlay={AvailableStorePopOver}
+                  >
+                    <div className="container__flex">
+                      <IoLocationSharp className="location__icon" />
+                      <label>
+                        {availableBranch?.length} chi nhánh còn sản phẩm
+                      </label>
+                    </div>
+                  </OverlayTrigger>
+                </button>
               </div>
             </div>
           </div>
-          {comments.map((item, index) => (
-            <CommentCard key={index} obj={item} />
-          ))}
+          <div className="product__detail_info">
+            <h3>Thông tin sản phẩm</h3>
+            <hr></hr>
+            <div className="product__detail_info_title">Thông tin chi tiết</div>
+            <Table striped bordered hover size="sm">
+              <tbody>
+                <tr>
+                  <td>Thương hiệu</td>
+                  <td>{product?.ten_npp}</td>
+                </tr>
+                <tr>
+                  <td>Xuất xứ</td>
+                  {product?.xuat_xu ? <td>Jacob</td> : <></>}
+                </tr>
+                <tr>
+                  <td>Khối lượng</td>
+                  <td>{product?.khoi_luong}</td>
+                </tr>
+                <tr>
+                  <td>Hạn sử dụng</td>
+                  {product?.hsd ? <td>Jacob</td> : <></>}
+                </tr>
+              </tbody>
+            </Table>
+            <div className="product__detail_info_title">Mô tả</div>
+            <div className="product__detail_info_content">
+              <p>{product?.mo_ta}</p>
+            </div>
+          </div>
+          <div className="product__detail_comment">
+            <h3>Đánh giá</h3>
+            <hr />
+            <div className="container__flex rating__overview">
+              <div className="rating__overview_left">
+                <span>
+                  <lable className="rating__overview_current_rate">
+                    {ratting?.avg}
+                  </lable>
+                  /5
+                </span>
+                <div>
+                  <AiFillStar />
+                  <AiFillStar />
+                  <AiFillStar />
+                  <AiFillStar />
+                  <AiFillStar />
+                </div>
+                <label>{product?.luot_danh_gia} đánh giá</label>
+              </div>
+              <div className="rating__overview_right">
+                <div className="rating__overview_right_col">
+                  <label>5</label>
+                  <label>4</label>
+                  <label>3</label>
+                  <label>2</label>
+                  <label>1</label>
+                </div>
+                <div className="rating__overview_right_col">
+                  <div className="rating__overview_right_row">
+                    <AiFillStar />
+                    <div className="rating__container_grey">
+                      <div
+                        className="rating__container_red"
+                        style={{ width: rattingConsult?.five_star_percent }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="rating__overview_right_row">
+                    <AiFillStar />
+                    <div className="rating__container_grey">
+                      <div
+                        className="rating__container_red"
+                        style={{ width: rattingConsult?.four_star_percent }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="rating__overview_right_row">
+                    <AiFillStar />
+                    <div className="rating__container_grey">
+                      <div
+                        className="rating__container_red"
+                        style={{ width: rattingConsult?.three_star_percent }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="rating__overview_right_row">
+                    <AiFillStar />
+                    <div className="rating__container_grey">
+                      <div
+                        className="rating__container_red"
+                        style={{ width: rattingConsult?.two_star_percent }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="rating__overview_right_row">
+                    <AiFillStar />
+                    <div className="rating__container_grey">
+                      <div
+                        className="rating__container_red"
+                        style={{ width: rattingConsult?.one_star_percent }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="rating__overview_right_col">
+                  <label>({ratting["5"]?.count})</label>
+                  <label>({ratting["4"]?.count})</label>
+                  <label>({ratting["3"]?.count})</label>
+                  <label>({ratting["2"]?.count})</label>
+                  <label>({ratting["1"]?.count})</label>
+                </div>
+              </div>
+            </div>
+            {comments.map((item, index) => (
+              <CommentCard key={index} obj={item} />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

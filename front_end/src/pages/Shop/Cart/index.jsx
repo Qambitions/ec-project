@@ -132,8 +132,10 @@ export default function Cart() {
               <div className="container__flex">
                 <label>Tạm tính:</label>
                 <span>
-                  {cartContext.cartInfo.tempPay}
-                  <text>đ</text>
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(cartContext.cartInfo.tempPay)}
                 </span>
               </div>
               <div className="container__flex">
@@ -150,7 +152,10 @@ export default function Cart() {
               <div className="container__flex">
                 <label>Tổng cộng: </label>
                 <span>
-                  {Number(cartContext.cartInfo.tempPay) + 0} <text>đ</text>
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(Number(cartContext.cartInfo.tempPay) + 0)}
                 </span>
               </div>
               <p>(đã bao gồm VAT)</p>

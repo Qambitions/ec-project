@@ -50,7 +50,13 @@ export default function DashboardOrderCard({ orderInfo }) {
             <label className="canceled_label">Đã hủy</label>
           )}
           <label>|</label>
-          <label>Tổng tiền: {orderInfo.tong_phi}đ</label>
+          <label>
+            Tổng tiền:{" "}
+            {new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(orderInfo.tong_phi)}
+          </label>
         </div>
         <label className="navigate__detail" onClick={handleViewDetail}>
           Xem chi tiết {">>"}

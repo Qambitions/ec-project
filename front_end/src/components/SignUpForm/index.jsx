@@ -8,7 +8,11 @@ import { useState, useEffect } from "react";
 import axios from "../../api/axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
-import { MyVerticallyCenteredModal } from "../PopUp";
+import {
+  LoadingOverlay,
+  SignupSuccessPopup,
+  MyVerticallyCenteredModal,
+} from "../PopUp";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const PHONE_REGEX = /^[0-9]{10}$/;
@@ -17,6 +21,8 @@ const REGISTER_URL = "/account/signup";
 
 export default function SignUpForm() {
   const [modalShow, setModalShow] = useState(false);
+  const [modalSuccessShow, setModalSuccessShow] = useState(false);
+  const [modalLoadShow, setModalLoadShow] = useState(false);
   const [errorMess, setErrorMess] = useState("");
   const [inputType, setInputType] = useState("password");
   const [iconType, setIconType] = useState(faEye);
@@ -24,7 +30,6 @@ export default function SignUpForm() {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
-
   const [formErrors, setFormErrors] = useState({});
   const authContext = useContext(AuthContext);
 
@@ -103,6 +108,7 @@ export default function SignUpForm() {
     setFormErrors({ ...formErrors, [name]: null });
   };
   const handleSubmit = async (e) => {
+    setModalLoadShow(true);
     e.preventDefault();
 
     let res = validate(formValues);
@@ -132,18 +138,23 @@ export default function SignUpForm() {
           districtid: districtId,
         });
         setErrorMess(res.data.message);
-        setModalShow(true);
+        setModalLoadShow(false);
         if (res.data.exitcode === 104) {
           console.log("existed");
+          setModalShow(true);
         } else if (res.data.exitcode === 101) {
           console.log("signup failed");
+          setModalShow(true);
         } else if (res.data.exitcode === 0) {
-          navigate("/", { replace: true });
+          // navigate("/", { replace: true });
+          setModalSuccessShow(true);
         }
       } catch (error) {
         console.log("sv failed");
       }
     }
+
+    setTimeout(1000);
   };
 
   const validate = (values) => {
@@ -203,6 +214,14 @@ export default function SignUpForm() {
 
   return (
     <div className="container signin-body">
+      <SignupSuccessPopup
+        show={modalSuccessShow}
+        onHide={() => setModalSuccessShow(false)}
+      />
+      <LoadingOverlay
+        show={modalLoadShow}
+        onHide={() => setModalLoadShow(false)}
+      />
       <form className="signup-form" onSubmit={handleSubmit}>
         <h2>Đăng ký</h2>
         <div className="signup__section_1">

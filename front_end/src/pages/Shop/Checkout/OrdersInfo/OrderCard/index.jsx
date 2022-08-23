@@ -12,7 +12,12 @@ export function OrderCard({
       <div className="card_info">
         <div className="card_info_head">
           <small>{ten_npp}</small>
-          <small>{gia_phai_tra} <span className="currency">đ</span></small>
+          <small>
+            {new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(gia_phai_tra)}{" "}
+          </small>
         </div>
         <small>{tensp}</small>
         <p>SL: {so_luong_mua}</p>

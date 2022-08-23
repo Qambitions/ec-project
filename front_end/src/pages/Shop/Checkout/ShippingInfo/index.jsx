@@ -159,7 +159,13 @@ export function ShippingInfo(props) {
                   "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/286088489_5050087261779690_4284998344429746518_n_ioqia7.png"
                 }
               ></img>
-              <label>Giao hàng nhanh&emsp;&emsp;{GHN.price}</label>
+              <label>
+                Giao hàng nhanh&emsp;&emsp;
+                {new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(GHN.price)}
+              </label>
             </small>
             <br></br>
           </div>
@@ -182,7 +188,13 @@ export function ShippingInfo(props) {
                   "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832642/icon/287535036_424202986024765_8691090997415472965_n_vqls2y.png"
                 }
               ></img>
-              <label>Giao hàng tiết kiệm&emsp;&emsp;{GHTK_norm.price}</label>
+              <label>
+                Giao hàng tiết kiệm&emsp;&emsp;
+                {new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(GHTK_norm.price)}
+              </label>
             </small>
             <br></br>
           </div>
@@ -206,7 +218,11 @@ export function ShippingInfo(props) {
                 }
               ></img>
               <label>
-                Giao hàng tiết kiệm siu tốc độ&emsp;&emsp;{GHTK_fast.price}
+                Giao hàng tiết kiệm siu tốc độ&emsp;&emsp;
+                {new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(GHTK_fast.price)}
               </label>
             </small>
             <br></br>

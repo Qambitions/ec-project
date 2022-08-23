@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) =>{
     const [info,setInfo]=useState({});
     const [deliveryAddress,setDeliveryAddress] = useState([]);
     useEffect(()=>{
-      autoLogin();
+        autoLogin();
         getInfo();
         getDelivery();
     },[])
