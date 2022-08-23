@@ -1,8 +1,16 @@
 import "./style.css";
 import { FiThumbsUp } from "react-icons/fi";
 import { AiFillStar } from "react-icons/ai";
+import { useEffect, useState } from "react";
 export function CommentCard(props) {
   const obj = props.obj;
+  const [date, setDate] = useState("");
+
+  useEffect(() => {
+    let time = new Date(obj.ngay_dang);
+    setDate(time.getDate() + "-" + time.getMonth() + "-" + time.getFullYear());
+  }, []);
+
   return (
     <>
       <div className="container__flex comment__card">
@@ -22,7 +30,7 @@ export function CommentCard(props) {
               <AiFillStar />
               <AiFillStar />
             </div>
-            |<label style={{ color: "grey" }}>{obj.ngay_dang}</label>
+            |<label style={{ color: "grey" }}>{date}</label>
           </div>
           <p>{obj.noi_dung}</p>
           <FiThumbsUp
