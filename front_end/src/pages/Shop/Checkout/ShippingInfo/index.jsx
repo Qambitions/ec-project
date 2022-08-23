@@ -7,7 +7,7 @@ import CheckoutContext from "../../../../context/CheckoutProvider";
 import { LoadingOverlay } from "../../../../components/PopUp";
 export function ShippingInfo(props) {
   const checkoutContext = useContext(CheckoutContext);
-  const [modalShow, setModalShow] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
   const [GHN, setGHN] = useState({});
   const [GHTK_fast, setGHTK_fast] = useState({});
   const [GHTK_norm, setGHTK] = useState({});
@@ -75,6 +75,7 @@ export function ShippingInfo(props) {
         method: method,
       },
     });
+
     if (res.data.exitcode === 0) {
       switch (method) {
         case "GHN":
@@ -96,10 +97,10 @@ export function ShippingInfo(props) {
             price: res.data.price,
             macn: res.data.macn,
           });
-          setModalShow(false);
           break;
       }
     }
+    setModalShow(false);
   };
 
   const calCheckoutInfo = () => {
