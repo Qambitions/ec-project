@@ -1,0 +1,12 @@
+.input__bordered input{
+    width: 90%;
+    padding: 0 0.5rem;
+}
+
+.input__bordered{
+    width: 65%;
+}
+
+.input_error{
+    color: #E04A4A;
+}

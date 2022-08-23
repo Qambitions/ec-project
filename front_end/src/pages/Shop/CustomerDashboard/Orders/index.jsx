@@ -37,7 +37,7 @@ export default function Orders() {
         <OrderDetail orderID={ordersContext?.orderID} />
       ) : (
         <div>
-          <h3 className="user_dashboard_header">Đơn hàng của tôi</h3>
+          <h3 className="user_dashboard_header_title">Đơn hàng của tôi</h3>
           <Tabs
             defaultActiveKey="profile"
             id="justify-tab-example"
@@ -52,7 +52,7 @@ export default function Orders() {
             <Tab eventKey="wait-confirmed" title="Chờ xác nhận">
               {orders
                 .filter((order) => {
-                  return order.trang_thai.localeCompare("CHỜ XÁC NHẬN") === 0;
+                  return order.trang_thai?.localeCompare("CHỜ XÁC NHẬN") === 0;
                 })
                 .map((order) => (
                   <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -61,7 +61,7 @@ export default function Orders() {
             <Tab eventKey="confirmed" title="Đã xác nhận">
               {orders
                 .filter((order) => {
-                  return order.trang_thai.localeCompare("ĐÃ XÁC NHẬN") === 0;
+                  return order.trang_thai?.localeCompare("ĐÃ XÁC NHẬN") === 0;
                 })
                 .map((order) => (
                   <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -70,7 +70,7 @@ export default function Orders() {
             <Tab eventKey="on-delivery" title="Đang giao">
               {orders
                 .filter((order) => {
-                  return order.trang_thai.localeCompare("ĐANG GIAO") === 0;
+                  return order.trang_thai?.localeCompare("ĐANG GIAO") === 0;
                 })
                 .map((order) => (
                   <DashboardOrderCard key={order.madh} orderInfo={order} />
@@ -80,7 +80,7 @@ export default function Orders() {
               {orders
                 .filter((order) => {
                   return (
-                    order.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG") === 0
+                    order.trang_thai?.localeCompare("ĐÃ GIAO THÀNH CÔNG") === 0
                   );
                 })
                 .map((order) => (
@@ -91,8 +91,8 @@ export default function Orders() {
               {orders
                 .filter((order) => {
                   return (
-                    order.trang_thai.localeCompare("THANH TOÁN THẤT BẠI") ===
-                      0 || order.trang_thai.localeCompare("ĐÃ HỦY") === 0
+                    order.trang_thai?.localeCompare("THANH TOÁN THẤT BẠI") ===
+                      0 || order.trang_thai?.localeCompare("ĐÃ HỦY") === 0
                   );
                 })
                 .map((order) => (

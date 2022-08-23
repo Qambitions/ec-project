@@ -12,7 +12,6 @@ export default function Footer() {
       headers: { magic_pass: process.env.REACT_APP_MAGIC_PASS },
     });
     if (res.data.exitcode === 0) {
-      console.log(res.data.chi_nhanh);
       setBranches(res.data.chi_nhanh);
     } else {
       console.log("fetch branch fail");

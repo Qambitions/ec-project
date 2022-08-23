@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MainAds } from "../../../components/Advertise";
 import HomepageSection from "../../../components/HomepageSection";
 import HotDeals from "../../../components/HomepageSection/HotDeals";
+import { LoadingOverlay } from "../../../components/PopUp";
 
 export default function Homepage() {
+  const [modalShow, setModalShow] = useState(false);
+
+  useEffect(() => {}, []);
+
   return (
     <div className="body">
       <MainAds />

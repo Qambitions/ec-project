@@ -17,10 +17,20 @@ export default function ProductCard(props) {
       <div>
         <div className="product__card_price">
           <label className="product__card_price_left">
-            {obj.gia_ban_giam} đ
+            {new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(obj.gia_ban_giam)}
           </label>
           <label className="product__card_price_right">
-            {obj.gia_ban !== obj.gia_ban_giam && <del>{obj.gia_ban} đ</del>}
+            {obj.gia_ban !== obj.gia_ban_giam && (
+              <del>
+                {new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(obj.gia_ban)}{" "}
+              </del>
+            )}
             {obj?.phan_tram_giam_gia && <span>{obj.phan_tram_giam_gia}%</span>}
           </label>
         </div>

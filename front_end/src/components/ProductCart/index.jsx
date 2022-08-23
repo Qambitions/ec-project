@@ -6,15 +6,17 @@ import axios from "../../api/axios";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import CartContext from "../../context/CartProvider";
-import { ConfirmRemoveItemPopUp } from "../PopUp";
+import { ConfirmRemoveItemPopUp, LoadingOverlay } from "../PopUp";
 const GET_PRODUCT = "/product/details";
 
 export default function ProductCart(props) {
+  const [modalShow, setModalShow] = useState(false);
   const [isRemove, setIsRemove] = useState(false);
   const [card, setCard] = useState({});
   const cartContext = useContext(CartContext);
   const obj = props.obj;
   const getProductInfo = async () => {
+    setModalShow(true);
     await axios
       .get(GET_PRODUCT, {
         params: { masp: obj.itemID },
@@ -30,6 +32,7 @@ export default function ProductCart(props) {
           pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
         });
       });
+    setModalShow(false);
   };
   useEffect(() => {
     getProductInfo();
@@ -109,6 +112,7 @@ export default function ProductCart(props) {
   return (
     <>
       <div className="checkout-main-row product__cart">
+        <LoadingOverlay show={modalShow} onHide={() => setModalShow(false)} />
         <div className="checkout-main-col-1">
           <input
             value={0}
@@ -134,7 +138,12 @@ export default function ProductCart(props) {
         </div>
         <div className="checkout-main-col-3 checkout__product_info">
           <span>
-            <label id="product-price">{card.price}</label>đ
+            <label id="product-price">
+              {new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(card.price)}
+            </label>
           </span>
         </div>
         <div className="checkout-main-col-3">
@@ -161,7 +170,13 @@ export default function ProductCart(props) {
         </div>
         <div className="checkout-main-col-3 checkout__product_info">
           <span>
-            <label id="product-pay">{card.price * card.quantity}</label>đ
+            <label id="product-pay">
+              {" "}
+              {new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(card.price * card.quantity)}
+            </label>
           </span>
         </div>
         <div className="checkout-main-col-3">

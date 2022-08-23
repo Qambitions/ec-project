@@ -3,11 +3,13 @@
     background-color: rgb(231, 160, 160);
     padding: 3rem 0;
     text-align: right;
+    margin: 0 auto
 }
 
 .popup_message div{
     text-align: center;
     line-height: 2rem;
+
 }
 
 .popup_message img{

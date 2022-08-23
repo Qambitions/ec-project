@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import OrderDetailItemCard from "./OrderDetailItemCard";
 
 export default function OrderDetail({ orderID }) {
+  const [total, setTotal] = useState(0);
   const [listState, setListState] = useState([]);
   const [progress, setProgress] = useState();
   const [info, setInfo] = useState({});
@@ -22,27 +23,35 @@ export default function OrderDetail({ orderID }) {
     });
     if (res.data.exitcode === 0) {
       setItems(res.data.items);
+      let tmp = 0;
+      res.data.items.forEach((element) => {
+        tmp += Number(element.thanh_tien_mua);
+      });
+      setTotal(tmp);
     }
   };
 
   const handleProgressBar = (listState) => {
     let states = listState;
-    console.log("LS", listState);
     states.forEach((state) => {
+      if (state.trang_thai?.localeCompare("ĐÃ GIAO THÀNH CÔNG") == 0) {
+        setProgress(100);
+        return;
+      }
+      if (state.trang_thai?.localeCompare("ĐANG GIAO HÀNG") == 0) {
+        setProgress(66);
+        return;
+      }
+      if (state.trang_thai?.localeCompare("ĐÃ XÁC NHẬN") == 0) {
+        setProgress(33);
+        return;
+      }
       if (
-        state.trang_thai.localeCompare("CHỜ XÁC NHẬN") == 0 ||
-        state.trang_thai.localeCompare("WAIT FOR PAYMENT") == 0
+        state.trang_thai?.localeCompare("CHỜ XÁC NHẬN") == 0 ||
+        state.trang_thai?.localeCompare("WAIT FOR PAYMENT") == 0
       ) {
         setProgress(0);
-      }
-      if (state.trang_thai.localeCompare("ĐÃ XÁC NHẬN") == 0) {
-        setProgress(33);
-      }
-      if (state.trang_thai.localeCompare("ĐANG GIAO HÀNG") == 0) {
-        setProgress(66);
-      }
-      if (state.trang_thai.localeCompare("ĐÃ GIAO THÀNH CÔNG") == 0) {
-        setProgress(100);
+        return;
       }
     });
   };
@@ -51,11 +60,9 @@ export default function OrderDetail({ orderID }) {
       method: "get",
       headers: { token: Cookies.get("token") },
       url: process.env.REACT_APP_GET_ORDER_DETAIL,
-      params: { madh: 500000 },
+      params: { madh: orderID },
     });
-    console.log(res.data);
     if (res.data.exitcode === 0) {
-      // setListState(res.data.list_state);
       handleProgressBar(res.data.list_state);
       setInfo(res.data.info);
     } else {
@@ -65,7 +72,6 @@ export default function OrderDetail({ orderID }) {
   useEffect(() => {
     fetchDetail();
     fetchItem();
-    // handleProgressBar(listState) ;
   }, []);
   return (
     <div>
@@ -122,23 +128,22 @@ export default function OrderDetail({ orderID }) {
         <OrderDetailItemCard info={item} />
       ))}
 
-      <Container className="container__100 order__progress_bar">
-        <Col xs={6}></Col>
+      <Container className="container__100 order__progress_bar order_detail_items_header">
+        <Col xs={5}></Col>
         <Col></Col>
         <Col>
-          <div>
-            <label>Phí sản phẩm:</label>
-            <label>Phí vận chuyển:</label>
-            <label>Phí giảm:</label>
+          <div className="container__flex_col" style={{ textAlign: "right" }}>
             <label>Tổng tiền:</label>
           </div>
         </Col>
         <Col>
           <div className="container__flex_col">
-            <label>đ</label>
-            <label>đ</label>
-            <label>đ</label>
-            <label>đ</label>
+            <label>
+              {new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(total)}
+            </label>
           </div>
         </Col>
       </Container>

@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import { UserConfig } from "../../context/config";
 import { encrypt10 } from "../../utils/crypto";
 import debounce from "lodash.debounce";
+import { LoadingOverlay } from "../PopUp";
 const LOGIN_URL = "/account/login";
 
 export default function SignInForm() {
@@ -20,7 +21,7 @@ export default function SignInForm() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [exitCode, setExitCode] = useState(2);
-
+  const [modalShow, setModalShow] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const validate = (values) => {
     const errors = {};
@@ -51,6 +52,7 @@ export default function SignInForm() {
   // <<<<<<< HEAD
 
   async function callLoginInAPI(username, password) {
+    setModalShow(true);
     if (username && password) {
       try {
         const res = await axios
@@ -108,6 +110,7 @@ export default function SignInForm() {
         console.log(error);
       }
     }
+    setModalShow(false);
   }
 
   const debounceSubmit = useCallback(
@@ -123,6 +126,7 @@ export default function SignInForm() {
 
   return (
     <div className="container signin-body">
+      <LoadingOverlay show={modalShow} onHide={() => setModalShow(false)} />
       <div className="signin-container">
         <h2>Đăng nhập</h2>
         {exitCode === 104 && <SignInErrorMessageBox />}
