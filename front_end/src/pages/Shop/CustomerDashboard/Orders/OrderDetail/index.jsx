@@ -10,7 +10,6 @@ import OrderDetailItemCard from "./OrderDetailItemCard";
 
 export default function OrderDetail({ orderID }) {
   const [total, setTotal] = useState(0);
-  const [listState, setListState] = useState([]);
   const [progress, setProgress] = useState();
   const [info, setInfo] = useState({});
   const [items, setItems] = useState([]);
@@ -56,16 +55,18 @@ export default function OrderDetail({ orderID }) {
     });
   };
   const fetchDetail = async () => {
-    let res = await axios({
-      method: "get",
-      headers: { token: Cookies.get("token") },
-      url: process.env.REACT_APP_GET_ORDER_DETAIL,
-      params: { madh: orderID },
-    });
-    if (res.data.exitcode === 0) {
-      handleProgressBar(res.data.list_state);
-      setInfo(res.data.info);
-    } else {
+    if (orderID !== "undefined") {
+      let res = await axios({
+        method: "get",
+        headers: { token: Cookies.get("token") },
+        url: process.env.REACT_APP_GET_ORDER_DETAIL,
+        params: { madh: orderID },
+      });
+      if (res.data.exitcode === 0) {
+        handleProgressBar(res.data.list_state);
+        setInfo(res.data.info);
+      } else {
+      }
     }
   };
 
@@ -75,7 +76,7 @@ export default function OrderDetail({ orderID }) {
   }, []);
   return (
     <div>
-      <h3 className="user_dashboard_header">Chi tiết đơn hàng</h3>
+      <h3 className="user_dashboard_header_title">Chi tiết đơn hàng</h3>
       <hr />
       <Container className="orderdetail_info_container">
         <Col xs={4}>

@@ -22,7 +22,6 @@ export default function Orders() {
       params: { limit: 4, offset: 0 },
     });
     if (res.data.exitcode === 0) {
-      console.log("Oder", res.data.orders);
       setOrders(res.data.orders);
     }
   };

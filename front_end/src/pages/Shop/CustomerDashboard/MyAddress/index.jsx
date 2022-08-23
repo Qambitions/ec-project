@@ -12,7 +12,7 @@ export default function MyAddress() {
   const fetchBasicInfo = async () => {
     let res = await axios({
       method: "get",
-      url: process.env.REACT_APP_GET_BASIC_INFO,
+      url: "/account/user_info/basic_info",
       headers: { token: Cookies.get("token") },
     });
     if (res.data.exitcode === 0) {
@@ -36,7 +36,7 @@ export default function MyAddress() {
   useEffect(() => {
     fetchAddress();
     fetchBasicInfo();
-  }, []);
+  }, [modalShow]);
 
   return (
     <>

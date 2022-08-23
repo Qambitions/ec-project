@@ -18,7 +18,6 @@ export default function CustomerDashboard({ page }) {
   function loadName() {
     var info = localStorage.getItem("account_info");
     info = info ? JSON.parse(info) : {};
-    console.log(info);
     let name = info.tenkh;
     if (name) {
       setName(name);

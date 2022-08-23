@@ -17,21 +17,24 @@ export default function ProductCart(props) {
   const obj = props.obj;
   const getProductInfo = async () => {
     setModalShow(true);
-    await axios
-      .get(GET_PRODUCT, {
-        params: { masp: obj.itemID },
-      })
-      .then((res) => {
-        setCard({
-          quantity: parseInt(obj.quantity),
-          itemID: obj.itemID,
-          img: res.data.item.hinh_anh,
-          pdName: res.data.item.tensp,
-          pdBrand: res.data.item.ten_npp,
-          price: res.data.item.gia_ban_giam,
-          pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
+    if (obj?.itemID) {
+      await axios
+        .get(GET_PRODUCT, {
+          params: { masp: obj.itemID },
+        })
+        .then((res) => {
+          setCard({
+            quantity: parseInt(obj.quantity),
+            itemID: obj.itemID,
+            img: res.data.item.hinh_anh,
+            pdName: res.data.item.tensp,
+            pdBrand: res.data.item.ten_npp,
+            price: res.data.item.gia_ban_giam,
+            pay: res.data.item.gia_ban_giam * parseInt(obj.quantity),
+          });
         });
-      });
+    }
+
     setModalShow(false);
   };
   useEffect(() => {
@@ -39,14 +42,16 @@ export default function ProductCart(props) {
     if (document.getElementById(obj.itemID) !== null) {
       var cart = localStorage.getItem("cart");
       cart = cart ? JSON.parse(cart) : [];
-      for (var i in cart) {
-        if (cart[i].itemID === obj.itemID) {
-          document.getElementById(obj.itemID).checked = cart[i].isChecked;
-          if (cart[i].isChecked === true) {
-            if (!isNaN(card.pay)) {
-              cartContext.calTempPay(card.pay);
-            } else {
-              cartContext.calTempPay(0);
+      if (cart.length > 0) {
+        for (var i in cart) {
+          if (cart[i].itemID === obj.itemID) {
+            document.getElementById(obj.itemID).checked = cart[i].isChecked;
+            if (cart[i].isChecked === true) {
+              if (!isNaN(card.pay)) {
+                cartContext.calTempPay(card.pay);
+              } else {
+                cartContext.calTempPay(0);
+              }
             }
           }
         }
