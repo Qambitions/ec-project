@@ -1,6 +1,9 @@
 import "./style.css";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import axios from "../../api/axios";
+import { useState } from "react";
+
 function ConfirmRemoveItemPopUp(props) {
   return (
     <>
@@ -80,9 +83,75 @@ function LoadingOverlay(props) {
   );
 }
 
+function EditAddress(props) {
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+
+  const fetchProvince = async () => {
+    await axios({
+      url: process.env.REACT_APP_GET_PROVINCES_URL,
+      method: "GET",
+      headers: {
+        token: process.env.REACT_APP_GET_ADDRESS_TOKEN,
+      },
+    }).then((res) => {
+      setProvinces(res.data.data);
+    });
+  };
+
+  const fetchDistrict = async (id) => {
+    await axios({
+      url: process.env.REACT_APP_GET_DISTRICTS_URL,
+      method: "GET",
+      headers: {
+        token: process.env.REACT_APP_GET_ADDRESS_TOKEN,
+      },
+      params: { province_id: id },
+    }).then((res) => {
+      setDistricts(res.data.data);
+    });
+  };
+
+  const fetchWard = async (id) => {
+    await axios({
+      url: process.env.REACT_APP_GET_WARDS_URL,
+      method: "GET",
+      headers: {
+        token: process.env.REACT_APP_GET_ADDRESS_TOKEN,
+      },
+      params: { district_id: id },
+    }).then((res) => {
+      setWards(res.data.data);
+    });
+  };
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Thêm địa chỉ mới
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <form>
+          <input placeholder="Họ và tên"></input>
+          <input placeholder="Số điện thoại"></input>
+          <input placeholder="xã"></input>
+        </form>
+      </Modal.Body>
+    </Modal>
+  );
+}
+
 export {
   ConfirmRemoveItemPopUp,
   VoucherPickerPopUp,
   MyVerticallyCenteredModal,
   LoadingOverlay,
+  EditAddress,
 };

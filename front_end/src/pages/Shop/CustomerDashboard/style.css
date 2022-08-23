@@ -4,9 +4,13 @@
 }
 
 .user_dashboard_header{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem; 
+}
+.user_dashboard_header_title{
     color:#FB5D5D;
     font-weight: 600;
-    margin-top: 1rem;
 }
 
 .tab-content{

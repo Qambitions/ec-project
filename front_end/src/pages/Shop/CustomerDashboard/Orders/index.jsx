@@ -37,7 +37,7 @@ export default function Orders() {
         <OrderDetail orderID={ordersContext?.orderID} />
       ) : (
         <div>
-          <h3 className="user_dashboard_header">Đơn hàng của tôi</h3>
+          <h3 className="user_dashboard_header_title">Đơn hàng của tôi</h3>
           <Tabs
             defaultActiveKey="profile"
             id="justify-tab-example"
