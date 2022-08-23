@@ -15,7 +15,6 @@ import {
   MyVerticallyCenteredModal,
 } from "../PopUp";
 
-
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const PHONE_REGEX = /^[0-9]{10}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -110,7 +109,6 @@ export default function SignUpForm() {
     setFormErrors({ ...formErrors, [name]: null });
   };
   const handleSubmit = async (e) => {
-    setModalLoadShow(true);
     e.preventDefault();
 
     let res = validate(formValues);
@@ -127,6 +125,7 @@ export default function SignUpForm() {
     var selectedCity = citys.options[citys.selectedIndex].text;
 
     if (res.validate) {
+      setModalLoadShow(true);
       try {
         const res = await axios.post(REGISTER_URL, {
           tenkh: formValues.fullname,

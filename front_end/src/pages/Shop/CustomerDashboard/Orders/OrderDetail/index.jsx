@@ -125,7 +125,7 @@ export default function OrderDetail({ orderID }) {
         <Col>Thành tiền</Col>
       </Container>
       {items.map((item) => (
-        <OrderDetailItemCard info={item} />
+        <OrderDetailItemCard info={item} id={orderID} />
       ))}
 
       <Container className="container__100 order__progress_bar order_detail_items_header">

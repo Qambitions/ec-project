@@ -29,12 +29,10 @@ export function ProductDetail() {
   const [comments, setComments] = useState([]);
   const [product, setProduct] = useState([]);
   const [availableBranch, setAvailableBranch] = useState([]);
-  const [starAvg, setStarAvg] = useState();
   const [rattingConsult, setRattingConsult] = useState({});
   const [show, setShow] = useState(false);
   useEffect(() => {
     fetchDetail();
-    setStarAvg(3);
   }, []);
 
   const handleAddToCart = () => {
@@ -59,7 +57,6 @@ export function ProductDetail() {
       calRattingConsult();
     });
     setModalShow(false);
-    setStarAvg(ratting.avg);
   };
 
   const calRattingConsult = () => {
@@ -148,8 +145,12 @@ export function ProductDetail() {
               <div className="container__flex">
                 <div>
                   {ratting?.avg}
-                  <Rate disabled defaultValue={3} />
-                  {product?.luot_danh_gia}
+                  {/* <Rate disabled defaultValue={parseInt(ratting.avg)}/> */}
+                  <AiFillStar />
+                  <AiFillStar />
+                  <AiFillStar />
+                  <AiFillStar />
+                  <AiFillStar />({product?.luot_danh_gia})
                 </div>
 
                 <div>
@@ -163,10 +164,24 @@ export function ProductDetail() {
                   {new Intl.NumberFormat("vi-VN", {
                     style: "currency",
                     currency: "VND",
-                  }).format(product?.gia_ban_goc)}
+                  }).format(product?.gia_ban_giam)}
                 </label>
                 <label className="product__card_price_right">
-                  {product?.phan_tram_giam_gia > 0 ? <span>%</span> : <></>}
+                  {product.gia_ban_goc > product.gia_ban_giam ? (
+                    <del>
+                      {new Intl.NumberFormat("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      }).format(product?.gia_ban_goc)}
+                    </del>
+                  ) : (
+                    <></>
+                  )}
+                  {product?.phan_tram_giam_gia > 0 ? (
+                    <span>-{product.phan_tram_giam_gia}%</span>
+                  ) : (
+                    <></>
+                  )}
                 </label>
               </div>
               <div className="container__flex">
@@ -194,7 +209,7 @@ export function ProductDetail() {
                     +
                   </button>
                 </div>
-                <label>{product?.ton_kho}</label>
+                <label>{product?.ton_kho} sản phẩm có sẵn</label>
               </div>
               <div className="container__flex">
                 <button className="button_pink" onClick={handleAddToCart}>

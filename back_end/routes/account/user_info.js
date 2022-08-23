@@ -89,7 +89,7 @@ async function queryOrderState(props){
 
 async function queryOrderItems(props){
     const rawSQL = ` 
-                    SELECT ctdh.so_luong_mua, ctdh.gia_phai_tra, ctdh.thanh_tien_mua, sp.ten_sp, sp.hinh_anh, npp.ten_npp
+                    SELECT ctdh.so_luong_mua, ctdh.gia_phai_tra, ctdh.thanh_tien_mua, sp.ten_sp, sp.hinh_anh, npp.ten_npp, ctdh.masp
                     FROM chi_tiet_don_hang ctdh
                     left join san_pham sp on sp.masp = ctdh.masp 
                     left join nha_phan_phoi npp on npp.manpp = sp.manpp
