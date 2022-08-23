@@ -35,16 +35,17 @@ export default function DashboardOrderCard({ orderInfo }) {
     <div className="dashboard__ordercard">
       <div className="container__spacebetween">
         <div className="container__flex">
-          {orderInfo.trang_thai.localeCompare("ĐÃ XÁC NHẬN") === 0 ? (
+          {orderInfo?.trang_thai?.localeCompare("ĐÃ XÁC NHẬN") === 0 ? (
             <label className="confirmed_label">Đã xác nhận</label>
-          ) : orderInfo.trang_thai.localeCompare("CHỜ XÁC NHẬN") === 0 ? (
+          ) : orderInfo?.trang_thai?.localeCompare("CHỜ XÁC NHẬN") === 0 ? (
             <label className="waitconfirm_label">Chờ xác nhận</label>
-          ) : orderInfo.trang_thai.localeCompare("ĐANG GIAO") === 0 ? (
+          ) : orderInfo?.trang_thai?.localeCompare("ĐANG GIAO") === 0 ? (
             <label className="ondelivery_label">Đang giao</label>
-          ) : orderInfo.trang_thai.localeCompare("ĐÃ GIAO") === 0 ? (
+          ) : orderInfo?.trang_thai?.localeCompare("ĐÃ GIAO") === 0 ? (
             <label className="delivered_label">Đã giao</label>
-          ) : orderInfo.trang_thai.localeCompare("ĐÃ HỦY") === 0 ||
-            orderInfo.trang_thai.localeCompare("THANH TOÁN THẤT BẠI") === 0 ? (
+          ) : orderInfo?.trang_thai?.localeCompare("ĐÃ HỦY") === 0 ||
+            orderInfo?.trang_thai?.localeCompare("THANH TOÁN THẤT BẠI") ===
+              0 ? (
             <label className="canceled_label">Đã hủy</label>
           ) : (
             <label className="canceled_label">Đã hủy</label>
