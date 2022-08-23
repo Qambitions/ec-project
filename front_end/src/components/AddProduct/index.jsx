@@ -22,13 +22,19 @@ export default function AddProduct(){
   const [tenSP, setTenSP] = useState("");
   const [MALH, setMALH] = useState('10');
   const [MANPP, setMANPP] = useState('1000');
-  const [gia, setGia] = useState();
-  const [khoiLuong, setKhoiLuong] = useState();
+  const [gia, setGia] = useState(0);
+  const [khoiLuong, setKhoiLuong] = useState(0);
   const [moTa, setMoTa] = useState("");
-  const [image, setImage] = useState();
+  const [image, setImage] = useState("");
 
   const [show, setShow] = useState(false);
-  const handleCancel = () => setShow(false);
+  const handleCancel = () => {
+    setShow(false);
+    setGia(0);
+    setKhoiLuong(0);
+    setMoTa("");
+    setTenSP("")
+  };
   const handleShow = () => setShow(true);
 
   useEffect(() => {
@@ -62,16 +68,45 @@ export default function AddProduct(){
 
 
   const handleSubmit = async(e) => {
+  if (tenSP == "" || moTa==""){
+    toast("Tên sản phẩm và mô tả không được bỏ trống", {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      });
+  }
+  else if (gia <= 0 || khoiLuong <= 0) {
+    toast("Giá bán và khối lượng phải lớn hơn 0", {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      });
+  }
+  else if (image ==""){
+    toast("Vui lòng chọn hình ảnh", {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      });
+  }
+  else {
     const formData = new FormData();
     formData.append('file', image);
     formData.append('upload_preset', 'ec_upload');
-
-    
     await axios.post("https://api.cloudinary.com/v1_1/ec-2022-lam-zau-khum-kho/image/upload", formData).then((res) => {
-        console.log(res.data);
         postItem(e, res.data.url);
         
       });
+  }
   }
   
   const postItem = async (e, uploadImg) => {
@@ -85,7 +120,6 @@ export default function AddProduct(){
       hinh_anh: uploadImg
 
   };
-  console.log(postData);
     let axiosConfig = {
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +137,6 @@ export default function AddProduct(){
       pauseOnHover: false,
       draggable: true,
       });
-    // window.location.reload();
   });
 
 

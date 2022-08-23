@@ -128,6 +128,7 @@ export default function ImportDetail(){
                 </div>
 
             </div>
+            <Link to="/admin/stock/import"><h5 className="p-2">{'<<'} Trở về </h5></Link>
 
           </Row>
           </Col>
