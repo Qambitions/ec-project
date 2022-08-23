@@ -22,7 +22,16 @@ Ngoài ra, đối với doanh nghiệp khác, cửa hàng nhận quảng cáo th
 - [ReactJS](https://reactjs.org): thư viện javarscript để phát triển giao diện người dùng (front-end).
 - [Enterprise Architect](https://sparxsystems.com): phần mềm phân tích và thiết kế UML.
 - [Figma](https://www.figma.com/): Công cụ thiết kế UX/UI - giúp vẽ prototype giao diện
-- ...
+- [Postman](https://www.postman.com/): Công cụ thao tác với API - giúp thử nghiệm các API
+- [DBeaver](https://dbeaver.io/): Công cụ quản trị cơ sở dữ liệu - giúp quản trị cơ sở dữ liệu PostgreSQL
+
+### Web Architucture
+-----------------
+- Web Architucture
+![WebArchitucture](https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1661272657/Web%20Architucture/Web_Architucture_tyogof.png)
+
+- Deploy Web Server
+![WebSerVer](https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1661272655/Web%20Architucture/Deploy_Web_Server_dgd2yu.png)
 
 ### Team thực hiện
 -----------------
