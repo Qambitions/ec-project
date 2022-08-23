@@ -32,7 +32,6 @@ router.post('/', async (req, res, next) =>{
       if (req.headers.magic_pass != 'LamZauKhumKho'){
           response.message = "sai Pass ròi!!"
           return res.send(response)
-          
       }
       const orderOverview = await pushItem(req.body);
       response.exitcode   = 0
