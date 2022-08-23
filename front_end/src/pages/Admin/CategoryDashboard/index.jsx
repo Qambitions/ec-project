@@ -61,6 +61,7 @@ export default function CategoryDashboard(){
           <Row>
           <AdminNavbar 
           title="Quản lý kho"
+          subtitle="Danh mục"
           text ="Danh mục sản phẩm"
           count = "6"/>
           </Row>

@@ -133,7 +133,8 @@ export default function Dashboard() {
           <Col>
           <Row>
           <AdminNavbar 
-          title="Dashboard"/>
+          title="Dashboard"
+          subtitle="Main"/>
           </Row>
           <br/>
           <Row >
@@ -185,7 +186,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <div className="checkout-main-col-3">
-                    <label>{product.sum} đ</label>
+                    <label>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.sum)}</label>
 
                     </div>
                 </div>
@@ -205,7 +206,7 @@ export default function Dashboard() {
                     <a href="#">
                       <span class="product">{prop.ten_sp}</span>
                     </a>
-                    <span class="quantity">{prop.gmv}</span>
+                    <span class="quantity">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(prop.gmv)}</span>
                   </li>   
                 );
                 })}</> : <h5>No data</h5>}

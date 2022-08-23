@@ -57,6 +57,7 @@ export default function OrderDashboard(props) {
      <div className="col-10" style={{backgroundColor: "#F5F5F5"}}>
      <AdminNavbar 
      title="Quản lý đơn hàng"
+     subtitle= "Tất cả"
      text ="Tổng số đơn hàng"
      count = {total}/>
      <Card className="card-plain table-plain-bg">
@@ -86,7 +87,7 @@ export default function OrderDashboard(props) {
                 <p class="fw-normal mb-1">{moment(item.thoi_gian).format("HH:mm:ss DD/MM/YYYY")}</p>
                 
               </td>
-              <td>{item.tong_phi} đ</td>
+              <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.tong_phi)}</td>
               <td>
               {item.trang_thai.normalize() === "CHỜ XÁC NHẬN".normalize() ? <span className="badge badge-wait">{item.trang_thai}</span> : 
               item.trang_thai.normalize() === "ĐÃ XÁC NHẬN".normalize() ? <span className="badge badge-confirmed">{item.trang_thai}</span> :

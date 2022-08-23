@@ -112,7 +112,7 @@ export default function OrderDetail(){
         <td>
           <p class="fw-normal mb-1">{moment(detail.thoi_gian).format("HH:mm:ss DD/MM/YYYY")}</p>
         </td>
-        <td>{detail.tong_phi}</td>
+        <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(detail.tong_phi)}</td>
         <td>
       <div className="input-group mb-3">
         <select value={value} onChange={e => setValue(e.target.value)}>
@@ -164,34 +164,34 @@ export default function OrderDetail(){
               </div>
               <div className="checkout-main-col-3">
                   <div className="checkout-product-info">
-                      <label id='product-price'>{product.gia_phai_tra}</label>
+                      <label id='product-price'>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.gia_phai_tra)}</label>
                   </div>
               </div>
               <div className="checkout-main-col-3">
               <label>{product.so_luong_mua}</label>
 
               </div>
-              <div className="checkout-main-col-3">{product.thanh_tien_mua}</div>
+              <div className="checkout-main-col-3">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.thanh_tien_mua)}</div>
           </div>
             )
         })}</>: "No data"}
           <div  className="checkout-main-row">
           <div className="checkout-main-col-2">Phí sản phẩm: </div>
-          <div className="checkout-main-col-3">{detail.phi_san_pham}</div>
+          <div className="checkout-main-col-3">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(detail.phi_san_pham)}</div>
 
           </div>
           <div  className="checkout-main-row">
           <div className="checkout-main-col-2">Phí vận chuyển: </div>
-          <div className="checkout-main-col-3">{detail.phi_van_chuyen} </div>
+          <div className="checkout-main-col-3">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(detail.phi_van_chuyen)} </div>
 
           </div>
           <div  className="checkout-main-row">
           <div className="checkout-main-col-2">Phí giảm: </div>
-          <div className="checkout-main-col-3">{detail.phi_giam} </div>
+          <div className="checkout-main-col-3">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(detail.phi_giam)} </div>
           </div>
           <div  className="checkout-main-row">
           <div className="checkout-main-col-2">Tổng tiền: </div>
-          <h5 className="checkout-main-col-3">{detail.tong_phi}</h5>
+          <h5 className="checkout-main-col-3">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(detail.tong_phi)}</h5>
           </div>
           </div>
 
@@ -238,7 +238,6 @@ export default function OrderDetail(){
       <Link to="/admin/order"><h5 className="p-2">{'<<'} Trở về </h5></Link>
 
     </Row>
-    <Link to="/admin/order"><h5 className="p-2">{'<<'} Trở về </h5></Link>
 
     </Col>
       </Row>
