@@ -4,11 +4,9 @@ import Container from "react-bootstrap/Container";
 import CommentPopUp from "./CommentPopUp";
 
 export default function OrderDetailItemCard({ info }) {
-  const handleCommentPopUp = () => {};
   const [commentPopUpIsRemove, setCommentPopUpIsRemove] = useState(false);
 
   const toggleReview = () => {
-    console.log("alo 123");
     setCommentPopUpIsRemove(!commentPopUpIsRemove);
   };
 
