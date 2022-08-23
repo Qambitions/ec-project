@@ -47,9 +47,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    right:19.2%;
-    top:17.5%;
+    margin-left: 0.5rem;
+    z-index: -1;
     border: 1px solid rgb(79, 176, 255);
     background-color:  rgb(79, 176, 255);
     border-radius: 50%;
