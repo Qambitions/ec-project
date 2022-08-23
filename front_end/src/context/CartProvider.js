@@ -18,11 +18,15 @@ export const CartProvider = ({ children }) =>{
     const countItems = ()=>{
         var cart = localStorage.getItem("cart");
         cart = cart ? JSON.parse(cart) : [];
-        let total = 0;
-        cart.forEach(item => {
-            total+=item.quantity;
-        });
-        setItemCount(total)
+        if(cart.length>0){        let total = 0;
+            cart.forEach(item => {
+                total+=item.quantity;
+            });
+            setItemCount(total)}
+            else{
+                setItemCount(0);
+            }
+
     }
 
     useEffect(()=>{

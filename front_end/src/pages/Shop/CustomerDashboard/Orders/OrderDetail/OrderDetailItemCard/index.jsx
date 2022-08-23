@@ -5,10 +5,10 @@ import CommentPopUp from "./CommentPopUp";
 
 export default function OrderDetailItemCard({ info }) {
   const handleCommentPopUp = () => {};
-  const [commentPopUpIsRemove,setCommentPopUpIsRemove]=useState(false);
+  const [commentPopUpIsRemove, setCommentPopUpIsRemove] = useState(false);
 
   const toggleReview = () => {
-  console.log("alo 123")
+    console.log("alo 123");
     setCommentPopUpIsRemove(!commentPopUpIsRemove);
   };
 
@@ -29,15 +29,31 @@ export default function OrderDetailItemCard({ info }) {
             <div>
               <button onClick={toggleReview}>Đánh giá</button>
               <button>Mua lại</button>
-              {commentPopUpIsRemove && (  <CommentPopUp info={info} handleClose={toggleReview} />)}
-
+              {commentPopUpIsRemove && (
+                <CommentPopUp info={info} handleClose={toggleReview} />
+              )}
             </div>
           </div>
         </div>
       </Col>
-      <Col>{info.gia_phai_tra}</Col>
-      <Col>{info.so_luong_mua}</Col>
-      <Col>{info.thanh_tien_mua}</Col>
+      <Col>
+        {new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(info.gia_phai_tra)}
+      </Col>
+      <Col>
+        {new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(info.so_luong_mua)}
+      </Col>
+      <Col>
+        {new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(info.thanh_tien_mua)}
+      </Col>
     </Container>
   );
 }

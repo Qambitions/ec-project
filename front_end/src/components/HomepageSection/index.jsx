@@ -3,10 +3,14 @@ import "./style.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
+import { LoadingOverlay } from "../PopUp";
+
 const GETVIEW_URL = "/product/view";
 
 export default function HomepageSection(props) {
   const navigate = useNavigate();
+  const [modalShow, setModalShow] = useState(false);
+
   const [productCards, setProductCards] = useState([]);
   useEffect(() => {
     fetchDetail();
@@ -34,28 +38,32 @@ export default function HomepageSection(props) {
   };
 
   return (
-    <div className="container homepage_section">
-      <div className="homepage_section_head">
-        <div className="homepage_section_head_title">
-          <h1>{props.header}</h1>
-          <img src={props.icon}></img>
+    <>
+      {" "}
+      <LoadingOverlay show={modalShow} onHide={() => setModalShow(false)} />
+      <div className="container homepage_section">
+        <div className="homepage_section_head">
+          <div className="homepage_section_head_title">
+            <h1>{props.header}</h1>
+            <img src={props.icon}></img>
+          </div>
+          <label onClick={handleViewAll} className="view_all">
+            Xem tất cả
+            <img
+              style={{ height: "20px" }}
+              src={
+                "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832641/icon/3272665_gztrje.png"
+              }
+            ></img>
+          </label>
         </div>
-        <label onClick={handleViewAll} className="view_all">
-          Xem tất cả
-          <img
-            style={{ height: "20px" }}
-            src={
-              "https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1655832641/icon/3272665_gztrje.png"
-            }
-          ></img>
-        </label>
+        <hr />
+        <div className="homepage_section_container">
+          {productCards.map((item) => (
+            <ProductCard key={item.masp} obj={item} />
+          ))}
+        </div>
       </div>
-      <hr />
-      <div className="homepage_section_container">
-        {productCards.map((item) => (
-          <ProductCard key={item.masp} obj={item} />
-        ))}
-      </div>
-    </div>
+    </>
   );
 }

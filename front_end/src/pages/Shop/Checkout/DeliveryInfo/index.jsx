@@ -9,14 +9,16 @@ export function DeliveryInfo(props) {
     <div className="payment__info_container">
       <div className="container__flex payment__info_head">
         <h4>Thông tin nhận hàng</h4>
-        <a>Tùy chỉnh</a>
+        <a href="/user/myadress">Tùy chỉnh</a>
       </div>
       <div className="payment__info_body">
         {authContext.deliveryAddress.map((item) => (
           <DeliveryCard info={item} />
         ))}
-        <br/>
-        <a className="navigate__detail">+ Thêm địa chỉ mới</a>
+        <br />
+        <a href="/user/myadress" className="navigate__detail">
+          + Thêm địa chỉ mới
+        </a>
       </div>
     </div>
   );

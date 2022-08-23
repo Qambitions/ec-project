@@ -31,7 +31,7 @@ export default function MyAccount() {
 
   return (
     <>
-      <h3 className="user_dashboard_header">Thông tin tài khoản</h3>
+      <h3 className="user_dashboard_header_title">Thông tin tài khoản</h3>
       <div className="horizontal_divider"></div>
       <Row className="user_dashboard_body">
         <Col xs={2} className="user_dashboard_body_left">

@@ -58,15 +58,13 @@ export default function Header() {
         </a>
         <Link to="/">
           <BsBell />{" "}
-        </Link>
+        </Link>{" "}
         <Link to="/user/cart">
-          <BsCart2 />
+          <div className="cart_item_count">{cartContext.itemCount}</div>
+          <BsCart2 />{" "}
         </Link>
-
         {loggedState ? (
           <>
-            {" "}
-            <div className="cart_item_count">{cartContext.itemCount}</div>{" "}
             <Dropdown align="end">
               <Dropdown.Toggle
                 as={CustomToggle}

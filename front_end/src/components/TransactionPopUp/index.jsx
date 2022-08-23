@@ -19,17 +19,20 @@ function SuccessTransaction() {
 
 function FailTransaction() {
   return (
-    <div className="popup_message">
-      <div>
-        <img
-          src="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057714/icon/190406_wray8h.png"
-          alt="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057714/icon/190406_wray8h.png"
-        ></img>
-        <h3>GIAO DỊCH THẤT BẠI</h3>
-        <p>Thanh toán không hợp lệ!</p>
-      </div>
+    <div className="container">
+      {" "}
+      <div className="popup_message">
+        <div>
+          <img
+            src="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057714/icon/190406_wray8h.png"
+            alt="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1658057714/icon/190406_wray8h.png"
+          ></img>
+          <h3>GIAO DỊCH THẤT BẠI</h3>
+          <p>Thanh toán không hợp lệ!</p>
+        </div>
 
-      <a>Xem lại đơn hàng</a>
+        <a>Xem lại đơn hàng</a>
+      </div>
     </div>
   );
 }
