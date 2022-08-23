@@ -130,6 +130,7 @@ router.get('/', async (req, res, next) =>{
             'hinh_anh':itemsInformation.hinh_anh,
             'luot_danh_gia':itemsInformation.luot_danh_gia,
             'sao':star,
+            'phan_tram_giam_gia':itemsInformation.phan_tram_giam_gia,
             'gia_ban_goc':itemsInformation.gia_ban,
             'khoi_luong':itemsInformation.khoi_luong,
             'tong_da_ban':itemsInformation.tong_da_ban,
