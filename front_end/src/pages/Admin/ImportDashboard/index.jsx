@@ -30,31 +30,53 @@ export default function ImportDashboard() {
   const [supplierValue, setSupplierValue] = useState("1000");
   const [selectedPrds, setSelectedPrds] = useState([]);
   const [currMaSP, setCurrMaSP] = useState();
-  const [currSL, setCurrSL] = useState();
-  const [currGia, setCurrGia] = useState();
+  const [currSL, setCurrSL] = useState(0);
+  const [currGia, setCurrGia] = useState(0);
   const [total, setTotal] = useState(0);
 
   const [branches, setBranches] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [POAmount, setPOAmount] = useState();
+
 
   const [po, setPO] = useState([]);
 
   const [show, setShow] = useState(false);
 
-  const handleCancel = () => setShow(false);
+  const handleCancel = () => {
+    setShow(false);
+    setSelectedPrds([]);
+    setTotal(0);
+    setCurrGia(0);
+    setCurrSL(0)
+
+
+  };
   const handleShow = () => setShow(true);
 
   const addMoreProducts = (e) => {
-    var prd = {
-      masp: currMaSP,
-      so_luong_nhap: currSL,
-      don_gia_nhap: currGia
-    };
-    setSelectedPrds(prev => [...prev, prd])
-    setCurrGia('')
-    setCurrSL('')
-    setTotal(prev => prev + currGia * currSL)
+    if (currSL <= 0 || currGia <= 0) {
+      toast("Giá và số lượng nhập phải lớn hơn 0", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+      });
+    }
+    else {
+      var prd = {
+        masp: currMaSP,
+        so_luong_nhap: currSL,
+        don_gia_nhap: currGia
+      };
+      setSelectedPrds(prev => [...prev, prd])
+      setCurrGia(0)
+      setCurrSL(0)
+      setTotal(prev => prev + currGia * currSL)
+    }
   };
 
   const [currentData, setCurrentData] = useState([
@@ -84,6 +106,7 @@ export default function ImportDashboard() {
       params: { macn: iVal },
     }).then((res) => {
       setPO(res.data.list_purchase);
+      setPOAmount(res.data.total_purchase);
     });
   };
 
@@ -120,6 +143,7 @@ export default function ImportDashboard() {
       },
     }).then((res) => {
       setProducts(res.data.items);
+      setCurrMaSP(res.data.items[0].masp)
     });
   };
 
@@ -129,26 +153,8 @@ export default function ImportDashboard() {
   }
 
   const postPO = async (e) => {
-    var postData = {
-      macn: branchValue,
-      manpp: supplierValue,
-      tong_tien_nhap: total,
-      po_items: selectedPrds
-    };
-    setSelectedPrds([])
-    setTotal(0)
-    setBranchValue("200")
-    setSupplierValue("1000")
-    let axiosConfig = {
-      headers: {
-        "Content-Type": "application/json",
-        "magic_pass": REACT_APP_MAGIC_PASS
-      }
-    };
-
-    await axios.post(POST_PO, postData, axiosConfig).then((res) => {
-      setShow(false);
-      toast(res.data.message, {
+    if (selectedPrds.length == 0) {
+      toast("Vui lòng chọn sản phẩm", {
         position: "top-center",
         autoClose: 4000,
         hideProgressBar: false,
@@ -156,7 +162,38 @@ export default function ImportDashboard() {
         pauseOnHover: false,
         draggable: true,
       });
-    });
+    }
+    else {
+      var postData = {
+        macn: branchValue,
+        manpp: supplierValue,
+        tong_tien_nhap: total,
+        po_items: selectedPrds
+      };
+      setSelectedPrds([])
+      setTotal(0)
+      setSupplierValue("1000")
+      let axiosConfig = {
+        headers: {
+          "Content-Type": "application/json",
+          "magic_pass": REACT_APP_MAGIC_PASS
+        }
+      };
+  
+      await axios.post(POST_PO, postData, axiosConfig).then((res) => {
+        setShow(false);
+        fetchPurchaseOrders(branchValue);
+        toast(res.data.message, {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+        });
+      });
+      
+    }
 
   };
 
@@ -173,8 +210,9 @@ export default function ImportDashboard() {
         <div className="col-10" style={{ backgroundColor: "#F5F5F5" }}>
           <AdminNavbar
             title="Quản lý phiếu nhập"
+            subtitle = {branchValue}
             text="Tổng đơn nhập"
-            count="200" />
+            count= {POAmount}/>
           <div style={{ display: "flex" }}>
             <div className="input-group p-4">
               <h5>Chọn chi nhánh: &nbsp;&nbsp;</h5>
@@ -239,11 +277,11 @@ export default function ImportDashboard() {
                     <Row className="my-2">
                       <Form.Group as={Col}>
                         <Form.Label>Số lượng</Form.Label>
-                        <Form.Control type="number" value={currSL} onChange={e => setCurrSL(e.target.value)} />
+                        <Form.Control type="number" value={currSL} onChange={e => setCurrSL(Math.abs(e.target.value))} />
                       </Form.Group>
                       <Form.Group as={Col}>
                         <Form.Label>Đơn giá nhập (VND)</Form.Label>
-                        <Form.Control type="number" value={currGia} onChange={e => setCurrGia(e.target.value)} />
+                        <Form.Control type="number" value={currGia} onChange={e => setCurrGia(Math.abs(e.target.value))} required />
                       </Form.Group>
                     </Row>
                     <a className="text-primary" onClick={addMoreProducts}>+ Thêm sản phẩm</a>
@@ -269,7 +307,7 @@ export default function ImportDashboard() {
                                   </div>
                                 </td>
                                 <td>{item.so_luong_nhap}</td>
-                                <td>{item.don_gia_nhap}</td>
+                                <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.don_gia_nhap)}</td>
                               </tr>
                             )
                           })}</> : "No data"}
@@ -278,9 +316,7 @@ export default function ImportDashboard() {
                     <br />
                     <Form.Group>
                       <Form.Label>Thành tiền</Form.Label>
-                      <h1><Badge bg="warning" text="dark" >{total} VND</Badge></h1>
-
-                      {/* <Form.Control type="number" disable value={total}/> */}
+                      <h1><Badge bg="warning" text="dark" >{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)}</Badge></h1>
                     </Form.Group>
                     <Button variant="secondary" onClick={handleCancel}>
                       Cancel
@@ -322,7 +358,7 @@ export default function ImportDashboard() {
                           <td>{item.ten_npp}</td>
                           <td>{moment(item.ngay_lap).format("HH:mm:ss DD/MM/YYYY")}</td>
                           <td>{item.tong_so_mat_hang}</td>
-                          <td>{item.tong_tien_nhap}</td>
+                          <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.tong_tien_nhap)}</td>
                         </tr>
                       )
                     })}</> : "No data"}
