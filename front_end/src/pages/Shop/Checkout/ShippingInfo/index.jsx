@@ -58,6 +58,7 @@ export function ShippingInfo(props) {
       checkoutContext.setShippingPrice(0);
       return;
     }
+    setModalShow(true);
     let token = Cookies.get("token");
     let res = await axios({
       url: process.env.REACT_APP_GET_SHIPPING_PRICE,
@@ -120,7 +121,6 @@ export function ShippingInfo(props) {
     checkoutContext.setShippingPrice(0);
     updateCheckoutShippingMethod("GHN");
     updateCheckoutPaymentMethod("MOMO");
-    setModalShow(true);
   }, []);
 
   useEffect(() => {
