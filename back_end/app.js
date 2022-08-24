@@ -11,6 +11,7 @@ var ads = require('./routes/ads.js');
 var cart = require('./routes/cart.js');
 var product = require('./routes/product.js');
 var management = require('./routes/management.js');
+require("dotenv").config();
 
 var app = express();
 var cors = require('cors');
@@ -25,7 +26,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+if (typeof(process.env.KEY_PEM_PATH) != "undefined"){
+  app.use(function (req, res, next) {
 
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_HOST);
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+  });
+}
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -34,6 +54,7 @@ app.use('/ads', ads);
 app.use('/cart', cart);
 app.use('/product', product);
 app.use('/management', management);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
