@@ -148,7 +148,7 @@
     padding: 0.5rem 5rem;
 }
 
-.add_cart_toats .toast-body button{
+.add_cart_toats .toast-body a{
     width: 100%;
     border: none;
     background-color: rgb(250, 206, 85);
