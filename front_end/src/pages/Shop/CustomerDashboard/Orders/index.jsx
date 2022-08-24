@@ -22,7 +22,12 @@ export default function Orders() {
       params: { limit: 4, offset: 0 },
     });
     if (res.data.exitcode === 0) {
-      setOrders(res.data.orders);
+      console.log(res.data.orders[0].trang_thai);
+      if (res.data.orders[0].trang_thai !== null) {
+        setOrders(res.data.orders);
+      } else {
+        setOrders([]);
+      }
     }
   };
 
