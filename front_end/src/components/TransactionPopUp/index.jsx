@@ -12,7 +12,7 @@ function SuccessTransaction() {
         <p>Cảm ơn bạn đã lựa chọn Huimitu</p>
       </div>
 
-      <a>Xem lại đơn hàng</a>
+      <a href="/user/myorder">Xem lại đơn hàng</a>
     </div>
   );
 }
@@ -31,7 +31,7 @@ function FailTransaction() {
           <p>Thanh toán không hợp lệ!</p>
         </div>
 
-        <a>Xem lại đơn hàng</a>
+        <a href="/user/myorder">Xem lại đơn hàng</a>
       </div>
     </div>
   );
