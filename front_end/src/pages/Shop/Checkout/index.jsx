@@ -80,8 +80,6 @@ export default function Checkout(props) {
         headers: { token: Cookies.get("token") },
         data: dataOrder,
       }).then((res) => {
-        console.log(dataOrder);
-        console.log(res.data);
         setErrorMess(res.data.message);
         if (res.data.exitcode === 1) {
           setErrorMess(res.data.warning);
@@ -96,9 +94,8 @@ export default function Checkout(props) {
           console.log("Tồn tại đơn hàng đang chờ thanh toán");
           setModalShow(true);
         } else if (res.data.exitcode === 0) {
-          // setModalShow(true);
-          // console.log("tao thanh cong", res.data.paymentURL);
-          setTimeout(window.location.replace(res.data.paymentURL), 1000);
+          setModalShow(true);
+          setTimeout(window.location.replace(res.data.paymentURL), 3000);
           localStorage.removeItem("cart");
           localStorage.removeItem("checkoutInfo");
         }
