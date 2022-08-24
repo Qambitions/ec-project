@@ -23,10 +23,13 @@ export const AuthProvider = ({ children }) =>{
         url:process.env.REACT_APP_AUTO_LOGIN,
         headers:{token:Cookies.get("token")}
       })
-      console.log(res.data);
-      if(res.data.exitcode!==0){
+        console.log(res.data);
+        if(res.data.exitcode!==0){
+          toggleLogout();
+        }}
+      else{
         toggleLogout();
-      }}
+      }
     }
 
     const getDelivery = async() =>{
