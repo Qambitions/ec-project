@@ -125,9 +125,11 @@ export default function OrderDetail({ orderID }) {
         <Col>Số lượng</Col>
         <Col>Thành tiền</Col>
       </Container>
-      {items.map((item) => (
-        <OrderDetailItemCard info={item} id={orderID} />
-      ))}
+      {items.length > 0 ? (
+        items.map((item) => <OrderDetailItemCard info={item} />)
+      ) : (
+        <h5>Bạn chưa có đơn hàng nào</h5>
+      )}
 
       <Container className="container__100 order__progress_bar order_detail_items_header">
         <Col xs={5}></Col>

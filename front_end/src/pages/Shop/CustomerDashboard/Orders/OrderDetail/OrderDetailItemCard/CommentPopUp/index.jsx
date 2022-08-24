@@ -25,16 +25,17 @@ export default function CommentPopUp({ info, handleClose }) {
           noi_dung: comment,
         },
       }).then((res) => {
+        setModalShow(false);
         if (res.data.exitcode === 0) {
-          setMessage("Bạn đã đánh giá cho món hàng này rồi");
-          setTimeout(2000);
-          handleClose();
+          setMessage("Cám ơn bạn đã đánh giá");
+          setTimeout(() => {
+            handleClose();
+          }, 3000);
         } else {
           setMessage("Bạn đã đánh giá cho món hàng này rồi");
         }
       });
     } catch (error) {}
-    setModalShow(false);
   };
   const handleComment = (e) => {
     setComment(e.target.value);

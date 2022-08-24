@@ -95,11 +95,7 @@ export default function SignInForm() {
           setUsername("");
           setPassword("");
           if (res.data.account_type === 0) {
-            if (from === "/") {
-              navigate("/admin", { replace: true });
-            } else {
-              navigate(from, { replace: true });
-            }
+            navigate("/admin", { replace: true });
           } else {
             navigate(from, { replace: true });
           }
