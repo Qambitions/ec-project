@@ -17,7 +17,8 @@ export const AuthProvider = ({ children }) =>{
     },[])
 
     const autoLogin = async()=>{
-      let res = await axios({
+      if(Cookies?.get("token")){
+        let res = await axios({
         method:'post',
         url:process.env.REACT_APP_AUTO_LOGIN,
         headers:{token:Cookies.get("token")}
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) =>{
       console.log(res.data);
       if(res.data.exitcode!==0){
         toggleLogout();
-      }
+      }}
     }
 
     const getDelivery = async() =>{
