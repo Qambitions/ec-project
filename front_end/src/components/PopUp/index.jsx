@@ -118,12 +118,12 @@ function EditAddress(props) {
   const [modalShow, setModalShow] = useState(false);
   const [message, setMessage] = useState("");
   const [formErrors, setFormErrors] = useState({});
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  // const [name, setName] = useState("");
+  // const [phone, setPhone] = useState("");
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
-  const [isDefault, setIsDefault] = useState(false);
+  // const [isDefault, setIsDefault] = useState(false);
   const [addressDetail, setAddressDetail] = useState("");
   const [address, setAddress] = useState({
     province: "",
@@ -204,14 +204,14 @@ function EditAddress(props) {
 
     const error = {};
     let flag = true;
-    if (!name.value) {
-      flag = false;
-      error.name = "Không được để trống";
-    }
-    if (!phone.value) {
-      flag = false;
-      error.phone = "Không được để trống";
-    }
+    // if (!name.value) {
+    //   flag = false;
+    //   error.name = "Không được để trống";
+    // }
+    // if (!phone.value) {
+    //   flag = false;
+    //   error.phone = "Không được để trống";
+    // }
     if (!cities.value) {
       flag = false;
       error.province = "Không được để trống";
@@ -247,6 +247,7 @@ function EditAddress(props) {
         tp_tinh: selectedCity,
       },
     }).then((res) => {
+      console.log(res.data);
       setMessage(res.data.message);
       setModalShow(true);
     });

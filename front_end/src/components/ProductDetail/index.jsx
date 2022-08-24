@@ -50,11 +50,13 @@ export function ProductDetail() {
       },
       params: { masp: id },
     }).then((res) => {
-      setProduct(res.data.item);
-      setComments(res.data.item.comment);
-      setRatting(res.data.item.sao);
-      setAvailableBranch(res.data.item.branch_available);
-      calRattingConsult();
+      if (res.data.exitcode === 0) {
+        setProduct(res.data.item);
+        setComments(res.data.item.comment);
+        setRatting(res.data.item.sao);
+        setAvailableBranch(res.data.item.branch_available);
+        calRattingConsult();
+      }
     });
     setModalShow(false);
   };
