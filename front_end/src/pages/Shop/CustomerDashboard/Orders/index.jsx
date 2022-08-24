@@ -44,7 +44,7 @@ export default function Orders() {
             justify
           >
             <Tab eventKey="all" title="Tất cả">
-              {orders.length < 0 ? (
+              {orders.length > 0 ? (
                 orders.map((order) => (
                   <DashboardOrderCard key={order.madh} orderInfo={order} />
                 ))
@@ -53,7 +53,7 @@ export default function Orders() {
               )}
             </Tab>
             <Tab eventKey="wait-confirmed" title="Chờ xác nhận">
-              {orders.length < 0 ? (
+              {orders.length > 0 ? (
                 orders
                   .filter((order) => {
                     return (
@@ -68,7 +68,7 @@ export default function Orders() {
               )}
             </Tab>
             <Tab eventKey="confirmed" title="Đã xác nhận">
-              {orders.length < 0 ? (
+              {orders.length > 0 ? (
                 orders
                   .filter((order) => {
                     return order.trang_thai?.localeCompare("ĐÃ XÁC NHẬN") === 0;
@@ -81,7 +81,7 @@ export default function Orders() {
               )}
             </Tab>
             <Tab eventKey="on-delivery" title="Đang giao">
-              {orders.length < 0 ? (
+              {orders.length > 0 ? (
                 orders
                   .filter((order) => {
                     return order.trang_thai?.localeCompare("ĐANG GIAO") === 0;
@@ -94,7 +94,7 @@ export default function Orders() {
               )}
             </Tab>
             <Tab eventKey="delivered" title="Đã giao">
-              {orders.length < 0 ? (
+              {orders.length > 0 ? (
                 orders
                   .filter((order) => {
                     return (
@@ -110,7 +110,7 @@ export default function Orders() {
               )}
             </Tab>
             <Tab eventKey="canceled" title="Đã hủy">
-              {orders.length < 0 ? (
+              {orders.length > 0 ? (
                 orders
                   .filter((order) => {
                     return (
