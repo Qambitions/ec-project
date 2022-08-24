@@ -29,7 +29,7 @@ function vnpayCall(props, Client) {
     // req.socket.remoteAddress ||
     // req.connection.socket.remoteAddress;
 
-    var ipAddr = HOST_LINK;
+    var ipAddr = 'https://localhost:5000';
     // var ipAddr = '127.0.0.1';
 
     var tmnCode = process.env.VNPAY_TMN_KEY;
