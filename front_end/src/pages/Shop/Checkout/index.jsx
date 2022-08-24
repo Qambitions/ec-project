@@ -10,8 +10,12 @@ import CheckoutContext from "../../../context/CheckoutProvider";
 import axios from "../../../api/axios";
 import { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { MyVerticallyCenteredModal } from "../../../components/PopUp";
+import {
+  LoadingOverlay,
+  MyVerticallyCenteredModal,
+} from "../../../components/PopUp";
 export default function Checkout(props) {
+  const [loadingShow, setLoadingShow] = useState(false);
   const [errorMess, setErrorMess] = useState("");
   const checkoutContext = useContext(CheckoutContext);
   const [items, setItems] = useState([]);
@@ -43,6 +47,7 @@ export default function Checkout(props) {
     checkoutInfo = checkoutInfo ? JSON.parse(checkoutInfo) : {};
     let itemsBuy = [];
     let tempPay = 0;
+
     items.forEach((element) => {
       let item = {};
       tempPay +=
@@ -68,7 +73,6 @@ export default function Checkout(props) {
       ),
       items: itemsBuy,
     };
-    console.log("orderInfo", dataOrder);
     try {
       await axios({
         method: "post",
@@ -76,9 +80,13 @@ export default function Checkout(props) {
         headers: { token: Cookies.get("token") },
         data: dataOrder,
       }).then((res) => {
-        setErrorMess(res.data.message);
+        console.log(dataOrder);
         console.log(res.data);
-        if (res.data.exitcode === 106) {
+        setErrorMess(res.data.message);
+        if (res.data.exitcode === 1) {
+          setErrorMess(res.data.warning);
+          setModalShow(true);
+        } else if (res.data.exitcode === 106) {
           console.log("token k ton tai");
           setModalShow(true);
         } else if (res.data.exitcode === 101) {
@@ -88,10 +96,7 @@ export default function Checkout(props) {
           console.log("Tồn tại đơn hàng đang chờ thanh toán");
           setModalShow(true);
         } else if (res.data.exitcode === 0) {
-          setTimeout(500);
-          console.log("tao thanh cong", res.data.paymentURL);
-          window.location.replace(res.data.paymentURL);
-          
+          setTimeout(window.location.replace(res.data.paymentURL), 1000);
           localStorage.removeItem("cart");
           localStorage.removeItem("checkoutInfo");
         }
@@ -101,6 +106,7 @@ export default function Checkout(props) {
 
   return (
     <CheckoutProvider>
+      <LoadingOverlay show={loadingShow} onHide={() => setLoadingShow(false)} />
       <div className="body">
         <div className="container container__flex_col">
           <h1>Thanh toán</h1>

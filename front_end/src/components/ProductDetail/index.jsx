@@ -125,7 +125,7 @@ export function ProductDetail() {
               <h6>Thêm vào giỏ hàng thành công</h6>
             </Toast.Header>
             <Toast.Body>
-              <button>Xem giỏ hàng và thanh toán</button>
+              <a href="/user/cart">Xem giỏ hàng và thanh toán</a>
             </Toast.Body>
           </Toast>
         </ToastContainer>

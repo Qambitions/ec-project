@@ -40,12 +40,7 @@ export default function OrderDetailItemCard({ info }) {
           currency: "VND",
         }).format(info.gia_phai_tra)}
       </Col>
-      <Col>
-        {new Intl.NumberFormat("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(info.so_luong_mua)}
-      </Col>
+      <Col>{info.so_luong_mua}</Col>
       <Col>
         {new Intl.NumberFormat("vi-VN", {
           style: "currency",
