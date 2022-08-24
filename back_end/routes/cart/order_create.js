@@ -58,8 +58,8 @@ async function addOrder(props, Client){
         phi_san_pham:props.phi_san_pham,
         phi_van_chuyen: props.phi_van_chuyen,
         phi_giam: props.phi_giam,
-        hinh_thuc_thanh_toan: props.hinh_thuc_thanh_toan,
-        hinh_thuc_giao_hang: props.hinh_thuc_giao_hang,
+        hinh_thuc_thanh_toan: props.hinh_thuc_thanh_toan.toUpperCase().normalize(),
+        hinh_thuc_giao_hang: props.hinh_thuc_giao_hang.toUpperCase().normalize(),
         id_dia_chi_giao: props.id_dia_chi_giao
     }).returning("madh").then(function (madh){
         // console.log(madh)
@@ -176,13 +176,13 @@ router.post('/', async (req, res, next) =>{
         var order = await addOrder(req.body, Client);
         var items_add = await addItems(req.body.items, order);
 
-        if (req.body.hinh_thuc_thanh_toan == 'COD'){
+        if (req.body.hinh_thuc_thanh_toan.toUpperCase().normalize() == 'COD'){
             updateOrderStatus(Client,'CHỜ XÁC NHẬN')
             response.exitcode = 0
             response.message = "TẠO ĐƠN HÀNG THÀNH CÔNG"
             return res.send(response)
         }
-        else if (req.body.hinh_thuc_thanh_toan == 'MOMO'){
+        else if (req.body.hinh_thuc_thanh_toan.toUpperCase().normalize() == 'MOMO'){
             const result = JSON.parse(await momoCall(req.body, Client));
             // console.log(result)
             if (result.resultCode != 0){
@@ -193,7 +193,7 @@ router.post('/', async (req, res, next) =>{
             response.paymentURL = result.payUrl;
             return res.send(response)
         }
-        else if (req.body.hinh_thuc_thanh_toan == 'PAYPAL'){
+        else if (req.body.hinh_thuc_thanh_toan.toUpperCase().normalize() == 'PAYPAL'){
             const result = await paypalCall(req.body, Client);
             if (result.resultCode != 0){
                 updateOrderStatus(Client,'THANH TOÁN THẤT BẠI')
@@ -204,7 +204,7 @@ router.post('/', async (req, res, next) =>{
             response.paymentURL = result.payUrl;
             return res.send(response)
         }
-        else if (req.body.hinh_thuc_thanh_toan == 'VNPAY'){
+        else if (req.body.hinh_thuc_thanh_toan.toUpperCase().normalize() == 'VNPAY'){
             const result = await vnpayCall(req.body, Client);
             // console.log(result)
             if (result.resultCode != 0){
