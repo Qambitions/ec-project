@@ -62,6 +62,8 @@ Ngoài ra, đối với doanh nghiệp khác, cửa hàng nhận quảng cáo th
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1qykuExgqUk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+[![clip_demo](https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1662995940/background/background_demo_lyt5ue.png)](https://youtu.be/1qykuExgqUk)
+
 <br/>
 
 -----------------
