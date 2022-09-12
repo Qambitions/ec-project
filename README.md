@@ -39,6 +39,21 @@ Ngoài ra, đối với doanh nghiệp khác, cửa hàng nhận quảng cáo th
 
 -----------------
 
+## Link video demo
+
+<p align="center">
+  <a href="https://youtu.be/1qykuExgqUk">
+    <img width="50%" src="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1662995940/background/background_demo_lyt5ue.png" />
+  </a>
+  <br/>
+  <a href="https://youtu.be/1qykuExgqUk"> Click for view
+  </a>
+</p>
+
+<br/>
+
+-----------------
+
 
 ## Một số giao diện của web
 
@@ -57,22 +72,6 @@ Ngoài ra, đối với doanh nghiệp khác, cửa hàng nhận quảng cáo th
 ![cart](https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1661349509/Web%20Architucture/UI/payment_gvfydf.png)
 
 -----------------
-
-## Link video demo
-
-<p align="center">
-  <a href="https://youtu.be/1qykuExgqUk">
-    <img width="50%" src="https://res.cloudinary.com/ec-2022-lam-zau-khum-kho/image/upload/v1662995940/background/background_demo_lyt5ue.png" />
-  </a>
-  <br/>
-  <a href="https://youtu.be/1qykuExgqUk"> Click for view
-  </a>
-</p>
-
-<br/>
-
------------------
-
 
 ## Team thực hiện
 
