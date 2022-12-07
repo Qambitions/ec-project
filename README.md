@@ -75,6 +75,6 @@ Ngoài ra, đối với doanh nghiệp khác, cửa hàng nhận quảng cáo th
 
 ## Team thực hiện
 
-Đây là đồ án của nhóm EC02-04 (lớp 19HTTT2), phục vụ môn học Thương mại điện tử.
+Đây là đồ án của nhóm EC02-04 (lớp 19HTTT2), phục vụ môn học Thương mại điện tử!!
 
 -----------------
